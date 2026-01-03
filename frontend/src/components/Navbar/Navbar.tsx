@@ -17,7 +17,7 @@ export default function Navbar() {
             <ul>
             { renderMap.map(({ title, to }, key) => (
                 <li key={ `${to}-${key}` }>
-                    <Link href={ to }>
+                    <Link href={ `/admin/${to}` }>
                         { title }
                     </Link>
                 </li>
