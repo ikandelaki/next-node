@@ -1,18 +1,21 @@
-import Field from "@/components/Field/Field"
+'use client';
+
+import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
+import { toKebabCase } from "@/utils/utils";
 
 export default function CreateMenuPage() {
     const createMenu = async (formData: FormData) => {
-        'use server'
-
-        const title = formData.get('menu-title');
+        const title = String(formData.get('menu-title'));
         const titles = formData.getAll('menu-item-title').map(v => String(v));
         const links = formData.getAll('menu-item-link').map(v => String(v));
 
         const items = titles.map((t, i) => ({ title: t, link: links[i] ?? '' }));
+        const code = toKebabCase(title);
 
         const rawFormData = {
             title,
+            code,
             items
         };
 
