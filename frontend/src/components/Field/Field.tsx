@@ -9,7 +9,8 @@ export type FieldType = {
     placeholder?: string,
     value?: string,
     onChange?: (value: ChangeEvent<HTMLInputElement>) => void,
-    label?: string
+    label?: string,
+    isRequired?: boolean
 }
 
 export default function Field({
@@ -19,7 +20,8 @@ export default function Field({
     onChange,
     id,
     label,
-    name
+    name,
+    isRequired
 }: FieldType
 ) {
     if (!type) {
@@ -38,10 +40,26 @@ export default function Field({
 
     const renderInput = () => {
         if (!value || !onChange) {
-            return <input className='bg-gray-900 p-2' type={ type } placeholder={ placeholder } id={ id } name={ inputName } />
+            return <input
+                className='bg-gray-900 p-2'
+                type={ type }
+                placeholder={ placeholder }
+                id={ id }
+                name={ inputName }
+                required={ isRequired }
+            />
         }
 
-        return <input className='bg-gray-900 p-2' type={ type } placeholder={ placeholder } id={ id } name={ inputName } value={ value } onChange={ onChange } />
+        return <input
+            className='bg-gray-900 p-2'
+            type={ type }
+            placeholder={ placeholder }
+            id={ id }
+            name={ inputName }
+            value={ value }
+            onChange={ onChange }
+            required={ isRequired }
+        />
     }
 
     return (

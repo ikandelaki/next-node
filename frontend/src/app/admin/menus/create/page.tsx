@@ -19,15 +19,32 @@ export default function CreateMenuPage() {
             items
         };
 
-        console.log('>> Object.fromEntries(formData)', Object.fromEntries(formData));
+        if (!title || !code || !items?.length) {
+            console.error('>> Please fill out all the necessary fields');
+            return;
+        }
+
         console.log('>> rawFormData', rawFormData);
+
+        const res = await fetch('http://localhost:8000/menus/create', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...rawFormData
+            })
+        });
+
+        const data = await res.json();
+        console.log('>> data', data);
     }
 
     return (
         <div className='AdminPage'>
             <h1>Create menu</h1>
             <form action={ createMenu }>
-                <Field type='text' placeholder='Menu title' label='Menu title' id='menu-title' />
+                <Field type='text' placeholder='Menu title' label='Menu title' id='menu-title' isRequired />
                 <FieldGroup label='menu-items' isMultipliable className='mt-4'>
                     {(i) => (
                         <>
@@ -37,6 +54,7 @@ export default function CreateMenuPage() {
                                 label='Menu item title'
                                 id={`menu-item-title-${i}`}
                                 name='menu-item-title'
+                                isRequired
                             />
                             <Field
                                 type='text'
@@ -44,6 +62,7 @@ export default function CreateMenuPage() {
                                 label='Menu item link'
                                 id={`menu-item-link-${i}`}
                                 name='menu-item-link'
+                                isRequired
                             />
                         </>
                     )}
