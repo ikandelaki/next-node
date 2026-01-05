@@ -50,6 +50,7 @@ export default class MenuModel extends BaseModel {
         const query = `INSERT INTO ${this.getMainTableName()} (title, code) VALUES ('${this.getTitle()}', '${this.getCode()}');`
         const data = await resourceConnection.execute(query);
         const items = this.getItems();
+        console.log('>> items', items);
 
         if (items?.length) {
             resourceConnection.setTableName('menu_item')
