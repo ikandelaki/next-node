@@ -30,7 +30,7 @@ export default class MenuModel extends BaseModel {
     }
 
     public getCode() {
-        return this;
+        return this.code;
     }
 
     public setItems(items: MenuItemsType[]) {
@@ -47,24 +47,22 @@ export default class MenuModel extends BaseModel {
         const resourceConnection = new ResourceConnection();
         resourceConnection.setTableName(this.getMainTableName());
 
-        const data = await resourceConnection.setQuery(
-            `INSERT INTO ${this.getMainTableName()} (title, code) VALUES (${this.getTitle()}, ${this.getCode()})`
-        ).execute();
+        const query = `INSERT INTO ${this.getMainTableName()} (title, code) VALUES ('${this.getTitle()}', '${this.getCode()}');`
+        const data = await resourceConnection.execute(query);
+        const items = this.getItems();
 
-        // if (this.getItems()?.length) {
-        //     resourceConnection.setTableName('menu_item')
-        //     resourceConnection.setQuery(
-        //         `INSERT INTO menu_item (title, href) VALUES `
-        //     )
+        if (items?.length) {
+            resourceConnection.setTableName('menu_item')
+            let query = `INSERT INTO menu_item (title, href) VALUES `;
 
-        //     this.getItems().forEach(({ title, link }) => {
-        //         resourceConnection.setQuery(`(${title}, ${link})`)
-        //     })
+            items.forEach(({ title, link }) => {
+                query += `('${title}', '${link}')`;
+            })
 
-        //     resourceConnection.setQuery(`;`);
-        //     const result = resourceConnection.execute();
-        //     console.log('>> result', result);
-        // }
+            query += ';';
+            const result = resourceConnection.execute(query);
+            console.log('>> result', result);
+        }
         
         console.log('>> data', data);
     }

@@ -148,7 +148,7 @@ class ResourceConnection {
         }
         
         this.setTableName(tableName);
-        await this.execute(`CREATE TABLE IF NOT EXISTS ${tableName}(entity_id varchar(255) PRIMARY KEY);`);
+        await this.execute(`CREATE TABLE IF NOT EXISTS ${tableName}(entity_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY);`);
         
         return this;
     }
