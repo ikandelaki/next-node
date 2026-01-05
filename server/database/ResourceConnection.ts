@@ -197,7 +197,7 @@ class ResourceConnection {
 
         const connection = await this.getConnection();
 
-        return connection?.execute(query);;
+        return connection?.execute(query);
     }
 
     private async columnExists(table: string, column: string): Promise<boolean> {
