@@ -21,6 +21,25 @@ type MySQLConstraint =
 
 const DEFAULT_PORT = 3306;
 
+/**
+ * Class ResourceConnection
+ * - Can be used for database manipulation and queries.
+ * @init - Initialize the database connection
+ * @getConnection - Get connection to the database
+ * @initDatabase - initialize the database (only used for the first time to create the DB)
+ * @runMigrations - TODO::Should get all the files under migrations directory and run the apply() methods
+ * -- It should also store in a separate db table the classes that already ran, to avoid them running every time npm start is run
+ * @setQuery - Set current sql query to the object, later to be executed on the DB.
+ * @clearQuery - Clear current query
+ * @getQuery - Get current query
+ * @setTablename - Set the table name to which we want to run queries on
+ * @getTablename - Get which table we are running queries on
+ * @createTable - Create a database table. It automatically initializes the entity_id column
+ * @addColumn - Add column to the table.
+ * @addColumns - Add multiple columns to the table.
+ * @execute - Execute current sql query (stored in this.query)
+ * @columnExists - Check if the column already exists.
+ */
 class ResourceConnection {
     private connection: Connection | null = null;
     private query: string = '';
@@ -97,14 +116,14 @@ class ResourceConnection {
         await initTables.apply();
     }
 
-    public clearQuery() {
-        this.query = '';
+    public setQuery(query: string = '') {
+        this.query = this.query ? this.query + query : query;
 
         return this;
     }
 
-    public setQuery(query: string = '') {
-        this.query = this.query ? this.query + query : query;
+    public clearQuery() {
+        this.query = '';
 
         return this;
     }
