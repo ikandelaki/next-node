@@ -45,26 +45,26 @@ export default class MenuModel extends BaseModel {
 
     public async save() {
         const resourceConnection = new ResourceConnection();
-        resourceConnection.setTableName(this.getMainTableName());
-
-        const query = `INSERT INTO ${this.getMainTableName()} (title, code) VALUES ('${this.getTitle()}', '${this.getCode()}');`
-        const data = await resourceConnection.execute(query);
+        const connection = await resourceConnection.getConnection();
         const items = this.getItems();
-        console.log('>> items', items);
 
-        if (items?.length) {
-            resourceConnection.setTableName('menu_item')
-            let query = `INSERT INTO menu_item (title, href) VALUES `;
-
-            items.forEach(({ title, link }) => {
-                query += `('${title}', '${link}')`;
-            })
-
-            query += ';';
-            const result = resourceConnection.execute(query);
-            console.log('>> result', result);
+        if (!items?.length) {
+            throw new Error('Menu must have at least one link item');
         }
+
+        const [menuResult] = await connection!.execute(
+            `INSERT INTO ${this.getMainTableName()} (title, code) VALUES (?, ?);`,
+            [this.getTitle(), this.getCode()]
+        );
         
-        console.log('>> data', data);
+        const menuId = (menuResult as any).insertId;
+
+        
+        for (const { title, link } of items) {
+            await connection!.execute(
+                'INSERT INTO menu_item (title, href, parent_id) VALUES (?, ?, ?)',
+                [title, link, menuId]
+            );
+        }
     }
 }
