@@ -24,8 +24,6 @@ export default function CreateMenuPage() {
             return;
         }
 
-        console.log('>> rawFormData', rawFormData);
-
         const res = await fetch('http://localhost:8000/menus/create', {
             method: 'POST',
             headers: {

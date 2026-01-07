@@ -40,7 +40,6 @@ export const createMenu = (req: express.Request, res: express.Response, next: ex
         menu.setItems(validatedData.items);
         menu.save();
 
-        console.log('>> createMenu', validatedData);
         res.status(201).json({ message: 'Menu created', data: validatedData });
     } catch (error) {
         if (error instanceof z.ZodError) {
