@@ -2,7 +2,7 @@
 
 import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
-import { SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
+import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { toKebabCase } from "@/utils/utils";
 
 export default function CreateMenuPage() {
@@ -23,7 +23,8 @@ export default function CreateMenuPage() {
         };
 
         if (!title || !code || !items?.length) {
-            console.error('>> Please fill out all the necessary fields');
+            setNotifications({ type: ERROR_TYPE, message: 'Please fill out all the necessary fields' });
+
             return;
         }
 
@@ -39,9 +40,9 @@ export default function CreateMenuPage() {
             });
 
             await res.json();
-            setNotifications({ type: SUCCESS_TYPE, message: 'Menu created successfully' })
-        } catch (err) {
-            setNotifications({ type: SUCCESS_TYPE, message: 'Could not create menu' })
+            setNotifications({ type: SUCCESS_TYPE, message: 'Menu created successfully' });
+        } catch {
+            setNotifications({ type: ERROR_TYPE, message: 'Could not create menu' });
         }
     }
 

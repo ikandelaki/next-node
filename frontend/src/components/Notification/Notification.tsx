@@ -1,6 +1,7 @@
 'use client';
 
 import { ERROR_TYPE, useNotificationStore } from "@/store/useNotificationStore";
+import './Notification.css';
 
 export default function Notifications() {
     const notifications = useNotificationStore((state) => state.notifications);
@@ -8,7 +9,7 @@ export default function Notifications() {
     const renderNotifications = () => {
         return notifications.map(({ type, message }, key) => (
             <div key={`${key}-${type}`} className={
-                `Notification_type-${type} ${ type === ERROR_TYPE ? 'bg-notification-error' : 'bg-notification-success' } px-4 py-2`
+                `Notification Notification_type-${type} ${ type === ERROR_TYPE ? 'bg-notification-error' : 'bg-notification-success' } px-4 py-2`
             }>
                 { message }
             </div>
