@@ -2,9 +2,12 @@
 
 import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
+import { SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { toKebabCase } from "@/utils/utils";
 
 export default function CreateMenuPage() {
+    const setNotifications = useNotificationStore((state) => state.setNotifications);
+
     const createMenu = async (formData: FormData) => {
         const title = String(formData.get('menu-title'));
         const titles = formData.getAll('menu-item-title').map(v => String(v));
@@ -24,18 +27,22 @@ export default function CreateMenuPage() {
             return;
         }
 
-        const res = await fetch('http://localhost:8000/menus/create', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                ...rawFormData
-            })
-        });
+        try {
+            const res = await fetch('http://localhost:8000/menus/create', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...rawFormData
+                })
+            });
 
-        const data = await res.json();
-        console.log('>> data', data);
+            await res.json();
+            setNotifications({ type: SUCCESS_TYPE, message: 'Menu created successfully' })
+        } catch (err) {
+            setNotifications({ type: SUCCESS_TYPE, message: 'Could not create menu' })
+        }
     }
 
     return (
