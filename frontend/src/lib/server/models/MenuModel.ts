@@ -1,6 +1,6 @@
-import ResourceConnection from "../database/ResourceConnection.ts";
-import BaseModel from "./BaseModel.js";
-import { type MenuItemsType } from "../../../../../server/types/MenuItemsType.js";
+import ResourceConnection from "../database/ResourceConnection";
+import BaseModel from "./BaseModel";
+import { type MenuItemsType } from "../types/MenuItemsType";
 
 export default class MenuModel extends BaseModel {
     protected title: string = '';
