@@ -1,6 +1,5 @@
-import { type DataPatchInterface } from '../interface/DataPatchInterface.js';
-import ResourceConnection from '../ResourceConnection.js';
-import { TYPE_VARCHAR } from '../ResourceConnection.js';
+import { type DataPatchInterface } from '../interface/DataPatchInterface';
+import ResourceConnection, { TYPE_VARCHAR } from '../ResourceConnection';
 
 class InitializeTables implements DataPatchInterface {
     public async apply() {

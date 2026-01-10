@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 import { type Connection } from 'mysql2/promise';
 import dotenv from 'dotenv';
-import InitializeTables from './migrations/InitializeTables.js';
+import InitializeTables from './migrations/InitializeTables.ts';
 
 export const TYPE_VARCHAR = 'VARCHAR(255)';
 
