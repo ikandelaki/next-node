@@ -1,10 +1,9 @@
 import Link from "next/link";
-import MenuRepository from "@/lib/server/repository/MenuRepository";
+import prisma from '@/lib/prisma';
 import { MenuType } from "@/lib/server/types/MenuType";
 
 export default async function MenusPage() {
-    const menuRepository = new MenuRepository();
-    const menus = await menuRepository.getAll();
+    const menus = await prisma.menu.findMany();
 
     const renderMenus = () => {
         if (!menus?.length) {
@@ -12,9 +11,9 @@ export default async function MenusPage() {
         }
         
         return menus.map((menu: MenuType, key: number) => (
-            <div key={ `${key}-${menu.title}` }>
-                <span>{ menu.title }</span>
-                <span>{ menu.code }</span>
+            <div key={ `${key}-${menu.id}` }>
+                <span>{ menu.name }</span>
+                <span>{ menu.identifier }</span>
             </div>
         ));
     }
