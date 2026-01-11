@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+
+table {
+  @apply w-full;
+}
+
+th, td {
+  @apply h-10 px-2 text-left align-middle font-medium border-r border overflow-hidden whitespace-nowrap;
+}
+
+td {
+  @apply align-middle px-2 w-full h-full cursor-pointer py-2
+}
+
+tbody tr {
+  @apply transition-colors hover:bg-gray-700;
+}
+
+th {
+  font-weight: bold;
+}

@@ -10,3 +10,11 @@ export const toKebabCase = (str: string | null) => {
         .replace(/[^a-z0-9-]/g, '')   // remove invalid chars
         .replace(/-+/g, '-');         // collapse multiple hyphens
 }
+
+export const capitalizeFirstLetter = (str: string | null) => {
+    if (!str) {
+        return '';
+    }
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

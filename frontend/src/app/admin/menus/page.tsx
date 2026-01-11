@@ -1,6 +1,8 @@
 import Link from "next/link";
 import prisma from '@/lib/prisma';
 import { MenuType } from "@/lib/server/types/MenuType";
+import Table from "@/components/Table/Table";
+import { capitalizeFirstLetter, toKebabCase } from "@/utils/utils";
 
 export default async function MenusPage() {
     const menus = await prisma.menu.findMany();
@@ -9,13 +11,11 @@ export default async function MenusPage() {
         if (!menus?.length) {
             return null;
         }
-        
-        return menus.map((menu: MenuType, key: number) => (
-            <div key={ `${key}-${menu.id}` }>
-                <span>{ menu.name }</span>
-                <span>{ menu.identifier }</span>
-            </div>
-        ));
+
+        const columns = Object.keys(menus[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
+        return (
+            <Table data={ menus } columns={ columns } />
+        );
     }
 
     return (
