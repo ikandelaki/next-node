@@ -29,7 +29,7 @@ export default function CreateMenuPage() {
         }
 
         try {
-            const res = await fetch('http://localhost:8000/menus/create', {
+            const res = await fetch('http://localhost:3000/api/menus/create', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
