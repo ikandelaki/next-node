@@ -1,8 +1,7 @@
 import Link from "next/link";
 import prisma from '@/lib/prisma';
-import { MenuType } from "@/lib/server/types/MenuType";
 import Table from "@/components/Table/Table";
-import { capitalizeFirstLetter, toKebabCase } from "@/utils/utils";
+import { capitalizeFirstLetter } from "@/utils/utils";
 
 export default async function MenusPage() {
     const menus = await prisma.menu.findMany();
@@ -14,15 +13,17 @@ export default async function MenusPage() {
 
         const columns = Object.keys(menus[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
         return (
-            <Table data={ menus } columns={ columns } />
+            <Table data={ menus } columns={ columns } className="mt-4 max-w-7xl mx-auto" shouldRenderLink />
         );
     }
 
     return (
         <div className="AdminPage">
-            <h1>Welcome to menu manager</h1>
+            <div className="flex">
+                <h1>Welcome to menu manager</h1>
+                <Link href='/admin/menus/create' className="Button mt-4 ml-auto">Create</Link>
+            </div>
             { renderMenus() }
-            <Link href='/admin/menus/create' className="Button">Create</Link>
         </div>
     )
 }

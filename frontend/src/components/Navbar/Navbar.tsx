@@ -17,7 +17,7 @@ export default function Navbar() {
             <ul>
             { renderMap.map(({ title, to }, key) => (
                 <li key={ `${to}-${key}` }>
-                    <Link href={ `/admin/${to}` }>
+                    <Link href={ `/admin/${to}` } className="inline-block w-max">
                         { title }
                     </Link>
                 </li>
