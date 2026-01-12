@@ -47,7 +47,7 @@ export default function CreateMenuPage() {
     }
 
     return (
-        <div className='AdminPage'>
+        <div>
             <h1>Create menu</h1>
             <form action={ createMenu }>
                 <Field type='text' placeholder='Menu title' label='Menu title' id='menu-title' isRequired />

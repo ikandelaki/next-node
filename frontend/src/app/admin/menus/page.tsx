@@ -18,7 +18,7 @@ export default async function MenusPage() {
     }
 
     return (
-        <div className="AdminPage">
+        <div>
             <div className="flex">
                 <h1>Welcome to menu manager</h1>
                 <Link href='/admin/menus/create' className="Button mt-4 ml-auto">Create</Link>
