@@ -4,7 +4,6 @@ import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { toKebabCase, transformSpaceIntoHyphens } from "@/utils/utils";
-import { redirect } from "next/navigation";
 
 export default function CreateMenuPage() {
     const setNotifications = useNotificationStore((state) => state.setNotifications);
@@ -51,14 +50,13 @@ export default function CreateMenuPage() {
             }
 
             if (response.type === ERROR_TYPE) {
-                throw new Error('Could not create menu');
+                setNotifications({ type: ERROR_TYPE, message: 'Could not create menu' });
             }
         } catch(err) {
             if (typeof err === 'string') {
                 setNotifications({ type: ERROR_TYPE, message: err });    
             }
 
-            console.log('>> err', err);
             setNotifications({ type: ERROR_TYPE, message: 'Error while creating the menu' });
         }
     }

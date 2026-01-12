@@ -52,15 +52,12 @@ export async function POST(request: NextRequest) {
             include: { menuItems: true }
         });
 
-        console.log('>> created', created);
-
         revalidatePath('/menus');
         return NextResponse.json({
             type: SUCCESS_TYPE,
             data: created
         }, { status: 201 });
-    } catch(err) {
-        console.error('>> err', err);
+    } catch {
         return NextResponse.json({
             type: ERROR_TYPE,
             message: 'Could not create menu',
