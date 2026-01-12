@@ -9,6 +9,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --skeleton-highlight: #f1f3f7;
+  --skeleton-base: #e6e9ef;
+  --animation-duration: 1.5s;
 }
 
 @theme inline {
@@ -46,4 +49,35 @@ h1 {
   &:hover {
     @apply bg-navbar;
   }
+}
+
+@keyframes shimmer {
+  0% {
+      transform: translateX(-100%);
+  }
+  100% {
+      transform: translateX(100%);
+  }
+}
+
+/* Skeleton loader for smooth placeholder pulses */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--skeleton-base);
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(90deg, transparent, var(--skeleton-highlight), transparent);
+  transform: translateZ(0);
+  background-size: 200% 100%;
+  animation: shimmer var(--animation-duration) infinite;
 }
