@@ -18,3 +18,11 @@ export const capitalizeFirstLetter = (str: string | null) => {
 
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export const transformSpaceIntoHyphens = (str?: string) => {
+    if (!str) {
+        return null;
+    }
+
+    return str.trim().replace(/\s+/g, '-');
+}
