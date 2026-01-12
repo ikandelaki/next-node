@@ -4,7 +4,7 @@ export default class BaseModel {
     protected mainTableName = '';
     protected entity_id: number | null = null;
 
-    public getById(id: string | number) {
+    public getById() {
         // TODO
     }
 
