@@ -4,25 +4,26 @@ import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { toKebabCase } from "@/utils/utils";
+import { redirect } from "next/navigation";
 
 export default function CreateMenuPage() {
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
     const createMenu = async (formData: FormData) => {
-        const title = String(formData.get('menu-title'));
+        const name = String(formData.get('menu-name'));
         const titles = formData.getAll('menu-item-title').map(v => String(v));
         const links = formData.getAll('menu-item-link').map(v => String(v));
 
-        const items = titles.map((t, i) => ({ title: t, link: links[i] ?? '' }));
-        const code = toKebabCase(title);
+        const menuItems = titles.map((t, i) => ({ label: t, code: toKebabCase(t), link: links[i] ?? '' }));
+        const identifier = toKebabCase(name);
 
         const rawFormData = {
-            title,
-            code,
-            items
+            name,
+            identifier,
+            menuItems
         };
 
-        if (!title || !code || !items?.length) {
+        if (!name || !identifier || !menuItems?.length) {
             setNotifications({ type: ERROR_TYPE, message: 'Please fill out all the necessary fields' });
 
             return;
@@ -39,10 +40,21 @@ export default function CreateMenuPage() {
                 })
             });
 
-            await res.json();
-            setNotifications({ type: SUCCESS_TYPE, message: 'Menu created successfully' });
-        } catch {
-            setNotifications({ type: ERROR_TYPE, message: 'Could not create menu' });
+            const response = await res.json();
+
+            if (response.type === SUCCESS_TYPE) {
+                setNotifications({ type: SUCCESS_TYPE, message: 'Menu created successfully' });
+                redirect('/menus');
+            }
+
+            throw new Error('Could not create menu');
+        } catch(err) {
+            if (typeof err === 'string') {
+                setNotifications({ type: ERROR_TYPE, message: err });    
+            }
+
+            console.log('>> err', err);
+            setNotifications({ type: ERROR_TYPE, message: 'Error while creating the menu' });
         }
     }
 
@@ -50,7 +62,7 @@ export default function CreateMenuPage() {
         <div>
             <h1>Create menu</h1>
             <form action={ createMenu }>
-                <Field type='text' placeholder='Menu title' label='Menu title' id='menu-title' isRequired />
+                <Field type='text' placeholder='Menu name' label='Menu name' id='menu-name' isRequired />
                 <FieldGroup label='menu-items' isMultipliable className='mt-4'>
                     {(i) => (
                         <>
