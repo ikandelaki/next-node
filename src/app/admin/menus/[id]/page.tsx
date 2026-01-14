@@ -12,9 +12,9 @@ export default async function Menu({ params }: { params: Promise<{ id: string }>
     }
 
     return (
-        <div>
+        <section className="Section">
             <h1>{ menu.name }</h1>
             <h2>{ menu.identifier }</h2>
-        </div>
+        </section>
     )
 }

@@ -62,9 +62,11 @@ export default function CreateMenuPage() {
     }
 
     return (
-        <div>
-            <h1>Create menu</h1>
-            <form action={ createMenu }>
+        <section>
+            <div className="Section">
+                <h1>Create menu</h1>
+            </div>
+            <form action={ createMenu } className="Section mt-4">
                 <Field type='text' placeholder='Menu name' label='Menu name' id='menu-name' isRequired />
                 <FieldGroup label='menu-items' isMultipliable className='mt-4'>
                     {(i) => (
@@ -90,6 +92,6 @@ export default function CreateMenuPage() {
                 </FieldGroup>
                 <button type='submit' className="Button mt-8">Submit</button>
             </form>
-        </div>
+        </section>
     )
 }
