@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navbar: oklch(20.8% 0.042 265.755);
+  --color-navbar: #171821;
   --color-notification-success: #2f9e44;
   --color-notification-error: #e03131;
+  --color-line: #2C2D33;
+  --color-section: #21222D;
 }
 
 :root {
@@ -23,7 +25,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #171821;
     --foreground: #ededed;
   }
 }
@@ -45,6 +47,7 @@ h1 {
   border-radius: 6px;
   transition: all 0.3s;
   cursor: pointer;
+  height: max-content;
 
   &:hover {
     @apply bg-navbar;
@@ -79,4 +82,8 @@ h1 {
   transform: translateZ(0);
   background-size: 200% 100%;
   animation: shimmer var(--animation-duration) infinite;
+}
+
+.Section {
+  @apply bg-section py-4 px-8 rounded-lg;
 }

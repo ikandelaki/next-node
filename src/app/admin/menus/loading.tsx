@@ -1,7 +1,7 @@
 export default function Loading() {
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center Section">
                 <h1>Welcome to menu manager</h1>
                 <div className="skeleton w-12 h-5 ml-auto"></div>
             </div>

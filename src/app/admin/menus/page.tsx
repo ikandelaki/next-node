@@ -13,17 +13,19 @@ export default async function MenusPage() {
 
         const columns = Object.keys(menus[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
         return (
-            <Table data={ menus } columns={ columns } className="mt-4 max-w-7xl mx-auto" shouldRenderLink />
+            <Table data={ menus } columns={ columns } className="max-w-7xl mx-auto" shouldRenderLink />
         );
     }
 
     return (
         <div>
-            <div className="flex">
+            <div className="flex items-center Section">
                 <h1>Welcome to menu manager</h1>
-                <Link href='/admin/menus/create' className="Button mt-4 ml-auto">Create</Link>
+                <Link href='/admin/menus/create' className="Button ml-auto">Create</Link>
             </div>
-            { renderMenus() }
+            <section className="Section mt-4">
+                { renderMenus() }
+            </section>
         </div>
     )
 }

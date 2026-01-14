@@ -9,7 +9,7 @@ th, td {
 }
 
 td {
-  @apply align-middle px-2 w-full h-full cursor-pointer py-2
+  @apply align-middle px-2 h-full cursor-pointer py-2
 }
 
 tbody tr {
