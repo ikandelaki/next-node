@@ -10,7 +10,7 @@ export type FieldGroupType = {
      * children must be a render-prop: `(index: number) => React.ReactNode`
      */
     children: ChildrenRenderer | React.ReactNode,
-    label: string,
+    label?: string,
     className?: string
 }
 
@@ -18,6 +18,10 @@ export default function FieldGroup({ isMultipliable, children, label, className 
     const [fieldCount, setFieldCount] = useState(1);
 
     const renderLabel = () => {
+        if (!label) {
+            return null;
+        }
+        
         const labelTitle = label
             .split('-')
             .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

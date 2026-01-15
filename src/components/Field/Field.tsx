@@ -10,7 +10,9 @@ export type FieldType = {
     value?: string,
     onChange?: (value: ChangeEvent<HTMLInputElement>) => void,
     label?: string,
-    isRequired?: boolean
+    isRequired?: boolean,
+    className?: string,
+    defaultValue?: string
 }
 
 export default function Field({
@@ -21,7 +23,9 @@ export default function Field({
     id,
     label,
     name,
-    isRequired
+    isRequired,
+    className,
+    defaultValue
 }: FieldType
 ) {
     if (!type) {
@@ -47,6 +51,7 @@ export default function Field({
                 id={ id }
                 name={ inputName }
                 required={ isRequired }
+                defaultValue={ defaultValue }
             />
         }
 
@@ -59,11 +64,12 @@ export default function Field({
             value={ value }
             onChange={ onChange }
             required={ isRequired }
+            defaultValue={ defaultValue }
         />
     }
 
     return (
-        <div className={ `Field Field_type_${type} flex gap-2 items-center` }>
+        <div className={ `Field Field_type_${type} flex gap-2 items-center ${className}` }>
             { renderLabel() }
             { renderInput() }
         </div>
