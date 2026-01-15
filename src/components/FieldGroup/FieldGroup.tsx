@@ -21,13 +21,13 @@ export default function FieldGroup({ isMultipliable, children, label, className 
         if (!label) {
             return null;
         }
-        
+
         const labelTitle = label
             .split('-')
             .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
             .join(' ');
 
-        return <div>{ labelTitle }</div>
+        return <h2>{ labelTitle }</h2>
     }
 
     const handleAddField = () => {

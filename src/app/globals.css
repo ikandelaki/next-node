@@ -86,3 +86,7 @@ h1 {
 .Section {
   @apply bg-section py-4 px-8 rounded-lg;
 }
+
+h2 {
+  @apply text-xl;
+}

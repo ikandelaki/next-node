@@ -8,7 +8,7 @@ export default function Loading() {
                     <span className="skeleton w-24 h-5"></span>
                 </div>
                 <div>
-                    <span>Menu Items</span>
+                    <h2>Menu Items</h2>
                 </div>
                 <div>
                     <span>Menu item title</span>
