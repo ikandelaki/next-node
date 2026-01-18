@@ -3,13 +3,20 @@
 import Field from "@/components/Field"
 import FieldGroup from "@/components/FieldGroup"
 import type { MenuGetPayload } from "@/app/generated/prisma/models/Menu";
+import { getFormattedMenuDataFromForm } from "../../lib/utils";
+import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
+import { fetchNext } from "@/utils/fetchData";
+import { useRouter } from 'next/navigation';
 
 type EditMenuFormProps = {
     menu: MenuGetPayload<{ include: { menuItems: true } }>
 }
 
 export default function EditMenuForm({ menu }: EditMenuFormProps) {
-     const renderMenuItems = () => {
+    const setNotifications = useNotificationStore((state) => state.setNotifications);
+    const router = useRouter();
+
+    const renderMenuItems = () => {
         return (
             <div className="mt-6 w-max">
                 <h2 className="text-xl">Menu items</h2>
@@ -52,7 +59,31 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
     }
 
     const editMenu = async (formData: FormData) => {
-        console.log('>> formData', formData.getAll('menu-item-link'));
+        const rawFormData = getFormattedMenuDataFromForm(formData);
+        const editFormData = {
+            ...rawFormData,
+            id: menu.id
+        }
+
+        const { name, identifier, menuItems } = editFormData;
+
+        if (!name || !identifier || !menuItems?.length) {
+            setNotifications({ type: ERROR_TYPE, message: 'Please fill out all the necessary fields' });
+
+            return;
+        }
+
+        const { type, message } = await fetchNext(`menus/edit/${menu.id}`, JSON.stringify(editFormData)) || {};
+
+        if (type === SUCCESS_TYPE) {
+            setNotifications({ type, message: 'Menu updated successfully' });
+            router.refresh();
+            
+            return;
+        }
+
+        setNotifications({ type, message });
+        router.refresh();
     }
 
     return (
