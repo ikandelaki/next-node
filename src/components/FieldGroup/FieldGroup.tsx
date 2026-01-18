@@ -50,7 +50,11 @@ export default function FieldGroup({ isMultipliable, children, label, className 
         }
 
         if (!isMultipliable && typeof children === 'function') {
-            return (children as ChildrenRenderer)(1);
+            return (
+                <div className='flex gap-4 items-center'>
+                    { (children as ChildrenRenderer)(1) }
+                </div>
+            )
         }
 
         if (isMultipliable) {
