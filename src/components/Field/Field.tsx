@@ -12,7 +12,7 @@ export type FieldType = {
     label?: string,
     isRequired?: boolean,
     className?: string,
-    defaultValue?: string
+    defaultValue?: string | number
 }
 
 export default function Field({

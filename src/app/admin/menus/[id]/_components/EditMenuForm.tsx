@@ -57,7 +57,7 @@ export default function EditMenuForm({ menu, deleteMenu }: EditMenuFormProps) {
 
     const handleAddField = () => {
         setDynamicMenuItems([...dynamicMenuItems, {
-            id: dynamicMenuItems[dynamicMenuItems.length - 1].id + 1,
+            id: 0,
             code: '',
             label: '',
             link: '',
@@ -100,6 +100,12 @@ export default function EditMenuForm({ menu, deleteMenu }: EditMenuFormProps) {
                                     isRequired
                                     defaultValue={ menuItem.link }
                                     className="[&>input]:ml-auto"
+                                />
+                                <Field
+                                    type="hidden"
+                                    name="menu-item-id"
+                                    defaultValue={menuItem.id || ''}
+                                    id={ `menu-item-id-${key}`}
                                 />
                                 { renderDeleteButton(idx) }
                             </>
