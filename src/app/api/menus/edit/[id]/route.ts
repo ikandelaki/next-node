@@ -1,7 +1,6 @@
 import { ERROR_TYPE, SUCCESS_TYPE } from "@/store/useNotificationStore";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from '@/lib/prisma';
-import { revalidatePath } from "next/cache";
 
 type MenuItemType = {
     label: string,

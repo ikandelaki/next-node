@@ -105,7 +105,7 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
                 className="mt-2 [&>input]:ml-auto"
                 defaultValue={ menu.identifier } />
             { renderMenuItems() }
-            <button type='submit' className="Button mt-4">Submit</button>
+            <button type='submit' className="Button mt-4">Save</button>
         </form>
     )
 }
