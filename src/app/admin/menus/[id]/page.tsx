@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import EditMenuForm from "./_components/EditMenuForm";
+import { ERROR_TYPE, SUCCESS_TYPE } from "@/store/useNotificationStore";
 
 export default async function Menu({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -13,10 +14,31 @@ export default async function Menu({ params }: { params: Promise<{ id: string }>
         notFound();
     }
 
+    const deleteMenu = async () => {
+        'use server';
+        
+        try {
+            console.log('>> delete');
+            const deleteMenuItems = prisma.menuItem.deleteMany({
+                where: { parentId: parseInt(id) }
+            })
+
+            const deleteMenu = prisma.menu.delete({
+                where: { id: parseInt(id) }
+            })
+
+            await prisma.$transaction([deleteMenuItems, deleteMenu]);
+
+            return { type: SUCCESS_TYPE, message: 'Menu deleted successfully' };
+        } catch {
+            return { type: ERROR_TYPE, message: 'Internal server error' };
+        }
+    }
+
     return (
         <section className="Section">
             <h1>Edit Menu</h1>
-            <EditMenuForm menu={ menu } />
+            <EditMenuForm menu={ menu } deleteMenu={ deleteMenu } />
         </section>
     )
 }

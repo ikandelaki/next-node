@@ -5,6 +5,7 @@ import FieldGroup from "@/components/FieldGroup";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { getFormattedMenuDataFromForm } from "../lib/utils";
 import { fetchNext } from "@/utils/fetchData";
+import { redirect } from "next/navigation";
 
 export default function CreateMenuPage() {
     const setNotifications = useNotificationStore((state) => state.setNotifications);
@@ -24,8 +25,7 @@ export default function CreateMenuPage() {
 
         if (response.type === SUCCESS_TYPE) {
             setNotifications({ type, message: 'Menu created successfully' });
-            
-            return;
+            redirect('/admin/menus');
         }
 
         setNotifications({ type, message });

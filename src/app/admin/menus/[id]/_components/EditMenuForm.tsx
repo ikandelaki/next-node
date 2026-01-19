@@ -6,15 +6,16 @@ import type { MenuGetPayload } from "@/app/generated/prisma/models/Menu";
 import { getFormattedMenuDataFromForm } from "../../lib/utils";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { fetchNext } from "@/utils/fetchData";
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import TrashIcon from "@/components/TrashIcon";
 import { useState, useEffect } from "react";
 
 type EditMenuFormProps = {
-    menu: MenuGetPayload<{ include: { menuItems: true } }>
+    menu: MenuGetPayload<{ include: { menuItems: true } }>,
+    deleteMenu: () => Promise<{ type: string, message: string }>
 }
 
-export default function EditMenuForm({ menu }: EditMenuFormProps) {
+export default function EditMenuForm({ menu, deleteMenu }: EditMenuFormProps) {
     const setNotifications = useNotificationStore((state) => state.setNotifications);
     const router = useRouter();
     const { menuItems } = menu || {};
@@ -33,6 +34,24 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
     const renderDeleteButton = (idx: number) => {
         return (
             <TrashIcon onClick={ () => handleDeleteButton(idx) } />
+        );
+    }
+
+    const handleDeleteMenuClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        const response = await deleteMenu() || {};
+
+        setNotifications(response);
+        if (response.type === SUCCESS_TYPE) {
+            redirect('/admin/menus');
+        }
+    }
+
+    const renderDeleteMenuButton = () => {
+        return (
+            <button className="Button ml-2 bg-notification-error hover:bg-red-light!"
+            onClick={ handleDeleteMenuClick }>Delete</button>
         );
     }
 
@@ -141,6 +160,7 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
             { renderMenuItems() }
             { renderAddFieldButton() }
             <button type='submit' className="Button mt-4">Save</button>
+            { renderDeleteMenuButton() }
         </form>
     )
 }

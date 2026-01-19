@@ -6,7 +6,7 @@ export const SUCCESS_TYPE = 'success';
 export const NOTIFICATION_DURATION = 3000;
 
 export type NotificationType = {
-    type: typeof ERROR_TYPE | typeof SUCCESS_TYPE,
+    type: string,
     message: string
 }
 
