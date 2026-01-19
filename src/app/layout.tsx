@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Notifications from "@/components/Notification/Notification";
 import QueryProvider from "@/components/QueryProvider/QueryProvider";
+import Menu from "@/components/Menu";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -25,6 +26,7 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased`}
       >
         <QueryProvider>
+          <Menu />
           {children}
           <Notifications />
         </QueryProvider>

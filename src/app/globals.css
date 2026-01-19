@@ -54,6 +54,14 @@ h1 {
   }
 }
 
+.Section {
+  @apply bg-section py-4 px-8 rounded-lg;
+}
+
+h2 {
+  @apply text-xl;
+}
+
 @keyframes shimmer {
   0% {
       transform: translateX(-100%);
@@ -84,10 +92,22 @@ h1 {
   animation: shimmer var(--animation-duration) infinite;
 }
 
-.Section {
-  @apply bg-section py-4 px-8 rounded-lg;
+.hover-underline {
+  position: relative;
 }
 
-h2 {
-  @apply text-xl;
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: white;
+  transition: all 0.3s;
+}
+
+.hover-underline:hover::after {
+  width: 100%;
+  left: 0;
 }
