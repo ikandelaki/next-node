@@ -18,7 +18,6 @@ export default async function Menu({ params }: { params: Promise<{ id: string }>
         'use server';
         
         try {
-            console.log('>> delete');
             const deleteMenuItems = prisma.menuItem.deleteMany({
                 where: { parentId: parseInt(id) }
             })

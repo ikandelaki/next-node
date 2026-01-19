@@ -2,7 +2,7 @@ import { toKebabCase, transformSpaceIntoHyphens } from "@/utils/utils";
 
 export const getFormattedMenuDataFromForm = (formData: FormData) => {
     const name = String(formData.get('menu-name'));
-    const identifier = toKebabCase(String(formData.get('identifier')));
+    const identifier = toKebabCase(String(formData.get('menu-identifier')));
     const titles = formData.getAll('menu-item-title').map(v => String(v));
     const links = formData.getAll('menu-item-link').map(v => String(v));
     const ids = formData
