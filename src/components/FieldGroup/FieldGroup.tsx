@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from "react"
-import TrashIcon from "../TrashIcon";
 
 export type ChildrenRenderer = (index: number) => React.ReactNode
 
@@ -12,11 +11,10 @@ export type FieldGroupType = {
      */
     children: ChildrenRenderer | React.ReactNode,
     label?: string,
-    className?: string,
-    isDeletable?: boolean
+    className?: string
 }
 
-export default function FieldGroup({ isMultipliable, children, label, className = '', isDeletable }: FieldGroupType) {
+export default function FieldGroup({ isMultipliable, children, label, className = '' }: FieldGroupType) {
     const [fieldCount, setFieldCount] = useState(1);
 
     const renderLabel = () => {
@@ -44,13 +42,6 @@ export default function FieldGroup({ isMultipliable, children, label, className 
         return <button type='button' onClick={ handleAddField } className='Button'>+ Add { label }</button>
     }
 
-    const renderDeleteButton = () => {
-        if (!isDeletable) {
-            return null;
-        }
-        return <TrashIcon />
-    }
-
     const renderChildren = () => {
         if (isMultipliable && typeof children !== 'function') {
             console.error('>> FieldGroup component: if isMultipliable is provided as true, children should be a function that returns a react node')
@@ -62,7 +53,6 @@ export default function FieldGroup({ isMultipliable, children, label, className 
             return (
                 <div className='flex gap-4 items-center'>
                     { (children as ChildrenRenderer)(1) }
-                    { renderDeleteButton() }
                 </div>
             )
         }
@@ -74,7 +64,6 @@ export default function FieldGroup({ isMultipliable, children, label, className 
                 return (
                     <div key={ groupId } className='flex gap-4 items-center'>
                         { (children as ChildrenRenderer)(i) }
-                        { renderDeleteButton() }
                     </div>
                 )
             })

@@ -27,6 +27,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         );
     }
 
+    if (menuItems.find((item) => !item.label || !item.link)) {
+        return NextResponse.json(
+            { type: ERROR_TYPE, message: 'Menu item title and link can not be empty' },
+            { status: 400 }
+        )
+    }
+
     // Check unique identifier
     const existing = await prisma.menu.findUnique({ where: { id: Number(id) } });
     if (!existing) {

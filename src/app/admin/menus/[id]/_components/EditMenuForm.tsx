@@ -7,6 +7,8 @@ import { getFormattedMenuDataFromForm } from "../../lib/utils";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { fetchNext } from "@/utils/fetchData";
 import { useRouter } from 'next/navigation';
+import TrashIcon from "@/components/TrashIcon";
+import { useState, useEffect } from "react";
 
 type EditMenuFormProps = {
     menu: MenuGetPayload<{ include: { menuItems: true } }>
@@ -15,17 +17,48 @@ type EditMenuFormProps = {
 export default function EditMenuForm({ menu }: EditMenuFormProps) {
     const setNotifications = useNotificationStore((state) => state.setNotifications);
     const router = useRouter();
+    const { menuItems } = menu || {};
+    const [dynamicMenuItems, setDynamicMenuItems] = useState(menuItems);
+
+    useEffect(() => {
+        setDynamicMenuItems(menuItems);
+    }, [menuItems]);
+
+    const handleDeleteButton = (idx: number) => {
+        const newMenuItems = dynamicMenuItems.filter((_, i) => i !== idx);
+
+        setDynamicMenuItems(newMenuItems);
+    }
+
+    const renderDeleteButton = (idx: number) => {
+        return (
+            <TrashIcon onClick={ () => handleDeleteButton(idx) } />
+        );
+    }
+
+    const handleAddField = () => {
+        setDynamicMenuItems([...dynamicMenuItems, {
+            id: dynamicMenuItems[dynamicMenuItems.length - 1].id + 1,
+            code: '',
+            label: '',
+            link: '',
+            parentId: menu.id
+        }])
+    }
+
+    const renderAddFieldButton = () => {
+        return <button type='button' onClick={ handleAddField } className='Button block w-full'>+ Add</button>
+    }
 
     const renderMenuItems = () => {
         return (
             <div className="mt-6 w-max">
                 <h2 className="text-xl">Menu items</h2>
             {
-                menu.menuItems.map((menuItem, idx) => (
+                dynamicMenuItems.map((menuItem, idx) => (
                     <FieldGroup
                         className='mt-2 py-2 border-b border-line'
                         key={ idx }
-                        isMultipliable={ idx === menu.menuItems.length - 1 }
                     >
                         { (key) => (
                             <>
@@ -49,6 +82,7 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
                                     defaultValue={ menuItem.link }
                                     className="[&>input]:ml-auto"
                                 />
+                                { renderDeleteButton(idx) }
                             </>
                         ) }
                     </FieldGroup>
@@ -105,6 +139,7 @@ export default function EditMenuForm({ menu }: EditMenuFormProps) {
                 className="mt-2 [&>input]:ml-auto"
                 defaultValue={ menu.identifier } />
             { renderMenuItems() }
+            { renderAddFieldButton() }
             <button type='submit' className="Button mt-4">Save</button>
         </form>
     )
