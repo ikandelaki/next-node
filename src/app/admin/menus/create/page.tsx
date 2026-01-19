@@ -36,8 +36,9 @@ export default function CreateMenuPage() {
             <div className="Section">
                 <h1>Create menu</h1>
             </div>
-            <form action={ createMenu } className="Section mt-4">
-                <Field type='text' placeholder='Menu name' label='Menu name' id='menu-name' isRequired />
+            <form action={ createMenu } className="Section mt-4 w-max">
+                <Field type='text' placeholder='Menu name' label='Menu name' id='menu-name' isRequired className="[&>input]:ml-auto" />
+                <Field type='text' placeholder='Unique identifier' label='Menu identifier' id='identifier' className="[&>input]:ml-auto mt-2" isRequired />
                 <FieldGroup label='menu-items' isMultipliable className='mt-4'>
                     {(i) => (
                         <>
