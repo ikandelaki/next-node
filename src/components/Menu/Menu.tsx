@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma';
 import { MenuItemType } from '@/types/menu';
 import Link from 'next/link';
-import Image from 'next/image';
 import LogoIcon from '../LogoIcon';
 
 export default async function Menu() {
