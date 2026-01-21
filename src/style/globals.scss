@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@use "tailwindcss";
+@use './base/_keyframes';
+@use './abstract/_abstract';
 
 @theme {
   --color-navbar: #171821;
@@ -15,6 +17,13 @@
   --skeleton-highlight: #f1f3f7;
   --skeleton-base: #e6e9ef;
   --animation-duration: 1.5s;
+  
+  --placeholder-gradient-color: #d9d9d9;
+  --placeholder-image: linear-gradient(to right, #ebebeb 0, var(--placeholder-gradient-color) 15%, #ebebeb 30%);
+  --placeholder-size: 1200px 100%;
+  --placeholder-animation: placeholderAnimation 2s linear infinite;
+
+  --shake-animation: shake 820ms .5ms cubic-bezier(.36, .07, .19, .97) both;
 }
 
 @theme inline {
@@ -73,23 +82,10 @@ h2 {
 
 /* Skeleton loader for smooth placeholder pulses */
 .skeleton {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--skeleton-base);
+  background-image: var(--placeholder-image);
+  background-size: var(--placeholder-size);
+  animation: var(--placeholder-animation);
   border-radius: 8px;
-}
-
-.skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(90deg, transparent, var(--skeleton-highlight), transparent);
-  transform: translateZ(0);
-  background-size: 200% 100%;
-  animation: shimmer var(--animation-duration) infinite;
 }
 
 .hover-underline {

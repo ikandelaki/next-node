@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "../globals.css";
 import Notifications from "@/components/Notification/Notification";
 import QueryProvider from "@/components/QueryProvider/QueryProvider";
 import Navbar from "@/components/Navbar";
+import "@/style/globals.scss";
 
 const poppins = Poppins({
   variable: "--font-poppins",
