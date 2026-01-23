@@ -34,7 +34,10 @@ model Product {
   name                String
   sku                 String     @unique
   price               Int
-  discount_price      Int
-  discount_percentage Int
+  discountPrice       Int
+  discountPercentage  Int
   image               String
+  enabled             Boolean
+  quantity            Int
+  isInStock           Boolean
 }

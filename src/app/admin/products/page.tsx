@@ -1,7 +1,12 @@
+import Link from "next/link";
+
 export default function ProductPage() {
     return (
-        <div>
+        <section className="Section flex items-center">
             <h1>Products</h1>
-        </div>
+            <div className="ml-auto">
+                <Link href="products/create" className="Button">Create</Link>
+            </div>
+        </section>
     )
 }

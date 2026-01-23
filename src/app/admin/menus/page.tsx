@@ -19,10 +19,10 @@ export default async function MenusPage() {
 
     return (
         <div>
-            <div className="flex items-center Section">
+            <section className="flex items-center Section">
                 <h1>Welcome to menu manager</h1>
                 <Link href='/admin/menus/create' className="Button ml-auto">Create</Link>
-            </div>
+            </section>
             <section className="Section mt-4">
                 { renderMenus() }
             </section>

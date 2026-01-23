@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import MenuIcon from '@/components/MenuIcon';
 import DashboardIcon from '@/components/DashboardIcon';
+import CubeIcon from '../CubeIcon';
 
 export default function Navbar() {
     const renderMap = [
@@ -13,6 +14,11 @@ export default function Navbar() {
             title: 'Menu manager',
             to: 'menus',
             icon: <MenuIcon />
+        },
+        {
+            title: "Products",
+            to: 'products',
+            icon: <CubeIcon />
         }
     ];
 
