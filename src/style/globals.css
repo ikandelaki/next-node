@@ -87,22 +87,32 @@ h2 {
   border-radius: 8px;
 }
 
-.hover-underline {
+.hover-underline,
+.hover-underline_red {
   position: relative;
 }
 
-.hover-underline::after {
+.hover-underline::after,
+.hover-underline_red::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   width: 0;
   height: 1px;
-  background-color: white;
   transition: all 0.3s;
 }
 
-.hover-underline:hover::after {
+.hover-underline::after {
+  @apply bg-white;
+}
+
+.hover-underline_red::after {
+  @apply bg-red-400;
+}
+
+.hover-underline:hover::after,
+.hover-underline_red:hover::after {
   width: 100%;
   left: 0;
 }

@@ -31,7 +31,7 @@ export default async function Menu() {
 
     const renderLogo = () => {
         return (
-            <div className='w-8 h-8 transition-all duration-150 ml-auto'>
+            <div className='w-8 h-8 transition-all duration-150'>
                 <Link href="/">
                     <LogoIcon />
                 </Link>
@@ -39,10 +39,23 @@ export default async function Menu() {
         )
     }
 
+    const renderAdminLink = () => {
+        return (
+            <Link href="/admin/dashboard" className="text-red-400 hover-underline_red">Admin</Link>
+        )
+    }
+
+    const renderAdditionalLinks = () => (
+        <div className="ml-auto flex items-center gap-8">
+            { renderAdminLink() }
+            { renderLogo() }
+        </div>
+    )
+
     return (
         <div className="w-full items-center flex py-2 px-4 gap-8 bg-navbar">
             { renderMenuItems() }
-            { renderLogo() }
+            { renderAdditionalLinks() }
         </div>
     )
 }
