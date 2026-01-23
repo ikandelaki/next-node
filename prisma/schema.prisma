@@ -28,3 +28,13 @@ model MenuItem {
   parentId Int
   menu     Menu   @relation(fields: [parentId], references: [id])
 }
+
+model Product {
+  id                  Int        @id @default(autoincrement())
+  name                String
+  sku                 String     @unique
+  price               Int
+  discount_price      Int
+  discount_percentage Int
+  image               String
+}
