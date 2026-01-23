@@ -1,6 +1,5 @@
-@use "tailwindcss";
-@use './base/_keyframes';
-@use './abstract/_abstract';
+@import "tailwindcss";
+@import './base/_keyframes';
 
 @theme {
   --color-navbar: #171821;
@@ -57,10 +56,10 @@ h1 {
   transition: all 0.3s;
   cursor: pointer;
   height: max-content;
+}
 
-  &:hover {
-    @apply bg-navbar;
-  }
+.Button:hover {
+  @apply bg-navbar;
 }
 
 .Section {

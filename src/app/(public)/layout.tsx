@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "@/style/globals.scss";
+import "@/style/globals.css";
 import Notifications from "@/components/Notification/Notification";
 import QueryProvider from "@/components/QueryProvider/QueryProvider";
 import Menu from "@/components/Menu";
