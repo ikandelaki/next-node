@@ -5,7 +5,11 @@ import Image from "next/image";
 import { fetchNext } from "@/lib/fetchData";
 import { useNotificationStore } from "@/store/useNotificationStore";
 
-export default function ImageUpload() {
+type ImageUploadType = {
+    isSquare?: boolean;
+}
+
+export default function ImageUpload({ isSquare }: ImageUploadType) {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploadedFilePaths, setUploadedFilePaths] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -45,15 +49,15 @@ export default function ImageUpload() {
             return null;
         }
 
-        const fileData = [];
+        const fileData: File[] = [];
         for (const file of files) {
             fileData.push(file);
         }
         
-        setSelectedFiles(fileData);
+        setSelectedFiles((files) => [...files, ...fileData]);
     }
 
-    const renderSelectedImage = (image: File, key = 0) => {
+    const renderSelectedFile = (image: File, key = 0) => {
         const imageUrl = URL.createObjectURL(image);
         
         return (
@@ -61,8 +65,8 @@ export default function ImageUpload() {
                 <Image
                     src={ imageUrl }
                     alt="Product image"
-                    width={ 180 }
-                    height={ 180 }
+                    width={ 160 }
+                    height={ 160 }
                 />
             </div>
         );
@@ -75,7 +79,7 @@ export default function ImageUpload() {
 
         return (
             <div className="flex gap-2">
-                { selectedFiles.map((selectedFile, key) => renderSelectedImage(selectedFile, key)) }
+                { selectedFiles.map((selectedFile, key) => renderSelectedFile(selectedFile, key)) }
             </div>
         )
     }
@@ -86,7 +90,9 @@ export default function ImageUpload() {
         }
 
         return (
-            <button className="Button bg-red-600 ml-4" onClick={ handleFileUploadSave }>Save</button>
+            <div className="block">
+                <button className="Button bg-red-600 mt-2" onClick={ handleFileUploadSave }>Save</button>
+            </div>
         )
     }
 
@@ -109,22 +115,40 @@ export default function ImageUpload() {
         ))
     }
 
-    // Need to implement this, probably
-    // useEffect(() => {
-    //     return () => selectedFiles.forEach(file =>
-    //         URL.revokeObjectURL(file)
-    //     );
-    // }, [selectedFiles]);
+    const renderLabel = () => {
+        if (isSquare) {
+            return (
+                <label
+                    className="w-40 h-40 cursor-pointer border border-dashed flex items-center justify-center text-sm"
+                    htmlFor="image-files"
+                >
+                    + Add
+                </label>
+            );
+        }
+
+        return (
+            <label htmlFor="image-files" className="Button">Upload Image</label>
+        )
+    }
+
+    useEffect(() => {
+        return () => selectedFiles.forEach(file =>
+            URL.revokeObjectURL(file.name)
+        );
+    }, [selectedFiles]);
 
     return (
-        <div>
-            { renderSelectedFiles() }
-            <div>
-                <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUploadChange } multiple />
-                <label htmlFor="image-files" className="Button">Upload Image</label>
-                { renderHiddenInputFields() }
-                { renderSaveButton() }
+        <section>
+            <div className="flex gap-2">
+                { renderSelectedFiles() }
+                <div className="inline-block">
+                    <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUploadChange } multiple />
+                    { renderLabel() }
+                    { renderHiddenInputFields() }
+                </div>
             </div>
-        </div>
+            { renderSaveButton() }
+        </section>
     )
 }

@@ -86,7 +86,7 @@ export default function CreateProduct() {
         return (
             <section className="mt-16">
                 <Expandable title="Media gallery" shouldRenderBottomLine={ true }>
-                    <ImageUpload />
+                    <ImageUpload isSquare />
                 </Expandable>
             </section>
         )

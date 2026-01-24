@@ -20,7 +20,7 @@ export default function Expandable({ title, children, shouldRenderBottomLine }: 
         const className = `${ shouldRenderBottomLine ? 'border-b border-line' : '' }`;
         if (React.isValidElement(title)) {
             return (
-                <div>
+                <div className="cursor-pointer">
                     { title }
                     <ChevronIcon />
                 </div>
@@ -28,7 +28,7 @@ export default function Expandable({ title, children, shouldRenderBottomLine }: 
         }
 
         return (
-            <div className={ `flex items-center w-full py-2 ${className}` } onClick={ handleExpand }>
+            <div className={ `flex items-center w-full py-2 cursor-pointer ${className}` } onClick={ handleExpand }>
                 <h2>{title}</h2>
                 <div className={ `ml-auto transition-transform ${isExpanded ? 'rotate-180' : '' }` }>
                     <ChevronIcon />
