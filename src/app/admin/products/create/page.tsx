@@ -1,5 +1,6 @@
 import Form from "@/components/Form";
 import Field from "@/components/Field";
+import Expandable from "@/components/Expandable";
 
 export default function CreateProduct() {
     const productAttributes = [
@@ -47,13 +48,6 @@ export default function CreateProduct() {
         },
         {
             type: 'text',
-            placeholder: 'image',
-            label: 'Image',
-            id: 'image',
-            isRequired: false
-        },
-        {
-            type: 'text',
             placeholder: 'Quantity',
             label: 'quantity',
             id: 'quantity',
@@ -73,7 +67,7 @@ export default function CreateProduct() {
         console.log('>> formData', formData);
     }
 
-    const renderFormFields = () => {
+    const renderMainFormFields = () => {
         return productAttributes.map(({ type, id, label, placeholder, isRequired }, key) => (
             <Field
                 type={ type }
@@ -87,6 +81,16 @@ export default function CreateProduct() {
         ))
     }
 
+    const renderMediaGallerySection = () => {
+        return (
+            <section className="mt-16">
+                <Expandable title="Media gallery" shouldRenderBottomLine={ true }>
+                    <Field type="text" id="image" name="image" />
+                </Expandable>
+            </section>
+        )
+    }
+
     return (
         <div>
             <section className="Section">
@@ -95,7 +99,8 @@ export default function CreateProduct() {
             <div className="Section mt-4">
                 <h2>Product details</h2>
                 <Form action={ createProduct }>
-                    { renderFormFields() }
+                    { renderMainFormFields() }
+                    { renderMediaGallerySection() }
                 </Form>
             </div>
         </div>

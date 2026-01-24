@@ -1,7 +1,7 @@
 type FormType = {
     action: (formData: FormData) => void;
     className?: string;
-    children: React.ReactElement | React.ReactElement[]
+    children: React.ReactNode
 }
 
 export default function Form({ action, className, children }: FormType) {
