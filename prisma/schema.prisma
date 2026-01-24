@@ -36,8 +36,16 @@ model Product {
   price               Int
   discountPrice       Int
   discountPercentage  Int
-  image               String
+  media_gallery       Image[]
   enabled             Boolean
   quantity            Int
   isInStock           Boolean
+}
+
+model Image {
+  id       Int     @id @default(autoincrement())
+  url      String
+  role     String
+  parentId Int    
+  product  Product @relation(fields: [parentId], references: [id])
 }

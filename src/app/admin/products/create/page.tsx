@@ -60,7 +60,7 @@ export default function CreateProduct() {
             isRequired: false
         },
         {
-            type: 'text',
+            type: 'bool',
             placeholder: 'Is in stock',
             label: 'Is in stock',
             id: 'is-in-stock',
