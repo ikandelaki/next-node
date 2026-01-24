@@ -1,6 +1,7 @@
 import Form from "@/components/Form";
 import Field from "@/components/Field";
 import Expandable from "@/components/Expandable";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function CreateProduct() {
     const productAttributes = [
@@ -85,7 +86,7 @@ export default function CreateProduct() {
         return (
             <section className="mt-16">
                 <Expandable title="Media gallery" shouldRenderBottomLine={ true }>
-                    <Field type="text" id="image" name="image" />
+                    <ImageUpload />
                 </Expandable>
             </section>
         )

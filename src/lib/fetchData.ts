@@ -1,13 +1,15 @@
 import { ERROR_TYPE } from "@/store/useNotificationStore";
 
-export const fetchNext = async (api?: string, body?: BodyInit) => {
+type SettingsType = {
+    [key: string]: unknown
+}
+
+export const fetchNext = async (api?: string, body?: BodyInit, settings?: SettingsType) => {
     try {
         const res = await fetch(`http://localhost:3000/api/${api}`, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body
+            body,
+            ...settings
         });
 
         return await res.json();
