@@ -1,17 +1,19 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, MouseEvent, useState } from "react";
 import Image from "next/image";
 import { fetchNext } from "@/lib/fetchData";
-import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 export default function ImageUpload() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [selectedFileUrls, setSelectedFileUrls] = useState<string[]>([]);
+    const [uploadedFilePaths, setUploadedFilePaths] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
-    const handleFileUploadSave = async () => {
+    const handleFileUploadSave = async (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
         if (!selectedFiles?.length) {
             return;
         }
@@ -23,14 +25,17 @@ export default function ImageUpload() {
 
         setIsLoading(true);
 
-        const { type, message } = await fetchNext(
+        const { type, message, data } = await fetchNext(
             '/images/upload',
             formData
         );
 
         setIsLoading(false);
-
         setNotifications({ type, message });
+
+        if (data?.length) {
+            setUploadedFilePaths(data);
+        }
     }
 
     const handleFileUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -52,13 +57,14 @@ export default function ImageUpload() {
         const imageUrl = URL.createObjectURL(image);
         
         return (
-            <Image
-                src={ imageUrl }
-                alt="Product image"
-                width={ 180 }
-                height={ 180 }
-                key={ `${imageUrl}-${key}` }
-            />
+            <div key={ `${imageUrl}-${key}` }>
+                <Image
+                    src={ imageUrl }
+                    alt="Product image"
+                    width={ 180 }
+                    height={ 180 }
+                />
+            </div>
         );
     }
 
@@ -80,8 +86,27 @@ export default function ImageUpload() {
         }
 
         return (
-            <button type="submit" className="Button bg-red-600 ml-4" onClick={ handleFileUploadSave }>Save</button>
+            <button className="Button bg-red-600 ml-4" onClick={ handleFileUploadSave }>Save</button>
         )
+    }
+
+    // After uploading the files we need to store uploaded file paths in inputs
+    // This is needed because after we create a product we need to assign these filePaths to the product
+    // This is how we store file path data for now
+    const renderHiddenInputFields = () => {
+        if (!uploadedFilePaths?.length) {
+            return null;
+        }
+
+        return uploadedFilePaths.map((filePath, key) => (
+            <input
+                type="text"
+                defaultValue={filePath}
+                key={ `${filePath}-${key}` }
+                className="hidden"
+                name="image"
+            />
+        ))
     }
 
     // Need to implement this, probably
@@ -95,8 +120,9 @@ export default function ImageUpload() {
         <div>
             { renderSelectedFiles() }
             <div>
-                <input type="file" id="image" name="image" className="hidden" onChange={ handleFileUploadChange } multiple />
-                <label htmlFor="image" className="Button">Upload Image</label>
+                <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUploadChange } multiple />
+                <label htmlFor="image-files" className="Button">Upload Image</label>
+                { renderHiddenInputFields() }
                 { renderSaveButton() }
             </div>
         </div>

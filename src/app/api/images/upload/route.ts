@@ -4,7 +4,8 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { ERROR_TYPE, SUCCESS_TYPE } from '@/store/useNotificationStore';
 
-const uploadDir = path.join(process.cwd(), '/public/uploads/catalog/product');
+const publicDir = '/public/uploads/catalog/product/';
+const uploadDir = path.join(process.cwd(), publicDir);
 
 export async function POST(request: NextRequest) {
     await fs.promises.mkdir(uploadDir, { recursive: true });
@@ -13,15 +14,19 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const files: File[] = formData.getAll('file') as File[];
 
+        const allFilePaths = [];
         for (const file of files) {
             const buffer = Buffer.from(await file.arrayBuffer());
             const filePath = path.join(uploadDir, file.name);
 
             await fs.promises.writeFile(filePath, buffer);
+            allFilePaths.push(publicDir + file.name);
         }
 
         return NextResponse.json({
-            type: SUCCESS_TYPE, message: 'File uploaded successfully'
+            type: SUCCESS_TYPE,
+            message: 'File uploaded successfully',
+            data: allFilePaths
         }, { status: 200 })
     } catch (err: any) {
         console.error('>> err', err);
