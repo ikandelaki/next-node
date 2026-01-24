@@ -2,7 +2,7 @@ export default function TrashIcon({ onClick }: { onClick: () => void }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="ionicon w-6 h-6 cursor-pointer hover:shadow-2xs hover:shadow-white transition-shadow duration-150"
+            className="icon w-6 h-6 cursor-pointer hover:shadow-2xs hover:shadow-white transition-shadow duration-150"
             viewBox="0 0 512 512"
             onClick={ onClick }
         >

@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import './base/_keyframes';
+@import "./base/_keyframes.css";
+@import "./base/_reset.css";
 
 @theme {
   --color-navbar: #171821;
@@ -115,4 +116,8 @@ h2 {
 .hover-underline_red:hover::after {
   width: 100%;
   left: 0;
+}
+
+.icon {
+  @apply w-6 h-6;
 }

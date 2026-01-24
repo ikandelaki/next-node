@@ -3,7 +3,7 @@
 import Field from "@/components/Field"
 import FieldGroup from "@/components/FieldGroup"
 import type { MenuGetPayload } from "@/app/generated/prisma/models/Menu";
-import { getFormattedMenuDataFromForm } from "../../lib/utils";
+import { getFormattedMenuDataFromForm } from "../../_lib/utils";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { fetchNext } from "@/lib/fetchData";
 import { redirect, useRouter } from 'next/navigation';

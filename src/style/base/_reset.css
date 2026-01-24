@@ -1,0 +1,6 @@
+select {
+  /* Removes default browser styling, including the dropdown arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

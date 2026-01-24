@@ -1,12 +1,18 @@
 import Form from "@/components/Form";
 import Field from "@/components/Field";
-import { pl } from "zod/locales";
 
 export default function CreateProduct() {
     const productAttributes = [
         {
+            type: 'bool',
+            placeholder: 'is Enabled',
+            label: 'Is Enabled',
+            id: 'enabled',
+            isRequired: false
+        },
+        {
             type: 'text',
-            placeholder: 'Product name',
+            placeholder: 'Name',
             label: 'Product name',
             id: 'product-name',
             isRequired: true
@@ -42,15 +48,8 @@ export default function CreateProduct() {
         {
             type: 'text',
             placeholder: 'image',
-            label: 'image',
+            label: 'Image',
             id: 'image',
-            isRequired: false
-        },
-        {
-            type: 'text',
-            placeholder: 'is Enabled',
-            label: 'Is Enabled',
-            id: 'enabled',
             isRequired: false
         },
         {
@@ -83,7 +82,7 @@ export default function CreateProduct() {
                 placeholder={ placeholder }
                 isRequired={ isRequired }
                 key={ id }
-                className={ `[&>input]:ml-auto${key === 0 ? '' : ' mt-2'}` }
+                className={ `${key === 0 ? '' : ' mt-2'}` }
             />
         ))
     }
@@ -94,6 +93,7 @@ export default function CreateProduct() {
                 <h1>Create a product</h1>
             </section>
             <div className="Section mt-4">
+                <h2>Product details</h2>
                 <Form action={ createProduct }>
                     { renderFormFields() }
                 </Form>

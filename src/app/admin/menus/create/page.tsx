@@ -3,7 +3,7 @@
 import Field from "@/components/Field/Field";
 import FieldGroup from "@/components/FieldGroup";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
-import { getFormattedMenuDataFromForm } from "../lib/utils";
+import { getFormattedMenuDataFromForm } from "../_lib/utils";
 import { fetchNext } from "@/lib/fetchData";
 import { redirect } from "next/navigation";
 

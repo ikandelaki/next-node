@@ -1,6 +1,7 @@
 'use client';
 
 import { ChangeEvent } from "react";
+import ChevronIcon from "../ChevronIcon";
 
 export type FieldType = {
     type: string,
@@ -42,7 +43,7 @@ export default function Field({
 
     const inputName = name ?? id;
 
-    const renderInput = () => {
+    const renderTextInput = () => {
         if (!value || !onChange) {
             return <input
                 className='bg-navbar py-2 px-4 rounded-lg'
@@ -68,10 +69,46 @@ export default function Field({
         />
     }
 
+    const renderBooleanInput = () => {
+        return (
+            <>
+                <select className="w-full bg-navbar py-2 px-4 rounded-lg" id={ id } name={ inputName } defaultValue={ 0 }>
+                    <option value={ 1 }>Yes</option>
+                    <option value={ 0 }>No</option>
+                </select>
+                <span className="absolute translate-x-[-25px] translate-y-[10px]">
+                    <ChevronIcon />
+                </span>
+            </>
+        )
+    }
+
+    const renderAsterisk = () => {
+        if (!isRequired) {
+            return null;
+        }
+
+        return <span className="text-red-400 absolute translate-1/2">*</span>
+    }
+
+    const renderMap: { [key: string]: () => React.ReactElement } = {
+        'text': renderTextInput,
+        'bool': renderBooleanInput
+    }
+
+    const renderInput = () => {
+        const renderer = renderMap[type];
+
+        return renderer();
+    }
+
     return (
-        <div className={ `Field Field_type_${type} flex gap-2 items-center ${className}` }>
+        <div className={ `Field Field_type_${type} grid grid-cols-2 items-center ${className}` }>
             { renderLabel() }
-            { renderInput() }
+            <div className="ml-auto relative w-full">
+                { renderInput() }
+                { renderAsterisk() }
+            </div>
         </div>
     );
 }
