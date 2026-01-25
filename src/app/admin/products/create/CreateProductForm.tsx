@@ -6,7 +6,7 @@ import Form from "@/components/Form";
 import Field from "@/components/Field";
 import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
-import { useNotificationStore, ERROR_TYPE } from '@/store/useNotificationStore';
+import { useNotificationStore, ERROR_TYPE, SUCCESS_TYPE } from '@/store/useNotificationStore';
 import { productAttributes } from '../_data/productAttributes';
 
 interface CreateProductFormProps {
@@ -18,8 +18,13 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
     const { setNotifications } = useNotificationStore();
 
     useEffect(() => {
-        if (!state.success && state.error) {
-            setNotifications({ type: ERROR_TYPE, message: state.error });
+        const { success, error, message } = state;
+        if (!success && error) {
+            setNotifications({ type: ERROR_TYPE, message: error });
+        }
+
+        if (success && message) {
+            setNotifications({ type: SUCCESS_TYPE, message });
         }
     }, [state, setNotifications]);
 

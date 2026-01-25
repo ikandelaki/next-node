@@ -46,7 +46,7 @@ export default function Field({
     const renderTextInput = () => {
         if (!value || !onChange) {
             return <input
-                className='bg-navbar py-2 px-4 rounded-lg'
+                className='bg-navbar py-2 px-4 rounded-lg w-full'
                 type={ type }
                 placeholder={ placeholder }
                 id={ id }
@@ -57,7 +57,7 @@ export default function Field({
         }
 
         return <input
-            className='bg-navbar py-2 px-4 rounded-lg'
+            className='bg-navbar py-2 px-4 rounded-lg w-full'
             type={ type }
             placeholder={ placeholder }
             id={ id }
