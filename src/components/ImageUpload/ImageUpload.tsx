@@ -101,7 +101,14 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
     // This is how we store file path data for now
     const renderHiddenInputFields = () => {
         if (!uploadedFilePaths?.length) {
-            return null;
+            return (
+                <input
+                    type="text"
+                    defaultValue=''
+                    className="hidden"
+                    name="image"
+                />
+            );
         }
 
         return uploadedFilePaths.map((filePath, key) => (
