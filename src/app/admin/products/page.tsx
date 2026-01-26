@@ -24,7 +24,9 @@ export default async function ProductPage() {
                 <Table
                     data={ products }
                     columns={ getTableColumnData(products) }
-                    shouldRenderLink
+                    shouldRenderLink={ {
+                        route: 'products'
+                    } }
                 />
             </div>
         )

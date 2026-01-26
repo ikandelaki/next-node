@@ -13,7 +13,8 @@ export type FieldType = {
     label?: string,
     isRequired?: boolean,
     className?: string,
-    defaultValue?: string | number
+    defaultValue?: string | number,
+    key?: string | number
 }
 
 export default function Field({
@@ -26,7 +27,8 @@ export default function Field({
     name,
     isRequired,
     className,
-    defaultValue
+    defaultValue,
+    key
 }: FieldType
 ) {
     if (!type) {
@@ -103,7 +105,7 @@ export default function Field({
     }
 
     return (
-        <div className={ `Field Field_type_${type} grid grid-cols-2 items-center ${className}` }>
+        <div className={ `Field Field_type_${type} grid grid-cols-2 items-center ${className}` } key={ key }>
             { renderLabel() }
             <div className="ml-auto relative w-full">
                 { renderInput() }

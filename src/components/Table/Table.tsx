@@ -14,7 +14,9 @@ export type TableType = {
     data: DataType[],
     columns: ColumnType[],
     className?: string,
-    shouldRenderLink?: boolean
+    shouldRenderLink?: {
+      route: string
+    }
 }
 
 const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
@@ -23,9 +25,11 @@ const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
       return null;
     }
 
+    const { route } = shouldRenderLink;
+
     return (
       <td className='hover:underline'>
-        <Link href={ `menus/${data[rowIndex].id.toString()}` }>Edit</Link>
+        <Link href={ `${ route }/${ data[rowIndex].id.toString() }` }>Edit</Link>
       </td>
     );
   }
