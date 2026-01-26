@@ -33,7 +33,7 @@ export default function Navbar() {
             isExpandable: false
         },
         {
-            title: "Content",
+            title: "Catalog",
             to: '',
             icon: <CubeIcon />,
             isExpandable: true,
