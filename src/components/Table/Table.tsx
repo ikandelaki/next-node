@@ -2,7 +2,7 @@ import Link from 'next/link';
 import './Table.css';
 
 export type DataType = {
-    [key: string]: string | number;
+    [key: string]: string | number | boolean;
 }
 
 export type ColumnType = {

@@ -26,3 +26,7 @@ export const transformSpaceIntoHyphens = (str?: string) => {
 
     return str.trim().replace(/\s+/g, '-');
 }
+
+export const getTableColumnData = (model: { [key: string]: string | number | boolean }[]) => {
+    return Object.keys(model[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
+}
