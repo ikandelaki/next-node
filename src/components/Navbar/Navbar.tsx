@@ -67,7 +67,7 @@ export default function Navbar() {
     ) => {
         if (!isExpandable) {
             return (
-                <li key={ `${to}-${key}` }>
+                <li key={ `${to}-${key}` } className="z-3">
                     <Link href={ `/admin/${to}` } className="flex w-max gap-2 items-center">
                         <div className="w-6 h-6">
                             { icon && icon }
@@ -81,24 +81,26 @@ export default function Navbar() {
         }
 
         return (
-            <button
-                className='flex w-full gap-2 items-center cursor-pointer'
-                key={ `${title}-${key}` }
-                onClick={ handleButtonClick }
-                data-index={ key }
-            >
-                { icon && icon }
-                <span className="cursor-pointer">{ title }</span>
-                <span className='rotate-270 ml-auto'>
-                    <ChevronIcon />
-                </span>
-            </button>
+            <li key={ `${title}-${key}` } className="z-3">
+                <button
+                    className='flex w-full gap-2 items-center cursor-pointer'
+                    onClick={ handleButtonClick }
+                    data-index={ key }
+                >
+                    { icon && icon }
+                    <span className="cursor-pointer">{ title }</span>
+                    <span className='rotate-270 ml-auto'>
+                        <ChevronIcon />
+                    </span>
+                </button>
+                { renderExpandableSidebarContent(children) }
+            </li>
         )
     }
 
     const renderNavLinks = () => {
         return (
-            <ul className="flex flex-col gap-8 bg-navbar">
+            <ul className="flex flex-col gap-8 bg-navbar z-3">
                 { renderMap.map((menu, key) => renderNavLink(menu, key)) }
             </ul>
         );
@@ -121,22 +123,18 @@ export default function Navbar() {
         )
     }
 
-    const renderExpandableSidebarContent = () => {
-        const menu = renderMap[expandedMenuId || 0];
-
-        const { children = {} } = menu || {};
+    const renderExpandableSidebarContent = (children: { [key: string]: MenuItemType[] }) => {
         return (
-            <div className={`absolute w-full left-full top-0 bg-navbar h-full p-6
-                transition-all duration-300 ${isExpanded ? 'translate-x-0 shadow-2xl border-r border-line' : '-translate-x-full border-none'} -z-9`}>
+            <div className={`absolute w-full left-full top-0 bg-navbar-light h-full p-6
+                transition-all duration-300 ${isExpanded ? 'translate-x-0 border-r border-line z-10' : '-translate-x-full border-none -z-10'}`}>
                 { renderSections(children) }
             </div>
         )
     }
 
     return (
-        <div className={`bg-navbar border-r border-line h-screen p-6 relative z-9 shadow-2xl`}>
+        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-9 shadow-2xl`}>
             { renderNavLinks() }
-            { renderExpandableSidebarContent() }
         </div>
     );
 }

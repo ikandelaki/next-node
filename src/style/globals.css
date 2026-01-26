@@ -122,3 +122,7 @@ h2 {
 .icon {
   @apply w-6 h-6;
 }
+
+.Navbar::before {
+    @apply content-[''] absolute left-0 top-0 bg-navbar w-full h-full z-2;
+}
