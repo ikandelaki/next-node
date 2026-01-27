@@ -6,11 +6,12 @@ import DashboardIcon from '@/components/DashboardIcon';
 import CubeIcon from '../CubeIcon';
 import ChevronIcon from '../ChevronIcon';
 import { useState, MouseEvent } from 'react';
+import CloseIcon from '@/components/CloseIcon';
 
 type MenuItemType = {
     title: string;
     to?: string,
-    icon: React.ReactNode,
+    icon?: React.ReactNode,
     isExpandable?: boolean,
     children?: { [key: string]: MenuItemType[] }
 }
@@ -42,7 +43,6 @@ export default function Navbar() {
                     {
                         title: "Products",
                         to: 'products',
-                        icon: <CubeIcon />,
                         isExpandable: false,
                     }
                 ]
@@ -61,6 +61,11 @@ export default function Navbar() {
         setExpandedMenuId(parseInt(index));
     }
 
+    const handleLinkClick = () => {
+        setIsExpanded(false);
+        setExpandedMenuId(null);
+    }
+
     const renderNavLink = (
         { title, to, icon, isExpandable, children }: MenuItemType,
         key: number
@@ -68,10 +73,16 @@ export default function Navbar() {
         if (!isExpandable) {
             return (
                 <li key={ `${to}-${key}` }>
-                    <Link href={ `/admin/${to}` } className="flex w-max gap-2 items-center">
-                        <div className="w-6 h-6">
-                            { icon && icon }
-                        </div>
+                    <Link
+                        href={ `/admin/${to}` }
+                        className="flex w-max gap-2 items-center z-700 relative"
+                        onClick={ handleLinkClick }
+                    >
+                        { icon && (
+                            <div className="w-6 h-6">
+                                { icon }
+                            </div>
+                        ) }
                         <div>
                             { title }
                         </div>
@@ -81,18 +92,20 @@ export default function Navbar() {
         }
 
         return (
-            <button
-                className='flex w-full gap-2 items-center cursor-pointer'
-                key={ `${title}-${key}` }
-                onClick={ handleButtonClick }
-                data-index={ key }
-            >
-                { icon && icon }
-                <span className="cursor-pointer">{ title }</span>
-                <span className='rotate-270 ml-auto'>
-                    <ChevronIcon />
-                </span>
-            </button>
+            <li key={ `${title}-${key}` }>
+                <button
+                    className='flex w-full gap-2 items-center cursor-pointer z-700 relative'
+                    onClick={ handleButtonClick }
+                    data-index={ key }
+                >
+                    { icon && icon }
+                    <span className="cursor-pointer">{ title }</span>
+                    <span className='rotate-270 ml-auto'>
+                        <ChevronIcon />
+                    </span>
+                </button>
+                { renderExpandableSidebarContent(children) }
+            </li>
         )
     }
 
@@ -121,22 +134,34 @@ export default function Navbar() {
         )
     }
 
-    const renderExpandableSidebarContent = () => {
-        const menu = renderMap[expandedMenuId || 0];
-
-        const { children = {} } = menu || {};
+    const renderCloseButton = () => {
         return (
-            <div className={`absolute w-full left-full top-0 bg-navbar h-full p-6
-                transition-all duration-300 ${isExpanded ? 'translate-x-0 shadow-2xl border-r border-line' : '-translate-x-full border-none'} -z-9`}>
+            <div className="absolute right-5 w-6 h-6 cursor-pointer [&_path]:stroke-red-400" onClick={ handleLinkClick }>
+                <CloseIcon />
+            </div>
+        );
+    }
+
+    const renderExpandableSidebarContent = (children?: { [key: string]: MenuItemType[] }) => {
+        if (!children) {
+            return null;
+        }
+
+        return (
+            <div className={`absolute w-full left-full top-0 bg-navbar-light h-full p-6 border-r border-line
+                transition-translate transition-visiblity duration-300 ${isExpanded
+                    ? 'translate-x-0 z-698 visible'
+                    : '-translate-x-full -z-10 invisible'
+                }`}>
+                { renderCloseButton() }
                 { renderSections(children) }
             </div>
         )
     }
 
     return (
-        <div className={`bg-navbar border-r border-line h-screen p-6 relative z-9 shadow-2xl`}>
+        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-700 shadow-2xl`}>
             { renderNavLinks() }
-            { renderExpandableSidebarContent() }
         </div>
     );
 }

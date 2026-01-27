@@ -8,14 +8,14 @@ export default async function ProductPage() {
 
     const renderNoProducts = () => {
         return (
-            <div>
+            <div className="Section mt-4">
                 You have no products...
             </div>
         )
     }
 
     const renderProductsTable = () => {
-        if (!products) {
+        if (!products || !products?.length) {
             return renderNoProducts();
         }
 
