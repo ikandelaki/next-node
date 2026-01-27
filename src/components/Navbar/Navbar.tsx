@@ -67,8 +67,8 @@ export default function Navbar() {
     ) => {
         if (!isExpandable) {
             return (
-                <li key={ `${to}-${key}` } className="z-3">
-                    <Link href={ `/admin/${to}` } className="flex w-max gap-2 items-center">
+                <li key={ `${to}-${key}` }>
+                    <Link href={ `/admin/${to}` } className="flex w-max gap-2 items-center z-700 relative">
                         <div className="w-6 h-6">
                             { icon && icon }
                         </div>
@@ -81,9 +81,9 @@ export default function Navbar() {
         }
 
         return (
-            <li key={ `${title}-${key}` } className="z-3">
+            <li key={ `${title}-${key}` }>
                 <button
-                    className='flex w-full gap-2 items-center cursor-pointer'
+                    className='flex w-full gap-2 items-center cursor-pointer z-700 relative'
                     onClick={ handleButtonClick }
                     data-index={ key }
                 >
@@ -100,7 +100,7 @@ export default function Navbar() {
 
     const renderNavLinks = () => {
         return (
-            <ul className="flex flex-col gap-8 bg-navbar z-3">
+            <ul className="flex flex-col gap-8 bg-navbar">
                 { renderMap.map((menu, key) => renderNavLink(menu, key)) }
             </ul>
         );
@@ -125,15 +125,18 @@ export default function Navbar() {
 
     const renderExpandableSidebarContent = (children: { [key: string]: MenuItemType[] }) => {
         return (
-            <div className={`absolute w-full left-full top-0 bg-navbar-light h-full p-6
-                transition-all duration-300 ${isExpanded ? 'translate-x-0 border-r border-line z-10' : '-translate-x-full border-none -z-10'}`}>
+            <div className={`absolute w-full left-full top-0 bg-navbar-light h-full p-6 border-r border-line
+                transition-translate transition-visiblity duration-300 ${isExpanded
+                    ? 'translate-x-0 z-698 visible'
+                    : '-translate-x-full -z-10 invisible'
+                }`}>
                 { renderSections(children) }
             </div>
         )
     }
 
     return (
-        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-9 shadow-2xl`}>
+        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-700 shadow-2xl`}>
             { renderNavLinks() }
         </div>
     );

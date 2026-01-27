@@ -124,5 +124,5 @@ h2 {
 }
 
 .Navbar::before {
-    @apply content-[''] absolute left-0 top-0 bg-navbar w-full h-full z-2;
+    @apply content-[''] fixed left-0 top-0 bg-navbar w-full h-full z-699;
 }
