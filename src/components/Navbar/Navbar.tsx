@@ -6,11 +6,12 @@ import DashboardIcon from '@/components/DashboardIcon';
 import CubeIcon from '../CubeIcon';
 import ChevronIcon from '../ChevronIcon';
 import { useState, MouseEvent } from 'react';
+import CloseIcon from '@/components/CloseIcon';
 
 type MenuItemType = {
     title: string;
     to?: string,
-    icon: React.ReactNode,
+    icon?: React.ReactNode,
     isExpandable?: boolean,
     children?: { [key: string]: MenuItemType[] }
 }
@@ -42,7 +43,6 @@ export default function Navbar() {
                     {
                         title: "Products",
                         to: 'products',
-                        icon: <CubeIcon />,
                         isExpandable: false,
                     }
                 ]
@@ -78,9 +78,11 @@ export default function Navbar() {
                         className="flex w-max gap-2 items-center z-700 relative"
                         onClick={ handleLinkClick }
                     >
-                        <div className="w-6 h-6">
-                            { icon && icon }
-                        </div>
+                        { icon && (
+                            <div className="w-6 h-6">
+                                { icon }
+                            </div>
+                        ) }
                         <div>
                             { title }
                         </div>
@@ -132,6 +134,14 @@ export default function Navbar() {
         )
     }
 
+    const renderCloseButton = () => {
+        return (
+            <div className="absolute right-5 w-6 h-6 cursor-pointer [&_path]:stroke-red-400" onClick={ handleLinkClick }>
+                <CloseIcon />
+            </div>
+        );
+    }
+
     const renderExpandableSidebarContent = (children?: { [key: string]: MenuItemType[] }) => {
         if (!children) {
             return null;
@@ -143,6 +153,7 @@ export default function Navbar() {
                     ? 'translate-x-0 z-698 visible'
                     : '-translate-x-full -z-10 invisible'
                 }`}>
+                { renderCloseButton() }
                 { renderSections(children) }
             </div>
         )
