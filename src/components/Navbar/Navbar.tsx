@@ -61,6 +61,11 @@ export default function Navbar() {
         setExpandedMenuId(parseInt(index));
     }
 
+    const handleLinkClick = () => {
+        setIsExpanded(false);
+        setExpandedMenuId(null);
+    }
+
     const renderNavLink = (
         { title, to, icon, isExpandable, children }: MenuItemType,
         key: number
@@ -68,7 +73,11 @@ export default function Navbar() {
         if (!isExpandable) {
             return (
                 <li key={ `${to}-${key}` }>
-                    <Link href={ `/admin/${to}` } className="flex w-max gap-2 items-center z-700 relative">
+                    <Link
+                        href={ `/admin/${to}` }
+                        className="flex w-max gap-2 items-center z-700 relative"
+                        onClick={ handleLinkClick }
+                    >
                         <div className="w-6 h-6">
                             { icon && icon }
                         </div>
@@ -123,7 +132,11 @@ export default function Navbar() {
         )
     }
 
-    const renderExpandableSidebarContent = (children: { [key: string]: MenuItemType[] }) => {
+    const renderExpandableSidebarContent = (children?: { [key: string]: MenuItemType[] }) => {
+        if (!children) {
+            return null;
+        }
+
         return (
             <div className={`absolute w-full left-full top-0 bg-navbar-light h-full p-6 border-r border-line
                 transition-translate transition-visiblity duration-300 ${isExpanded
