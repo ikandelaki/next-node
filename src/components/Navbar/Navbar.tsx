@@ -160,7 +160,7 @@ export default function Navbar() {
     }
 
     return (
-        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-700 shadow-2xl`}>
+        <div className={`Navbar bg-navbar border-r border-line h-screen p-6 relative z-700 w-[200] shadow-2xl`}>
             { renderNavLinks() }
         </div>
     );
