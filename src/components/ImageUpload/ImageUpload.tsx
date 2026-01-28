@@ -154,7 +154,10 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
                     className="w-40 h-40 cursor-pointer border border-dashed flex items-center justify-center text-sm"
                     htmlFor="image-files"
                 >
-                    + Add
+                    <div className="flex flex-col items-center gap-2">
+                        <span>+ Add</span>
+                        <span className="text-xs text-gray-300">(.jpg, .jpeg, .png only)</span>
+                    </div>
                 </label>
             );
         }
