@@ -51,7 +51,6 @@ export default function CreateProduct() {
                 }
             })
 
-            // Here you would save to database or something
             return { success: true, message: "Product created successfully" };
         } catch (error) {
             if (error instanceof z.ZodError) {
@@ -61,7 +60,6 @@ export default function CreateProduct() {
                 };
             }
 
-            console.log('>> error', error);
             return { success: false, error: 'Unknown error' };
         }
     }
