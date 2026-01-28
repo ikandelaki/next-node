@@ -1,7 +1,7 @@
 import { ERROR_TYPE, SUCCESS_TYPE } from "@/store/useNotificationStore";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from '@/lib/prisma';
-import { toKebabCase } from "@/lib/utils";
+import { toKebabCase } from "@/lib/utils/utils";
 
 type MenuItemType = {
     id?: number,

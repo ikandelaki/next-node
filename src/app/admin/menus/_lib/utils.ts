@@ -1,4 +1,4 @@
-import { toKebabCase, transformSpaceIntoHyphens } from "@/lib/utils";
+import { toKebabCase, transformSpaceIntoHyphens } from "@/lib/utils/utils";
 
 export const getFormattedMenuDataFromForm = (formData: FormData) => {
     const name = String(formData.get('menu-name'));

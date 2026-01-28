@@ -1,7 +1,7 @@
 import Link from "next/link";
 import prisma from '@/lib/prisma';
 import Table from "@/components/Table/Table";
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { capitalizeFirstLetter } from "@/lib/utils/utils";
 
 export default async function MenusPage() {
     const menus = await prisma.menu.findMany();

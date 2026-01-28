@@ -1,7 +1,7 @@
 import Link from "next/link";
 import prisma from '@/lib/prisma';
 import Table from "@/components/Table/Table";
-import { getTableColumnData } from "@/lib/utils";
+import { getTableColumnData } from "@/lib/utils/utils";
 
 export default async function ProductPage() {
     const products = await prisma.product.findMany();

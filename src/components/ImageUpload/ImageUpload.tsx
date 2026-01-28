@@ -4,15 +4,22 @@ import { ChangeEvent, useEffect, MouseEvent, useState } from "react";
 import Image from "next/image";
 import { fetchNext } from "@/lib/fetchData";
 import { useNotificationStore } from "@/store/useNotificationStore";
+import { normalizeImageUrl } from "@/lib/utils/url";
+
+type MediaGalleryType = {
+    id: number;
+    url: string;
+    role: string;
+}
 
 type ImageUploadType = {
     isSquare?: boolean;
+    mediaGallery?: MediaGalleryType[]
 }
 
-export default function ImageUpload({ isSquare }: ImageUploadType) {
+export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUploadType) {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [uploadedFilePaths, setUploadedFilePaths] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState<MediaGalleryType[]>(mediaGallery);
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
     const handleFileUploadSave = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -27,18 +34,15 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
             formData.append('file', selectedFile, selectedFile.name);
         }
 
-        setIsLoading(true);
-
         const { type, message, data } = await fetchNext(
             '/images/upload',
             formData
         );
 
-        setIsLoading(false);
         setNotifications({ type, message });
 
         if (data?.length) {
-            setUploadedFilePaths(data);
+            setUploadedFiles(data);
         }
     }
 
@@ -55,6 +59,27 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
         }
         
         setSelectedFiles((files) => [...files, ...fileData]);
+    }
+
+    // If we already have mediaGallery for the entity we can render it directly.
+    // This is useful for entity EDIT forms.
+    const renderExistingMediaGallery = () => {
+        if (!mediaGallery?.length) {
+            return null;
+        }
+
+        return mediaGallery.map(({ url }, key) => {
+            return (
+                <div key={ `${url}-${key}` }>
+                    <Image
+                        src={ normalizeImageUrl(url) }
+                        alt="Product image"
+                        width={ 160 }
+                        height={ 160 }
+                    />
+                </div>
+            );
+        })
     }
 
     const renderSelectedFile = (image: File, key = 0) => {
@@ -100,7 +125,7 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
     // This is needed because after we create a product we need to assign these filePaths to the product
     // This is how we store file path data for now
     const renderHiddenInputFields = () => {
-        if (!uploadedFilePaths?.length) {
+        if (!uploadedFiles?.length) {
             return (
                 <input
                     type="text"
@@ -111,11 +136,11 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
             );
         }
 
-        return uploadedFilePaths.map((filePath, key) => (
+        return uploadedFiles.map(({ url }, key) => (
             <input
                 type="text"
-                defaultValue={filePath}
-                key={ `${filePath}-${key}` }
+                defaultValue={url}
+                key={ `${url}-${key}` }
                 className="hidden"
                 name="image"
             />
@@ -148,6 +173,7 @@ export default function ImageUpload({ isSquare }: ImageUploadType) {
     return (
         <section>
             <div className="flex gap-2">
+                { renderExistingMediaGallery() }
                 { renderSelectedFiles() }
                 <div className="inline-block">
                     <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUploadChange } multiple />
