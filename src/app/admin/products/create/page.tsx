@@ -1,7 +1,8 @@
-import { Product } from '@/app/admin/products/_types/produtType';
+import { Product } from '@/types/product';
 import z from 'zod';
 import CreateProductForm from './CreateProductForm';
 import prisma from '@/lib/prisma';
+import { formatZodError } from '@/lib/utils/utils';
 
 export default function CreateProduct() {
     const createProduct = async (
@@ -56,11 +57,11 @@ export default function CreateProduct() {
             if (error instanceof z.ZodError) {
                 return {
                     success: false,
-                    error: error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join(', ')
+                    error: formatZodError(error)
                 };
             }
 
-            return { success: false, error: 'Unknown error' };
+            return { success: false, error: 'Unknown error while creating product' };
         }
     }
 

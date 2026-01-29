@@ -1,3 +1,5 @@
+import z from "zod";
+
 export const toKebabCase = (str: string | null) => {
     if (!str) {
         return '';
@@ -29,4 +31,8 @@ export const transformSpaceIntoHyphens = (str?: string) => {
 
 export const getTableColumnData = (model: { [key: string]: string | number | boolean }[]) => {
     return Object.keys(model[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
+}
+
+export const formatZodError = (error: z.ZodError) => {
+    return error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join(', ');
 }

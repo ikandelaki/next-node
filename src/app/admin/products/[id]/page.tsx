@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation';
 import { productAttributes } from '../_data/productAttributes';
 import ImageUpload from '@/components/ImageUpload';
 import Expandable from '@/components/Expandable';
+import { Product } from '@/types/product';
+import z from 'zod';
+import { formatZodError } from '@/lib/utils/utils';
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -27,7 +30,28 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     const formAction = async (formData: FormData) => {
         "use server";
-        console.log('>> formData', formData);
+
+        const raw_media_gallery = formData
+                .getAll('image')
+                .map((image) => ({ url: image, role: "" })) || [];
+        const data = Object.fromEntries(formData.entries());
+        const rawFormData = {
+            ...data,
+            media_gallery: raw_media_gallery
+        }
+
+        try {
+            const parsedProduct = await Product.parse(rawFormData);
+        } catch(error) {
+            if (error instanceof z.ZodError) {
+                return {
+                    success: false,
+                    error: formatZodError(error)
+                }
+            }
+
+            return { success: false, error: 'Unknown error while editing product' };
+        }
     }
 
     const renderSaveButton = () => {
