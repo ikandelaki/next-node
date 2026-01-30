@@ -6,13 +6,13 @@ import { fetchNext } from "@/lib/fetchData";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { normalizeImageUrl } from "@/lib/utils/url";
 
-type MediaGalleryType = {
+export type MediaGalleryType = {
     id: number;
     url: string;
     role: string;
 }
 
-type ImageUploadType = {
+export type ImageUploadType = {
     isSquare?: boolean;
     mediaGallery?: MediaGalleryType[]
 }

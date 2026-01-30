@@ -61,9 +61,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 });
             }
 
-            if (newMedia) {
+            console.log('>> newMedia', newMedia);
+            if (newMedia?.length) {
                 await prisma.image.deleteMany({ where: { parentId: parseInt(id) } });
                 
+                console.log('>> newMedia', newMedia);
                 if (newMedia.length) {
                     await prisma.image.createMany({
                         data: (newMedia as ImageType[]).map((image) => ({
@@ -106,26 +108,20 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     const renderMainForm = () => {
         return (
-            <EditProductForm formAction={ formAction } product={ product } formId={ formId } />
+            <EditProductForm
+                formAction={ formAction }
+                product={ product }
+                formId={ formId }
+                media_gallery={media_gallery}
+            />
         )
     }
-
-    const renderMediaGallerySection = () => {
-        return (
-            <section className="mt-16">
-                <Expandable title="Media gallery" shouldRenderBottomLine={true}>
-                    <ImageUpload isSquare mediaGallery={ media_gallery } />
-                </Expandable>
-            </section>
-        );
-    };
 
     return (
         <section>
             { renderHeading() }
             <div>
                 { renderMainForm() }
-                { renderMediaGallerySection() }
             </div>
         </section>
     )

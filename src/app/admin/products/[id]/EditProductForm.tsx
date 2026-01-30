@@ -8,6 +8,9 @@ import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotif
 import { type StateType } from '../create/CreateProductForm';
 import { Product } from "@/app/generated/prisma/client";
 import { useRouter } from "next/navigation";
+import Expandable from "@/components/Expandable";
+import ImageUpload from "@/components/ImageUpload";
+import { MediaGalleryType } from "@/components/ImageUpload/ImageUpload";
 
 type EditProductFormType = {
     formAction: (
@@ -16,9 +19,10 @@ type EditProductFormType = {
     ) => Promise<StateType>;
     formId: string;
     product: Product;
+    media_gallery?: MediaGalleryType[]
 }
 
-export default function EditProductForm({ formAction, formId, product }: EditProductFormType) {
+export default function EditProductForm({ formAction, formId, product, media_gallery }: EditProductFormType) {
     const [state, action] = useActionState(formAction, { success: true, message: '' });
     const setNotifications = useNotificationStore((state) => state.setNotifications);
     const router = useRouter();
@@ -41,6 +45,16 @@ export default function EditProductForm({ formAction, formId, product }: EditPro
         setNotifications({ type, message });
     }, [state, setNotifications, router]);
 
+    const renderMediaGallerySection = () => {
+        return (
+            <section className="mt-16">
+                <Expandable title="Media gallery" shouldRenderBottomLine={true}>
+                    <ImageUpload isSquare mediaGallery={ media_gallery } />
+                </Expandable>
+            </section>
+        );
+    };
+
     return (
         <Form action={ action } id={ formId }>
             { productAttributes.map(({ type, placeholder, label, id, isRequired }, key) => {
@@ -56,6 +70,7 @@ export default function EditProductForm({ formAction, formId, product }: EditPro
                     isRequired={ isRequired }
                 />
             }) }
+            { renderMediaGallerySection() }
         </Form>
     )
 }
