@@ -1,13 +1,14 @@
-import Field from '@/components/Field';
-import Form from '@/components/Form';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import { productAttributes } from '../_data/productAttributes';
 import ImageUpload from '@/components/ImageUpload';
 import Expandable from '@/components/Expandable';
-import { Product } from '@/types/product';
+import { ImageType, Product } from '@/types/product';
 import z from 'zod';
 import { formatZodError } from '@/lib/utils/utils';
+import EditProductForm from './EditProductForm';
+import { StateType } from '../create/CreateProductForm';
+import { getChangedFields } from '@/lib/utils/compare';
+import { revalidatePath } from 'next/cache';
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -28,7 +29,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     const formId = `editProduct-${product.id}`;
     const { media_gallery } = product;
 
-    const formAction = async (formData: FormData) => {
+    const formAction = async (prevState: StateType, formData: FormData) => {
         "use server";
 
         const raw_media_gallery = formData
@@ -42,15 +43,49 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
         try {
             const parsedProduct = await Product.parse(rawFormData);
+            
+            const changes = getChangedFields(parsedProduct, product);
+
+            if (Object.keys(changes).length === 0) {
+                return { success: true, message: 'Product saved successfully' };
+            }
+
+            const { media_gallery: newMedia, ...restChanges } = changes;
+
+            if (Object.keys(restChanges).length > 0) {
+                await prisma.product.update({
+                    where: {
+                        id: parseInt(id)
+                    },
+                    data: restChanges
+                });
+            }
+
+            if (newMedia) {
+                await prisma.image.deleteMany({ where: { parentId: parseInt(id) } });
+                
+                if (newMedia.length) {
+                    await prisma.image.createMany({
+                        data: (newMedia as ImageType[]).map((image) => ({
+                            parentId: parseInt(id),
+                            url: image.url,
+                            role: image.role
+                        }))
+                    })
+                }
+            }
+
+            revalidatePath('/admin/products/1', 'page');
+            return { success: true, message: 'Product saved successfully' };
         } catch(error) {
             if (error instanceof z.ZodError) {
                 return {
                     success: false,
-                    error: formatZodError(error)
+                    message: formatZodError(error)
                 }
             }
 
-            return { success: false, error: 'Unknown error while editing product' };
+            return { success: false, message: 'Unknown error while editing product' };
         }
     }
 
@@ -71,21 +106,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     const renderMainForm = () => {
         return (
-            <Form action={ formAction } id={ formId }>
-                { productAttributes.map(({ type, placeholder, label, id, isRequired }, key) => {
-                    return <Field
-                        key={ label }
-                        name={ label }
-                        id={ id }
-                        type={ type }
-                        placeholder={ placeholder }
-                        defaultValue={ product?.[id] }
-                        label={ label }
-                        className={ `${ key ? 'mt-2' : '' }` }
-                        isRequired={ isRequired }
-                    />
-                }) }
-            </Form>
+            <EditProductForm formAction={ formAction } product={ product } formId={ formId } />
         )
     }
 

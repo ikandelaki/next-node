@@ -18,3 +18,9 @@ export const Product = z.object({
         })
     ).optional().default([])
 })
+
+export type ImageType = {
+    parentId?: number,
+    url: string,
+    role: string
+}

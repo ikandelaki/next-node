@@ -9,23 +9,27 @@ import ImageUpload from "@/components/ImageUpload";
 import { useNotificationStore, ERROR_TYPE, SUCCESS_TYPE } from '@/store/useNotificationStore';
 import { productAttributes } from '../_data/productAttributes';
 
+export type StateType = {
+    success: boolean,
+    message: string
+}
+
 interface CreateProductFormProps {
-    action: (prevState: { success: boolean; error?: string }, formData: FormData) => Promise<{ success: boolean; error?: string }>;
+    action: (
+        prevState: StateType,
+        formData: FormData
+    ) => Promise<StateType>;
 }
 
 export default function CreateProductForm({ action }: CreateProductFormProps) {
-    const [state, formAction] = useActionState(action, { success: true });
+    const [state, formAction] = useActionState(action, { success: true, message: '' });
     const { setNotifications } = useNotificationStore();
 
     useEffect(() => {
-        const { success, error, message } = state;
-        if (!success && error) {
-            setNotifications({ type: ERROR_TYPE, message: error });
-        }
-
-        if (success && message) {
-            setNotifications({ type: SUCCESS_TYPE, message });
-        }
+        const { success, message } = state;
+        
+        const type = success ? SUCCESS_TYPE : ERROR_TYPE;
+        setNotifications({ type, message });
     }, [state, setNotifications]);
 
     const renderMainFormFields = () => {

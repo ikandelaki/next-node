@@ -13,8 +13,7 @@ export type FieldType = {
     label?: string,
     isRequired?: boolean,
     className?: string,
-    defaultValue?: string | number,
-    key?: string | number
+    defaultValue?: string | number
 }
 
 export default function Field({
@@ -27,8 +26,7 @@ export default function Field({
     name,
     isRequired,
     className,
-    defaultValue,
-    key
+    defaultValue
 }: FieldType
 ) {
     if (!type) {
@@ -74,7 +72,12 @@ export default function Field({
     const renderBooleanInput = () => {
         return (
             <>
-                <select className="w-full bg-navbar py-2 px-4 rounded-lg" id={ id } name={ inputName } defaultValue={ 0 }>
+                <select
+                    className="w-full bg-navbar py-2 px-4 rounded-lg"
+                    id={ id }
+                    name={ inputName }
+                    defaultValue={ defaultValue ? 1 : 0 }
+                >
                     <option value={ 1 }>Yes</option>
                     <option value={ 0 }>No</option>
                 </select>
@@ -105,7 +108,7 @@ export default function Field({
     }
 
     return (
-        <div className={ `Field Field_type_${type} grid grid-cols-2 items-center ${className}` } key={ key }>
+        <div className={ `Field Field_type_${type} grid grid-cols-2 items-center ${className}` } key={ String(defaultValue) }>
             { renderLabel() }
             <div className="ml-auto relative w-full">
                 { renderInput() }

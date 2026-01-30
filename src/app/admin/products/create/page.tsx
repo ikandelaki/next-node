@@ -1,12 +1,12 @@
 import { Product } from '@/types/product';
 import z from 'zod';
-import CreateProductForm from './CreateProductForm';
+import CreateProductForm, { StateType } from './CreateProductForm';
 import prisma from '@/lib/prisma';
 import { formatZodError } from '@/lib/utils/utils';
 
 export default function CreateProduct() {
     const createProduct = async (
-        prevState: { success: boolean; error?: string, message?: string },
+        prevState: StateType,
         formData: FormData
     ) => {
         "use server";
@@ -57,11 +57,11 @@ export default function CreateProduct() {
             if (error instanceof z.ZodError) {
                 return {
                     success: false,
-                    error: formatZodError(error)
+                    message: formatZodError(error)
                 };
             }
 
-            return { success: false, error: 'Unknown error while creating product' };
+            return { success: false, message: 'Unknown error while creating product' };
         }
     }
 
