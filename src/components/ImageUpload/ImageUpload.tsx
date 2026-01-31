@@ -42,7 +42,9 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
         setNotifications({ type, message });
 
         if (data?.length) {
-            setUploadedFiles(data);
+            console.log('>> data', data);
+            const formattedFileData = data.map((filePath: string) => ({ url: filePath, role: '' }))
+            setUploadedFiles(formattedFileData);
         }
     }
 
@@ -125,6 +127,7 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
     // This is needed because after we create a product we need to assign these filePaths to the product
     // This is how we store file path data for now
     const renderHiddenInputFields = () => {
+        console.log('>> uploadedFiles', uploadedFiles);
         if (!uploadedFiles?.length) {
             return (
                 <input
