@@ -33,7 +33,10 @@ export default function EditMenuForm({ menu, deleteMenu }: EditMenuFormProps) {
 
     const renderDeleteButton = (idx: number) => {
         return (
-            <TrashIcon onClick={ () => handleDeleteButton(idx) } />
+            <TrashIcon
+                onClick={ () => handleDeleteButton(idx) }
+                className="hover:shadow-2xs hover:shadow-white transition-shadow duration-150"
+            />
         );
     }
 

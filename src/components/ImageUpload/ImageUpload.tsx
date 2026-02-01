@@ -5,6 +5,7 @@ import Image from "next/image";
 import { fetchNext } from "@/lib/fetchData";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { normalizeImageUrl } from "@/lib/utils/url";
+import TrashIcon from "../TrashIcon";
 
 export type MediaGalleryType = {
     id?: number;
@@ -46,29 +47,49 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
         setNotifications({ type, message });
 
         if (data?.length) {
-            console.log('>> data', data);
             const formattedFileData = data.map((filePath: string) => ({ url: filePath, role: '' }))
             setUploadedFiles([...uploadedFiles, ...formattedFileData]);
         }
     }
 
+    const handleImageDelete = (event: MouseEvent<HTMLButtonElement>) => {
+        const index = event?.currentTarget?.dataset?.index;
+
+        if (!index) {
+            return;
+        }
+
+        const newFiles = uploadedFiles.toSpliced(parseInt(index), 1);
+        // Delete the file
+        console.log('>> newFiles', newFiles);
+    }
+
     // If we already have mediaGallery for the entity we can render it directly.
     // This is useful for entity EDIT forms.
     const renderExistingMediaGallery = () => {
-        console.log('>> uploadedFiles', uploadedFiles);
         if (!uploadedFiles?.length) {
             return null;
         }
 
         return uploadedFiles.map(({ url }, key) => {
             return (
-                <div key={ `${url}-${key}` }>
+                <div key={ `${url}-${key}` } className="relative group">
                     <Image
                         src={ normalizeImageUrl(url) }
                         alt="Product image"
                         width={ 160 }
                         height={ 160 }
+                        className="cursor-pointer"
                     />
+                    <div className="absolute w-full h-full left-0 top-0 transition-opacity transition-300 opacity-0 group-hover:opacity-100 group-hover:bg-black/30">
+                        <button
+                            onClick={ handleImageDelete }
+                            className="absolute top-1/2 left-1/2 -translate-1/2 "
+                            data-index={ key }
+                        >
+                            <TrashIcon className="**:stroke-red-400"/>
+                        </button>
+                    </div>
                 </div>
             );
         })
@@ -78,7 +99,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
     // This is needed because after we create a product we need to assign these filePaths to the product
     // This is how we store file path data for now
     const renderHiddenInputFields = () => {
-        console.log('>> uploadedFiles', uploadedFiles);
         if (!uploadedFiles?.length) {
             return (
                 <input
