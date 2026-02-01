@@ -7,7 +7,7 @@ import { useNotificationStore } from "@/store/useNotificationStore";
 import { normalizeImageUrl } from "@/lib/utils/url";
 
 export type MediaGalleryType = {
-    id: number;
+    id?: number;
     url: string;
     role: string;
 }
@@ -18,19 +18,23 @@ export type ImageUploadType = {
 }
 
 export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUploadType) {
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<MediaGalleryType[]>(mediaGallery);
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
-    const handleFileUploadSave = async (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
+    const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+        const { files = [] } = event.target;
 
-        if (!selectedFiles?.length) {
-            return;
+        if (!files?.length) {
+            return null;
         }
 
+        const fileData: File[] = [];
+        for (const file of files) {
+            fileData.push(file);
+        }
+        
         const formData = new FormData();
-        for (const selectedFile of selectedFiles) {
+        for (const selectedFile of fileData) {
             formData.append('file', selectedFile, selectedFile.name);
         }
 
@@ -44,33 +48,19 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
         if (data?.length) {
             console.log('>> data', data);
             const formattedFileData = data.map((filePath: string) => ({ url: filePath, role: '' }))
-            setUploadedFiles(formattedFileData);
+            setUploadedFiles([...uploadedFiles, ...formattedFileData]);
         }
-    }
-
-    const handleFileUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { files = [] } = event.target;
-
-        if (!files?.length) {
-            return null;
-        }
-
-        const fileData: File[] = [];
-        for (const file of files) {
-            fileData.push(file);
-        }
-        
-        setSelectedFiles((files) => [...files, ...fileData]);
     }
 
     // If we already have mediaGallery for the entity we can render it directly.
     // This is useful for entity EDIT forms.
     const renderExistingMediaGallery = () => {
-        if (!mediaGallery?.length) {
+        console.log('>> uploadedFiles', uploadedFiles);
+        if (!uploadedFiles?.length) {
             return null;
         }
 
-        return mediaGallery.map(({ url }, key) => {
+        return uploadedFiles.map(({ url }, key) => {
             return (
                 <div key={ `${url}-${key}` }>
                     <Image
@@ -82,45 +72,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
                 </div>
             );
         })
-    }
-
-    const renderSelectedFile = (image: File, key = 0) => {
-        const imageUrl = URL.createObjectURL(image);
-        
-        return (
-            <div key={ `${imageUrl}-${key}` }>
-                <Image
-                    src={ imageUrl }
-                    alt="Product image"
-                    width={ 160 }
-                    height={ 160 }
-                />
-            </div>
-        );
-    }
-
-    const renderSelectedFiles = () => {
-        if (!selectedFiles || !selectedFiles?.length) {
-            return null;
-        }
-
-        return (
-            <div className="flex gap-2">
-                { selectedFiles.map((selectedFile, key) => renderSelectedFile(selectedFile, key)) }
-            </div>
-        )
-    }
-
-    const renderSaveButton = () => {
-        if (!selectedFiles || !selectedFiles?.length) {
-            return null;
-        }
-
-        return (
-            <div className="block">
-                <button className="Button bg-red-600 mt-2" onClick={ handleFileUploadSave }>Save</button>
-            </div>
-        )
     }
 
     // After uploading the files we need to store uploaded file paths in inputs
@@ -170,24 +121,16 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
         )
     }
 
-    useEffect(() => {
-        return () => selectedFiles.forEach(file =>
-            URL.revokeObjectURL(file.name)
-        );
-    }, [selectedFiles]);
-
     return (
         <section>
             <div className="flex gap-2">
                 { renderExistingMediaGallery() }
-                { renderSelectedFiles() }
                 <div className="inline-block">
-                    <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUploadChange } multiple />
+                    <input type="file" id="image-files" name="image-files" className="hidden" onChange={ handleFileUpload } multiple />
                     { renderLabel() }
                     { renderHiddenInputFields() }
                 </div>
             </div>
-            { renderSaveButton() }
         </section>
     )
 }
