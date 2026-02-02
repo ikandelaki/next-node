@@ -1,9 +1,9 @@
 'use client';
 
-import { ChangeEvent, useEffect, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import Image from "next/image";
 import { fetchNext } from "@/lib/fetchData";
-import { useNotificationStore } from "@/store/useNotificationStore";
+import { SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { normalizeImageUrl } from "@/lib/utils/url";
 import TrashIcon from "../TrashIcon";
 import { ImageModel } from "@/app/generated/prisma/models";
@@ -59,20 +59,24 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
     }
 
     const handleImageDelete = async (event: MouseEvent<HTMLButtonElement>) => {
-        const index = event?.currentTarget?.dataset?.index;
+        event.preventDefault();
+        const imageId = event?.currentTarget?.dataset?.imageid;
 
-        if (!index) {
+        if (!imageId) {
             return;
         }
 
-        const { type, message, data } = await fetchNext(
+        const { type, message } = await fetchNext(
             '/images/delete',
-            index
+            imageId
         )
 
         setNotifications({ type, message });
-        // Delete the file
-        console.log('>> data', data);
+
+        if (type === SUCCESS_TYPE) {
+            const newFiles = uploadedFiles.filter((uploadedFile) => uploadedFile.id !== parseInt(imageId));
+            setUploadedFiles(newFiles);
+        }
     }
 
     // If we already have mediaGallery for the entity we can render it directly.
@@ -82,7 +86,7 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
             return null;
         }
 
-        return uploadedFiles.map(({ url }, key) => {
+        return uploadedFiles.map(({ id, url }, key) => {
             return (
                 <div key={ `${url}-${key}` } className="relative group">
                     <Image
@@ -96,7 +100,7 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
                         <button
                             onClick={ handleImageDelete }
                             className="absolute top-1/2 left-1/2 -translate-1/2 "
-                            data-index={ key }
+                            data-imageid={ id }
                         >
                             <TrashIcon className="**:stroke-red-400"/>
                         </button>
