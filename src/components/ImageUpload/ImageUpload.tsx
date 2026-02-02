@@ -15,10 +15,11 @@ export type MediaGalleryType = {
 
 export type ImageUploadType = {
     isSquare?: boolean;
-    mediaGallery?: MediaGalleryType[]
+    mediaGallery?: MediaGalleryType[],
+    productId: number
 }
 
-export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUploadType) {
+export default function ImageUpload({ isSquare, mediaGallery = [], productId }: ImageUploadType) {
     const [uploadedFiles, setUploadedFiles] = useState<MediaGalleryType[]>(mediaGallery);
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
@@ -38,6 +39,8 @@ export default function ImageUpload({ isSquare, mediaGallery = [] }: ImageUpload
         for (const selectedFile of fileData) {
             formData.append('file', selectedFile, selectedFile.name);
         }
+
+        formData.set('productId', productId.toString());
 
         const { type, message, data } = await fetchNext(
             '/images/upload',

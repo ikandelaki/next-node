@@ -49,7 +49,7 @@ export default function EditProductForm({ formAction, formId, product, media_gal
         return (
             <section className="mt-16">
                 <Expandable title="Media gallery" shouldRenderBottomLine={true}>
-                    <ImageUpload isSquare mediaGallery={ media_gallery } />
+                    <ImageUpload isSquare mediaGallery={ media_gallery } productId={ product.id } />
                 </Expandable>
             </section>
         );

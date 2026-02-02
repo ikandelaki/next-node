@@ -1,7 +1,5 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import ImageUpload from '@/components/ImageUpload';
-import Expandable from '@/components/Expandable';
 import { ImageType, Product } from '@/types/product';
 import z from 'zod';
 import { formatZodError } from '@/lib/utils/utils';
@@ -36,8 +34,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 .getAll('image')
                 .map((image) => ({ url: image, role: "" })) || [];
 
-        console.log('>> raw_media_gallery', raw_media_gallery);
-        console.log('>> formData', formData);
         const data = Object.fromEntries(formData.entries());
         const rawFormData = {
             ...data,
@@ -64,11 +60,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 });
             }
 
-            console.log('>> newMedia', newMedia);
             if (newMedia?.length) {
                 await prisma.image.deleteMany({ where: { parentId: parseInt(id) } });
                 
-                console.log('>> newMedia', newMedia);
                 if (newMedia.length) {
                     await prisma.image.createMany({
                         data: (newMedia as ImageType[]).map((image) => ({
@@ -80,7 +74,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 }
             }
 
-            revalidatePath('/admin/products/1', 'page');
             return { success: true, message: 'Product saved successfully' };
         } catch(error) {
             if (error instanceof z.ZodError) {
