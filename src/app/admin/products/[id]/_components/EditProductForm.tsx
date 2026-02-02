@@ -27,7 +27,6 @@ type EditProductFormType = {
 
 export default function EditProductForm({ formAction, formId, product, media_gallery }: EditProductFormType) {
     const [state, action] = useActionState(formAction, { success: true, message: '' });
-    const { pending } = useFormStatus();
     const setNotifications = useNotificationStore((state) => state.setNotifications);
     const router = useRouter();
 

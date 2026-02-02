@@ -40,6 +40,8 @@ model Product {
   enabled             Boolean
   quantity            Int
   isInStock           Boolean
+  createdAt           DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime    @updatedAt
 }
 
 model Image {

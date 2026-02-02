@@ -18,7 +18,7 @@ export type MediaGalleryType = {
 export type ImageUploadType = {
     isSquare?: boolean;
     mediaGallery?: MediaGalleryType[],
-    productId: number
+    productId?: number
 }
 
 export default function ImageUpload({ isSquare, mediaGallery = [], productId }: ImageUploadType) {
@@ -43,7 +43,9 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
             formData.append('file', selectedFile, selectedFile.name);
         }
 
-        formData.set('productId', productId.toString());
+        if (productId) {
+            formData.set('productId', productId.toString());
+        }
 
         setIsLoading(true);
 
