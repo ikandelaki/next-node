@@ -7,6 +7,7 @@ import { SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore
 import { normalizeImageUrl } from "@/lib/utils/url";
 import TrashIcon from "../TrashIcon";
 import { ImageModel } from "@/app/generated/prisma/models";
+import Loader from "../Loader/Loader";
 
 export type MediaGalleryType = {
     id?: number;
@@ -22,6 +23,7 @@ export type ImageUploadType = {
 
 export default function ImageUpload({ isSquare, mediaGallery = [], productId }: ImageUploadType) {
     const [uploadedFiles, setUploadedFiles] = useState<MediaGalleryType[]>(mediaGallery);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const setNotifications = useNotificationStore((state) => state.setNotifications);
 
     const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -43,11 +45,14 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
 
         formData.set('productId', productId.toString());
 
+        setIsLoading(true);
+
         const { type, message, data } = await fetchNext(
             '/images/upload',
             formData
         );
 
+        setIsLoading(false);
         setNotifications({ type, message });
 
         if (data?.length) {
@@ -66,11 +71,13 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
             return;
         }
 
+        setIsLoading(true);
         const { type, message } = await fetchNext(
             '/images/delete',
             imageId
         )
 
+        setIsLoading(false);
         setNotifications({ type, message });
 
         if (type === SUCCESS_TYPE) {
@@ -156,8 +163,17 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
         )
     }
 
+    const renderLoader = () => {
+        if (!isLoading) {
+            return null;
+        }
+
+        return <Loader />;
+    }
+
     return (
-        <section>
+        <section className="relative">
+            { renderLoader() }
             <div className="flex gap-2">
                 { renderExistingMediaGallery() }
                 <div className="inline-block">
