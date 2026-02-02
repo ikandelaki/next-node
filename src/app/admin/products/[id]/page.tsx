@@ -66,7 +66,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                     where: {
                         id: parseInt(id)
                     },
-                    data: restChanges
+                    data: { ...restChanges }
                 });
             }
 
@@ -93,6 +93,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 }
             }
 
+            console.log('>> error', error);
             return { success: false, message: 'Unknown error while editing product' };
         }
     }
