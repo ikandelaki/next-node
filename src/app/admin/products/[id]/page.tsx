@@ -3,10 +3,9 @@ import { notFound } from 'next/navigation';
 import { ImageType, Product } from '@/types/product';
 import z from 'zod';
 import { formatZodError } from '@/lib/utils/utils';
-import EditProductForm from './EditProductForm';
+import EditProductForm from './_components/EditProductForm';
 import { StateType } from '../create/CreateProductForm';
 import { getChangedFields } from '@/lib/utils/compare';
-import { revalidatePath } from 'next/cache';
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -125,7 +124,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     }
 
     return (
-        <section>
+        <section className="relative">
             { renderHeading() }
             <div>
                 { renderMainForm() }

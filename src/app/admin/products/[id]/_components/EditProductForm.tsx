@@ -2,15 +2,18 @@
 
 import { useActionState, useEffect } from "react";
 import Form from "@/components/Form";
-import { productAttributes } from "../_data/productAttributes";
+import { productAttributes } from "../../_data/productAttributes";
 import Field from "@/components/Field";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
-import { type StateType } from '../create/CreateProductForm';
+import { type StateType } from '../../create/CreateProductForm';
 import { Product } from "@/app/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
 import { MediaGalleryType } from "@/components/ImageUpload/ImageUpload";
+import { useFormStatus } from "react-dom";
+import Loader from "@/components/Loader/Loader";
+import { FormLoader } from "./FormLoader";
 
 type EditProductFormType = {
     formAction: (
@@ -24,6 +27,7 @@ type EditProductFormType = {
 
 export default function EditProductForm({ formAction, formId, product, media_gallery }: EditProductFormType) {
     const [state, action] = useActionState(formAction, { success: true, message: '' });
+    const { pending } = useFormStatus();
     const setNotifications = useNotificationStore((state) => state.setNotifications);
     const router = useRouter();
 
@@ -55,6 +59,14 @@ export default function EditProductForm({ formAction, formId, product, media_gal
         );
     };
 
+    const renderLoader = () => {
+        return <FormLoader />;
+    }
+
+    const renderHiddenSubmitButton = () => {
+        return <button type="submit" hidden />;
+    }
+
     return (
         <Form action={ action } id={ formId }>
             { productAttributes.map(({ type, placeholder, label, id, isRequired }, key) => {
@@ -70,7 +82,9 @@ export default function EditProductForm({ formAction, formId, product, media_gal
                     isRequired={ isRequired }
                 />
             }) }
+            { renderLoader() }
             { renderMediaGallerySection() }
+            { renderHiddenSubmitButton() }
         </Form>
     )
 }

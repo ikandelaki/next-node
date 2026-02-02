@@ -12,8 +12,6 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        console.log('>> formData', imageId);
-
         return NextResponse.json(
             { type: SUCCESS_TYPE, message: `Image deleted successfully`, data: imageId },
             { status: 200 }
