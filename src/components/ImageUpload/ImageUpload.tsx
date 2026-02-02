@@ -58,16 +58,21 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
         }
     }
 
-    const handleImageDelete = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleImageDelete = async (event: MouseEvent<HTMLButtonElement>) => {
         const index = event?.currentTarget?.dataset?.index;
 
         if (!index) {
             return;
         }
 
-        const newFiles = uploadedFiles.toSpliced(parseInt(index), 1);
+        const { type, message, data } = await fetchNext(
+            '/images/delete',
+            index
+        )
+
+        setNotifications({ type, message });
         // Delete the file
-        console.log('>> newFiles', newFiles);
+        console.log('>> data', data);
     }
 
     // If we already have mediaGallery for the entity we can render it directly.

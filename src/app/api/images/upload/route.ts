@@ -4,7 +4,6 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { ERROR_TYPE, SUCCESS_TYPE } from '@/store/useNotificationStore';
 import prisma from '@/lib/prisma';
-import { TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST } from 'next/dist/shared/lib/constants';
 
 const publicDir = '/public/uploads/catalog/product/';
 const uploadDir = path.join(process.cwd(), publicDir);
