@@ -30,6 +30,17 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     const formAction = async (prevState: StateType, formData: FormData) => {
         "use server";
 
+        // Need to re-fetch the product,
+        // because the image data may have changed after first fetching it when the product page loaded
+        const product = await prisma.product.findUnique({
+            where: { id: parseInt(id) },
+            include: { media_gallery: true }
+        })
+
+        if (!product) {
+            return notFound();
+        }
+
         const raw_media_gallery = formData
                 .getAll('image')
                 .map((image) => ({ url: image, role: "" })) || [];

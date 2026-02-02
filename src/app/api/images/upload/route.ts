@@ -4,6 +4,7 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { ERROR_TYPE, SUCCESS_TYPE } from '@/store/useNotificationStore';
 import prisma from '@/lib/prisma';
+import { TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST } from 'next/dist/shared/lib/constants';
 
 const publicDir = '/public/uploads/catalog/product/';
 const uploadDir = path.join(process.cwd(), publicDir);
@@ -33,11 +34,17 @@ export async function POST(request: NextRequest) {
             });
 
             if (product) {
-                await prisma.image.createMany({
+                const images = await prisma.image.createManyAndReturn({
                     data: allFilePaths.map((filePath: string) => (
                         { parentId: parseInt(productId), url: filePath, role: '' }
                     ))
                 });
+
+                return NextResponse.json({
+                    type: SUCCESS_TYPE,
+                    message: `File${images?.length > 1 ? 's' : ''} uploaded successfully`,
+                    data: images
+                }, { status: 200 })
             }
         }
 

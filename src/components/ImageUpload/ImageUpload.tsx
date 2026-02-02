@@ -6,6 +6,7 @@ import { fetchNext } from "@/lib/fetchData";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { normalizeImageUrl } from "@/lib/utils/url";
 import TrashIcon from "../TrashIcon";
+import { ImageModel } from "@/app/generated/prisma/models";
 
 export type MediaGalleryType = {
     id?: number;
@@ -50,7 +51,9 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
         setNotifications({ type, message });
 
         if (data?.length) {
-            const formattedFileData = data.map((filePath: string) => ({ url: filePath, role: '' }))
+            const formattedFileData = data.map(({ id, url, role, parentId }: ImageModel) => (
+                { id, url, role, parentId })
+            )
             setUploadedFiles([...uploadedFiles, ...formattedFileData]);
         }
     }
