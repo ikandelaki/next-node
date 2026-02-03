@@ -2,15 +2,15 @@
 type AnyObj = Record<string, any>;
 
 function isPrimitive(val: any) {
-  return val === null || (typeof val !== 'object' && typeof val !== 'function');
+  return val === null || (typeof val !== "object" && typeof val !== "function");
 }
 
 function primitiveEqual(a: any, b: any) {
   // handle number/string equivalence if you want, else strict
-  if (typeof a === 'number' && typeof b === 'string' && b.trim() !== '') {
+  if (typeof a === "number" && typeof b === "string" && b.trim() !== "") {
     return a === Number(b);
   }
-  if (typeof b === 'number' && typeof a === 'string' && a.trim() !== '') {
+  if (typeof b === "number" && typeof a === "string" && a.trim() !== "") {
     return Number(a) === b;
   }
   return a === b;
@@ -33,8 +33,8 @@ function arraysEqual(a: any[], b: any[]): boolean {
   }
 
   // If items are objects and have `id`, compare by id + shallow fields
-  const aAllHaveId = a.every((x) => x && typeof x === 'object' && ('id' in x));
-  const bAllHaveId = b.every((x) => x && typeof x === 'object' && ('id' in x));
+  const aAllHaveId = a.every((x) => x && typeof x === "object" && "id" in x);
+  const bAllHaveId = b.every((x) => x && typeof x === "object" && "id" in x);
 
   if (aAllHaveId && bAllHaveId) {
     const mapB = new Map(b.map((it: any) => [String(it.id), it]));
@@ -75,7 +75,12 @@ export function getChangedFields(newObj: AnyObj, oldObj: AnyObj): AnyObj {
     }
 
     // objects (non-array)
-    if (typeof newVal === 'object' && newVal !== null && typeof oldVal === 'object' && oldVal !== null) {
+    if (
+      typeof newVal === "object" &&
+      newVal !== null &&
+      typeof oldVal === "object" &&
+      oldVal !== null
+    ) {
       const nested = getChangedFields(newVal, oldVal);
       if (Object.keys(nested).length > 0) {
         changes[key] = nested;

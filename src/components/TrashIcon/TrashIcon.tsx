@@ -1,21 +1,47 @@
-import { MouseEvent } from "react"
+import { MouseEvent } from "react";
 
 type TrashIconType = {
-    onClick?: (event: MouseEvent<SVGSVGElement>) => void;
-    className?: string;
-}
+  onClick?: (event: MouseEvent<SVGSVGElement>) => void;
+  className?: string;
+};
 
 export default function TrashIcon({ onClick, className }: TrashIconType) {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={ `icon w-6 h-6 cursor-pointer ${className}` }
-            viewBox="0 0 512 512"
-            onClick={ onClick }
-        >
-            <path d="M432 144l-28.67 275.74A32 32 0 01371.55 448H140.46a32 32 0 01-31.78-28.26L80 144" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
-            <rect x="32" y="64" width="448" height="80" rx="16" ry="16" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
-            <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M312 240L200 352M312 352L200 240"/>
-        </svg>
-    )
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={`icon w-6 h-6 cursor-pointer ${className}`}
+      viewBox="0 0 512 512"
+      onClick={onClick}
+    >
+      <path
+        d="M432 144l-28.67 275.74A32 32 0 01371.55 448H140.46a32 32 0 01-31.78-28.26L80 144"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <rect
+        x="32"
+        y="64"
+        width="448"
+        height="80"
+        rx="16"
+        ry="16"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+        d="M312 240L200 352M312 352L200 240"
+      />
+    </svg>
+  );
 }

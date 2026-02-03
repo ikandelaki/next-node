@@ -1,35 +1,39 @@
-import Link from 'next/link';
-import './Table.css';
-import { ProductModel } from '@/app/generated/prisma/models';
+import Link from "next/link";
+import "./Table.css";
+import { ProductModel } from "@/app/generated/prisma/models";
 
 export type ColumnType = {
-    id: string,
-    label: string
-}
+  id: string;
+  label: string;
+};
 
 export type TableType = {
-    data: ProductModel[],
-    columns: ColumnType[],
-    className?: string,
-    shouldRenderLink?: {
-      route: string
-    }
-}
+  data: ProductModel[];
+  columns: ColumnType[];
+  className?: string;
+  shouldRenderLink?: {
+    route: string;
+  };
+};
 
 const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
   const renderLink = (rowIndex: number) => {
-    if (!shouldRenderLink || data[rowIndex].id === undefined || data[rowIndex].id === null) {
+    if (
+      !shouldRenderLink ||
+      data[rowIndex].id === undefined ||
+      data[rowIndex].id === null
+    ) {
       return null;
     }
 
     const { route } = shouldRenderLink;
 
     return (
-      <td className='hover:underline'>
-        <Link href={ `${ route }/${ data[rowIndex].id.toString() }` }>Edit</Link>
+      <td className="hover:underline">
+        <Link href={`${route}/${data[rowIndex].id.toString()}`}>Edit</Link>
       </td>
     );
-  }
+  };
 
   const formatCellValue = (value: unknown) => {
     if (value instanceof Date) {
@@ -40,28 +44,24 @@ const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
   };
 
   return (
-    <table className={ className }>
+    <table className={className}>
       <thead>
         <tr>
-          { columns.map((column) => (
-            <th key={ column.id }>
-              { column.label }
-            </th>
-          )) }
-          { shouldRenderLink && <th>Actions</th> }
+          {columns.map((column) => (
+            <th key={column.id}>{column.label}</th>
+          ))}
+          {shouldRenderLink && <th>Actions</th>}
         </tr>
       </thead>
       <tbody>
-        { data.map((row, rowIndex) => (
-          <tr key={ rowIndex }>
-            { columns.map((column) => (
-              <td key={ column.id }>
-                { formatCellValue(row[column.id]) }
-              </td>
-            )) }
-            { renderLink(rowIndex) }
+        {data.map((row, rowIndex) => (
+          <tr key={rowIndex}>
+            {columns.map((column) => (
+              <td key={column.id}>{formatCellValue(row[column.id])}</td>
+            ))}
+            {renderLink(rowIndex)}
           </tr>
-        )) }
+        ))}
       </tbody>
     </table>
   );

@@ -1,1 +1,1 @@
-export { default } from './Expandable';
+export { default } from "./Expandable";

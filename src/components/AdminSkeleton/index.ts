@@ -1,1 +1,1 @@
-export { default } from './AdminSkeleton';
+export { default } from "./AdminSkeleton";

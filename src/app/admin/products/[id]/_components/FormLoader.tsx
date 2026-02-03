@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useFormStatus } from 'react-dom';
-import Loader from '@/components/Loader/Loader';
+import { useFormStatus } from "react-dom";
+import Loader from "@/components/Loader/Loader";
 
 export function FormLoader() {
-    const { pending } = useFormStatus();
+  const { pending } = useFormStatus();
 
-    if (!pending) return null;
+  if (!pending) return null;
 
-    return <Loader />;
+  return <Loader />;
 }

@@ -1,1 +1,1 @@
-export { default } from './DashboardIcon';
+export { default } from "./DashboardIcon";

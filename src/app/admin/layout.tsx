@@ -7,7 +7,7 @@ import "@/style/globals.css";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: '400'
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -20,17 +20,15 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <body className={`${poppins.variable} antialiased`}>
-                <div className="flex">
-                    <Navbar />
-                    <div className="py-2 px-8 w-full">
-                        { children }
-                    </div>
-                    <Notifications />
-                </div>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`${poppins.variable} antialiased`}>
+        <div className="flex">
+          <Navbar />
+          <div className="py-2 px-8 w-full">{children}</div>
+          <Notifications />
+        </div>
+      </body>
+    </html>
+  );
 }

@@ -1,15 +1,16 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 table {
   @apply w-full;
 }
 
-th, td {
+th,
+td {
   @apply h-10 px-2 text-left align-middle font-medium border-r border overflow-hidden whitespace-nowrap;
 }
 
 td {
-  @apply align-middle px-2 h-full cursor-pointer py-2
+  @apply align-middle px-2 h-full cursor-pointer py-2;
 }
 
 tbody tr {
