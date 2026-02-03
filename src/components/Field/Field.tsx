@@ -53,6 +53,8 @@ export default function Field({
           name={inputName}
           required={isRequired}
           defaultValue={defaultValue}
+          // Temporarily disabling autoComplete, need to fix default white background on autofill inputs
+          autoComplete="off"
         />
       );
     }

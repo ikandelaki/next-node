@@ -52,7 +52,6 @@ export default function CreateProduct() {
       return {
         success: true,
         message: "Product created successfully",
-        data: product.id,
       };
     } catch (error) {
       if (error instanceof z.ZodError) {

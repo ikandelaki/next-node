@@ -18,7 +18,6 @@ import { GSP_NO_RETURNED_VALUE } from "next/dist/lib/constants";
 export type StateType = {
   success: boolean;
   message: string;
-  data: number | null;
 };
 
 interface CreateProductFormProps {
@@ -29,13 +28,12 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
   const [state, formAction] = useActionState(action, {
     success: false,
     message: "",
-    data: null,
   });
   const { setNotifications } = useNotificationStore();
   const router = useRouter();
 
   useEffect(() => {
-    const { success, message, data: productId } = state;
+    const { success, message } = state;
 
     const type = success ? SUCCESS_TYPE : ERROR_TYPE;
 
@@ -44,7 +42,7 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
     }
 
     setNotifications({ type, message });
-    router.push(`/admin/products/${productId}`);
+    router.push(`/admin/products`);
   }, [state, setNotifications, router]);
 
   const renderMainFormFields = () => {
