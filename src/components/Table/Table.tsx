@@ -1,9 +1,6 @@
 import Link from 'next/link';
 import './Table.css';
-
-export type DataType = {
-    [key: string]: string | number | boolean;
-}
+import { ProductModel } from '@/app/generated/prisma/models';
 
 export type ColumnType = {
     id: string,
@@ -11,7 +8,7 @@ export type ColumnType = {
 }
 
 export type TableType = {
-    data: DataType[],
+    data: ProductModel[],
     columns: ColumnType[],
     className?: string,
     shouldRenderLink?: {
@@ -34,6 +31,14 @@ const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
     );
   }
 
+  const formatCellValue = (value: unknown) => {
+    if (value instanceof Date) {
+      return value.toLocaleDateString(); // or toLocaleString()
+    }
+
+    return String(value);
+  };
+
   return (
     <table className={ className }>
       <thead>
@@ -51,7 +56,7 @@ const Table = ({ data, columns, className, shouldRenderLink }: TableType) => {
           <tr key={ rowIndex }>
             { columns.map((column) => (
               <td key={ column.id }>
-                { row[column.id] }
+                { formatCellValue(row[column.id]) }
               </td>
             )) }
             { renderLink(rowIndex) }

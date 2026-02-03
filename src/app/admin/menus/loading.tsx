@@ -1,11 +1,12 @@
+import AdminSkeleton from "@/components/AdminSkeleton"
+
 export default function Loading() {
-    return (
-        <div>
-            <div className="flex items-center Section">
-                <h1>Welcome to menu manager</h1>
-                <div className="skeleton w-12 h-5 ml-auto"></div>
-            </div>
-            <div className="skeleton w-full max-w-7xl h-50 mx-auto mt-4"></div>
+    const renderHeadingFallback = () => (
+        <div className="flex items-center Section">
+            <h1>Welcome to menu manager</h1>
+            <button className="Button ml-auto">Create</button>
         </div>
     )
+
+    return <AdminSkeleton heading={ renderHeadingFallback } />
 }

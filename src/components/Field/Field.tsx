@@ -104,6 +104,10 @@ export default function Field({
     const renderInput = () => {
         const renderer = renderMap[type];
 
+        if (typeof renderer !== 'function') {
+            return null;
+        }
+
         return renderer();
     }
 

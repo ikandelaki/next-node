@@ -1,3 +1,4 @@
+import { ProductModel } from "@/app/generated/prisma/models";
 import z from "zod";
 
 export const toKebabCase = (str: string | null) => {
@@ -29,7 +30,7 @@ export const transformSpaceIntoHyphens = (str?: string) => {
     return str.trim().replace(/\s+/g, '-');
 }
 
-export const getTableColumnData = (model: { [key: string]: string | number | boolean }[]) => {
+export const getTableColumnData = (model: ProductModel[]) => {
     return Object.keys(model[0]).map((column) => ({ id: column, label: capitalizeFirstLetter(column) }));
 }
 
