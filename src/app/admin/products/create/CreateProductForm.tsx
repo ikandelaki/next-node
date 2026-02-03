@@ -12,10 +12,13 @@ import {
   SUCCESS_TYPE,
 } from "@/store/useNotificationStore";
 import { productAttributes } from "../_data/productAttributes";
+import { useRouter } from "next/navigation";
+import { GSP_NO_RETURNED_VALUE } from "next/dist/lib/constants";
 
 export type StateType = {
   success: boolean;
   message: string;
+  data: number | null;
 };
 
 interface CreateProductFormProps {
@@ -24,17 +27,25 @@ interface CreateProductFormProps {
 
 export default function CreateProductForm({ action }: CreateProductFormProps) {
   const [state, formAction] = useActionState(action, {
-    success: true,
+    success: false,
     message: "",
+    data: null,
   });
   const { setNotifications } = useNotificationStore();
+  const router = useRouter();
 
   useEffect(() => {
-    const { success, message } = state;
+    const { success, message, data: productId } = state;
 
     const type = success ? SUCCESS_TYPE : ERROR_TYPE;
+
+    if (!message) {
+      return;
+    }
+
     setNotifications({ type, message });
-  }, [state, setNotifications]);
+    router.push(`/admin/products/${productId}`);
+  }, [state, setNotifications, router]);
 
   const renderMainFormFields = () => {
     return productAttributes.map(

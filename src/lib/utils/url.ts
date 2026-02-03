@@ -1,3 +1,3 @@
-export const normalizeImageUrl = (url: string) => {
-  return url.replace(/^\/?public/, "");
+export const normalizeImageUrl = (url?: string) => {
+  return url?.replace(/^\/?public/, "") ?? "";
 };

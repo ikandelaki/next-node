@@ -30,7 +30,7 @@ export default function CreateProduct() {
         media_gallery,
       } = Product.parse(rawFormData);
 
-      await prisma.product.create({
+      const product = await prisma.product.create({
         data: {
           name,
           sku,
@@ -49,7 +49,11 @@ export default function CreateProduct() {
         },
       });
 
-      return { success: true, message: "Product created successfully" };
+      return {
+        success: true,
+        message: "Product created successfully",
+        data: product.id,
+      };
     } catch (error) {
       if (error instanceof z.ZodError) {
         return {

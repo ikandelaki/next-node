@@ -64,7 +64,7 @@ export default function ImageUpload({
     setIsLoading(false);
     setNotifications({ type, message });
 
-    if (data?.length) {
+    if (data?.length && productId) {
       const formattedFileData = data.map(
         ({ id, url, role, parentId }: ImageModel) => ({
           id,
@@ -74,7 +74,17 @@ export default function ImageUpload({
         }),
       );
       setUploadedFiles([...uploadedFiles, ...formattedFileData]);
+
+      return;
     }
+
+    const formattedFileData = data.map((filePath: ImageModel, key: number) => ({
+      id: key,
+      url: filePath,
+      role: "",
+      parentId: "",
+    }));
+    setUploadedFiles([...uploadedFiles, ...formattedFileData]);
   };
 
   const handleImageDelete = async (event: MouseEvent<HTMLButtonElement>) => {
