@@ -18,7 +18,6 @@ type MenuItemType = {
 
 export default function Navbar() {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [expandedMenuId, setExpandedMenuId] = useState<number | null>(null);
 
     const renderMap: MenuItemType[] = [
         {
@@ -58,12 +57,10 @@ export default function Navbar() {
         }
 
         setIsExpanded(!isExpanded);
-        setExpandedMenuId(parseInt(index));
     }
 
     const handleLinkClick = () => {
         setIsExpanded(false);
-        setExpandedMenuId(null);
     }
 
     const renderNavLink = (

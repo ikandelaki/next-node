@@ -56,16 +56,21 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
         );
     };
 
+    const renderSaveButton = () => {
+        return <button className='Button bg-red-500 ml-auto' form='create-product'>Save</button>
+    }
+
     return (
         <div>
-            <section className="Section">
+            <section className="Section flex items-center">
                 <h1>Create a product</h1>
+                { renderSaveButton() }
             </section>
             <div className="Section mt-4">
                 <h2>Product details</h2>
-                <Form action={formAction}>
-                    {renderMainFormFields()}
-                    {renderMediaGallerySection()}
+                <Form action={ formAction } id="create-product">
+                    { renderMainFormFields() }
+                    { renderMediaGallerySection() }
                 </Form>
             </div>
         </div>

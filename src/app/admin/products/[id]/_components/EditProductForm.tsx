@@ -11,8 +11,6 @@ import { useRouter } from "next/navigation";
 import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
 import { MediaGalleryType } from "@/components/ImageUpload/ImageUpload";
-import { useFormStatus } from "react-dom";
-import Loader from "@/components/Loader/Loader";
 import { FormLoader } from "./FormLoader";
 
 type EditProductFormType = {
