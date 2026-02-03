@@ -30,7 +30,7 @@ export default function CreateProduct() {
         media_gallery,
       } = Product.parse(rawFormData);
 
-      const product = await prisma.product.create({
+      await prisma.product.create({
         data: {
           name,
           sku,

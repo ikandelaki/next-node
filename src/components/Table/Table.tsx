@@ -1,6 +1,9 @@
 import Link from "next/link";
 import "./Table.css";
-import { ProductModel } from "@/app/generated/prisma/models";
+
+export type DataType = {
+  [key: string]: unknown;
+};
 
 export type ColumnType = {
   id: string;
@@ -8,7 +11,7 @@ export type ColumnType = {
 };
 
 export type TableType = {
-  data: ProductModel[];
+  data: DataType[];
   columns: ColumnType[];
   className?: string;
   shouldRenderLink?: {

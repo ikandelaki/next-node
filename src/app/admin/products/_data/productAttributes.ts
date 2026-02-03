@@ -1,3 +1,5 @@
+import { Product } from "@/app/generated/prisma/client";
+
 const ATTR_ENABLED = "enabled";
 const ATTR_NAME = "name";
 const ATTR_SKU = "sku";
@@ -18,7 +20,15 @@ export const productAttributeMap = {
   ATTR_MEDIA_GALLERY,
 };
 
-export const productAttributes = [
+type ProductAttributeType = {
+  type: string,
+  placeholder?: string,
+  label?: string,
+  id: keyof Product,
+  isRequired?: boolean
+}
+
+export const productAttributes: ProductAttributeType[] = [
   {
     type: "bool",
     placeholder: "is Enabled",

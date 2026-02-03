@@ -90,7 +90,7 @@ export default function EditProductForm({
               id={id}
               type={type}
               placeholder={placeholder}
-              defaultValue={product?.[id]}
+              defaultValue={String(product?.[id])}
               label={label}
               className={`${key ? "mt-2" : ""}`}
               isRequired={isRequired}
