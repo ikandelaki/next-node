@@ -26,7 +26,7 @@ export default function Form({
   };
 
   return (
-    <form action={action} className={`Section mt-4 w-max ${className}`} id={id}>
+    <form action={action} className={`Section mt-4 ${className}`} id={id}>
       {children}
       {renderSubmitButton()}
     </form>

@@ -53,7 +53,7 @@ export default function CategoryPage() {
       <main className="grid grid-cols-4 w-full h-full gap-x-4 mt-8">
         <section className="Section">Category list</section>
         <section className="Section col-[2/-1]">
-          <Form action={createCategory} id="create-category">
+          <Form action={createCategory} id="create-category" className="w-full">
             {renderMainFormFields()}
             {renderImageUploadSection()}
           </Form>

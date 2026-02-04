@@ -43,7 +43,7 @@ export const categoryAttributes: CategoryAttributeType[] = [
         isRequired: true,
     },
     {
-        type: "text",
+        type: "textarea",
         placeholder: "Description",
         label: "Description",
         id: ATTR_DESCRIPTION,

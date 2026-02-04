@@ -86,7 +86,7 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
       </section>
       <div className="Section mt-4">
         <h2>Product details</h2>
-        <Form action={formAction} id="create-product">
+        <Form action={formAction} id="create-product" className="w-max">
           {renderMainFormFields()}
           {renderMediaGallerySection()}
         </Form>

@@ -80,7 +80,7 @@ export default function EditProductForm({
   };
 
   return (
-    <Form action={action} id={formId}>
+    <Form action={action} id={formId} className="w-max">
       {productAttributes.map(
         ({ type, placeholder, label, id, isRequired }, key) => {
           return (
