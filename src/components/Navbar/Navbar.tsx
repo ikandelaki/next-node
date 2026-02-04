@@ -44,6 +44,11 @@ export default function Navbar() {
             to: "products",
             isExpandable: false,
           },
+          {
+            title: "Categories",
+            to: "categories",
+            isExpandable: false,
+          },
         ],
       },
     },

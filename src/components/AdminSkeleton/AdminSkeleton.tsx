@@ -14,7 +14,7 @@ export default function AdminSkeleton({ heading }: AdminSkeletonType) {
       return heading();
     }
 
-    return heading;
+    return <h1 className="Section">{heading}</h1>;
   };
 
   return (
