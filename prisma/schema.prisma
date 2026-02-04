@@ -51,3 +51,15 @@ model Image {
   parentId Int    
   product  Product @relation(fields: [parentId], references: [id])
 }
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String
+  urlKey      String
+  enabled     Boolean
+  mainImage   String
+  description String
+  parentId    Int?
+  parent      Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryToSubCategory")
+}
