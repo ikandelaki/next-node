@@ -16,7 +16,6 @@ type CategoryImageUploadType = {
 
 export default function CategoryImageUpload({
   image,
-  categoryId,
 }: CategoryImageUploadType) {
   const [uploadedFile, setUploadedFile] = useState<ImageType>(image);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -110,8 +109,8 @@ export default function CategoryImageUpload({
           <span>Main image</span>
           <input
             type="file"
-            id="image-files"
-            name="image-files"
+            id="mainImage"
+            name="mainImage"
             className="hidden"
             onChange={handleFileUpload}
             ref={imageInputRef}

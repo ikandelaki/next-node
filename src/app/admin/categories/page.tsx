@@ -2,11 +2,27 @@ import Field from "@/components/Field";
 import Form from "@/components/Form";
 import { categoryAttributes } from "./_data/categoryAttributes";
 import CategoryImageUpload from "@/components/CategoryImageUpload";
+import { toKebabCase } from "@/lib/utils/utils";
+import { Category } from "@/types/category";
+import z from "zod";
 
 export default function CategoryPage() {
   const createCategory = async (formData: FormData) => {
     "use server";
 
+    const data = Object.fromEntries(formData);
+    console.log(">> data", data);
+    if (!data.urlKey) {
+      data.urlKey = toKebabCase(data.name as string);
+    }
+
+    try {
+      const { name, urlKey, mainImage, description, enabled } =
+        await Category.parse(data);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+      }
+    }
     console.log(">> formData", formData);
   };
 
