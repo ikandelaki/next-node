@@ -1,8 +1,6 @@
 import Field from "@/components/Field";
 import Form from "@/components/Form";
 import { categoryAttributes } from "./_data/categoryAttributes";
-import ImageUpload from "@/components/ImageUpload";
-import { ChangeEvent } from "react";
 import CategoryImageUpload from "@/components/CategoryImageUpload";
 
 export default function CategoryPage() {
