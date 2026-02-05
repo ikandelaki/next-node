@@ -11,11 +11,11 @@ export default function CategoryPage() {
     "use server";
 
     const data = Object.fromEntries(formData);
-    console.log(">> data", data);
     if (!data.urlKey) {
       data.urlKey = toKebabCase(data.name as string);
     }
 
+    console.log(">> data", data);
     try {
       const { name, urlKey, mainImage, description, enabled } =
         await Category.parse(data);

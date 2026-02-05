@@ -20,6 +20,7 @@ export default function CategoryImageUpload({
   const [uploadedFile, setUploadedFile] = useState<ImageType>(image);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const inputValuePlaceholderRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -44,16 +45,22 @@ export default function CategoryImageUpload({
 
     setIsLoading(false);
     setUploadedFile(data);
+
+    if (inputValuePlaceholderRef.current) {
+      inputValuePlaceholderRef.current.value = data;
+    }
   };
 
   const handleImageDelete = () => {
     setUploadedFile(null);
 
-    if (imageInputRef.current === null) {
-      return;
+    if (imageInputRef.current?.value) {
+      imageInputRef.current.value = "";
     }
 
-    imageInputRef.current.value = "";
+    if (inputValuePlaceholderRef.current?.value) {
+      inputValuePlaceholderRef.current.value = "";
+    }
   };
 
   // If we already have mediaGallery for the entity we can render it directly.
@@ -81,13 +88,14 @@ export default function CategoryImageUpload({
             <TrashIcon className="**:stroke-red-400" />
           </button>
         </div>
+        <input hidden ref={inputValuePlaceholderRef} name="mainImage" />
       </div>
     );
   };
 
   const renderLabel = () => {
     return (
-      <label htmlFor="image-files" className="Button ml-auto">
+      <label htmlFor="file" className="Button ml-auto">
         Upload Image
       </label>
     );
@@ -109,8 +117,8 @@ export default function CategoryImageUpload({
           <span>Main image</span>
           <input
             type="file"
-            id="mainImage"
-            name="mainImage"
+            id="file"
+            name="file"
             className="hidden"
             onChange={handleFileUpload}
             ref={imageInputRef}
