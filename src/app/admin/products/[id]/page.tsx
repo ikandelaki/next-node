@@ -4,7 +4,7 @@ import { ImageType, Product } from "@/types/product";
 import z from "zod";
 import { formatZodError } from "@/lib/utils/utils";
 import EditProductForm from "./_components/EditProductForm";
-import { StateType } from "../create/CreateProductForm";
+import { type ActionStateType } from "../create/CreateProductForm";
 import { getChangedFields } from "@/lib/utils/compare";
 
 export default async function EditProductPage({
@@ -30,7 +30,7 @@ export default async function EditProductPage({
   const formId = `editProduct-${product.id}`;
   const { media_gallery } = product;
 
-  const formAction = async (prevState: StateType, formData: FormData) => {
+  const formAction = async (prevState: ActionStateType, formData: FormData) => {
     "use server";
 
     // Need to re-fetch the product,

@@ -5,7 +5,7 @@ export const Category = z.object({
     .string()
     .trim()
     .max(100, { error: "Name should not be more than 100 characters long." }),
-  enabled: z.boolean(),
+  enabled: z.string().transform((val) => val === "1"),
   urlKey: z.string().trim(),
   mainImage: z.string().trim().max(100, { error: "" }).optional(),
   description: z

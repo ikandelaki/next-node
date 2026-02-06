@@ -2,9 +2,10 @@ import Loader from "../Loader/Loader";
 
 type AdminSkeletonType = {
   heading?: string | (() => React.ReactNode);
+  content?: string | (() => React.ReactNode);
 };
 
-export default function AdminSkeleton({ heading }: AdminSkeletonType) {
+export default function AdminSkeleton({ heading, content }: AdminSkeletonType) {
   const renderHeading = () => {
     if (!heading) {
       return null;
@@ -17,9 +18,22 @@ export default function AdminSkeleton({ heading }: AdminSkeletonType) {
     return <h1 className="Section">{heading}</h1>;
   };
 
+  const renderContent = () => {
+    if (!content) {
+      return null;
+    }
+
+    if (typeof content === "function") {
+      return content();
+    }
+
+    return <h1 className="Section">{content}</h1>;
+  };
+
   return (
     <section className="relative h-full">
       {renderHeading()}
+      {renderContent()}
       <div>
         <Loader />
       </div>

@@ -1,13 +1,15 @@
-import Field from "@/components/Field";
-import Form from "@/components/Form";
-import { categoryAttributes } from "./_data/categoryAttributes";
-import CategoryImageUpload from "@/components/CategoryImageUpload";
-import { toKebabCase } from "@/lib/utils/utils";
+import { formatZodError, toKebabCase } from "@/lib/utils/utils";
 import { Category } from "@/types/category";
 import z from "zod";
+import CategoryForm from "./_components/CategoryForm";
+import { ActionStateType } from "../products/create/CreateProductForm";
+import prisma from "@/lib/prisma";
 
 export default function CategoryPage() {
-  const createCategory = async (formData: FormData) => {
+  const createCategory = async (
+    initialState: ActionStateType,
+    formData: FormData,
+  ): Promise<ActionStateType> => {
     "use server";
 
     const data = Object.fromEntries(formData);
@@ -15,64 +17,44 @@ export default function CategoryPage() {
       data.urlKey = toKebabCase(data.name as string);
     }
 
-    console.log(">> data", data);
     try {
-      const { name, urlKey, mainImage, description, enabled } =
-        await Category.parse(data);
+      const {
+        name,
+        urlKey,
+        mainImage = "",
+        description = "",
+        enabled,
+      } = await Category.parse(data);
+
+      const { id } = await prisma.category.create({
+        data: {
+          name,
+          urlKey,
+          mainImage,
+          description,
+          enabled,
+        },
+      });
+
+      return {
+        success: true,
+        message: "Category created successfully",
+        redirectPath: `/admin/categories/${id}`,
+      };
     } catch (err) {
       if (err instanceof z.ZodError) {
+        return {
+          success: false,
+          message: formatZodError(err),
+        };
       }
+
+      return {
+        success: false,
+        message: "Could not create the category",
+      };
     }
-    console.log(">> formData", formData);
   };
 
-  const renderMainFormFields = () => {
-    return categoryAttributes.map(
-      ({ type, id, label, placeholder, isRequired }, key) => (
-        <Field
-          type={type}
-          id={id}
-          label={label}
-          placeholder={placeholder}
-          isRequired={isRequired}
-          key={id}
-          className={`${key === 0 ? "" : " mt-2"}`}
-        />
-      ),
-    );
-  };
-
-  const renderImageUploadSection = () => {
-    return (
-      <section className="mt-16 flex">
-        <CategoryImageUpload />
-      </section>
-    );
-  };
-
-  const renderSaveButton = () => {
-    return (
-      <button className="Button bg-red-500 ml-auto" form="create-category">
-        Save
-      </button>
-    );
-  };
-
-  return (
-    <div>
-      <section className="Section flex items-center">
-        <h1>Categories</h1>
-        {renderSaveButton()}
-      </section>
-      <main className="grid grid-cols-4 w-full h-full gap-x-4 mt-8">
-        <section className="Section">Category list</section>
-        <section className="Section col-[2/-1]">
-          <Form action={createCategory} id="create-category" className="w-full">
-            {renderMainFormFields()}
-            {renderImageUploadSection()}
-          </Form>
-        </section>
-      </main>
-    </div>
-  );
+  return <CategoryForm formAction={createCategory} />;
 }

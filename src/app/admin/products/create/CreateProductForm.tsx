@@ -14,13 +14,17 @@ import {
 import { productAttributes } from "../_data/productAttributes";
 import { useRouter } from "next/navigation";
 
-export type StateType = {
+export type ActionStateType = {
   success: boolean;
   message: string;
+  redirectPath?: string;
 };
 
 interface CreateProductFormProps {
-  action: (prevState: StateType, formData: FormData) => Promise<StateType>;
+  action: (
+    prevState: ActionStateType,
+    formData: FormData,
+  ) => Promise<ActionStateType>;
 }
 
 export default function CreateProductForm({ action }: CreateProductFormProps) {

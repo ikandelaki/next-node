@@ -9,7 +9,7 @@ import {
   SUCCESS_TYPE,
   useNotificationStore,
 } from "@/store/useNotificationStore";
-import { type StateType } from "../../create/CreateProductForm";
+import { type ActionStateType } from "../../create/CreateProductForm";
 import { Product } from "@/app/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import Expandable from "@/components/Expandable";
@@ -18,7 +18,10 @@ import { MediaGalleryType } from "@/components/ImageUpload/ImageUpload";
 import { FormLoader } from "./FormLoader";
 
 type EditProductFormType = {
-  formAction: (prevState: StateType, formData: FormData) => Promise<StateType>;
+  formAction: (
+    prevState: ActionStateType,
+    formData: FormData,
+  ) => Promise<ActionStateType>;
   formId: string;
   product: Product;
   media_gallery?: MediaGalleryType[];

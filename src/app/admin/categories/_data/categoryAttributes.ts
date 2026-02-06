@@ -47,6 +47,6 @@ export const categoryAttributes: CategoryAttributeType[] = [
     placeholder: "Description",
     label: "Description",
     id: ATTR_DESCRIPTION,
-    isRequired: true,
+    isRequired: false,
   },
 ];

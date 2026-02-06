@@ -1,11 +1,14 @@
 import { Product } from "@/types/product";
 import z from "zod";
-import CreateProductForm, { StateType } from "./CreateProductForm";
+import CreateProductForm, { type ActionStateType } from "./CreateProductForm";
 import prisma from "@/lib/prisma";
 import { formatZodError } from "@/lib/utils/utils";
 
 export default function CreateProduct() {
-  const createProduct = async (prevState: StateType, formData: FormData) => {
+  const createProduct = async (
+    prevState: ActionStateType,
+    formData: FormData,
+  ) => {
     "use server";
 
     try {

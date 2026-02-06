@@ -95,10 +95,7 @@ export default function Field({
 
   const renderTextareaInput = () => {
     return (
-      <textarea
-        className="bg-navbar px-4 py-2 rounded-lg w-full"
-        defaultValue="Enter description here..."
-      ></textarea>
+      <textarea className="bg-navbar px-4 py-2 rounded-lg w-full"></textarea>
     );
   };
 
