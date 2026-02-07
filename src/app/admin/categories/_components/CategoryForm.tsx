@@ -20,7 +20,7 @@ type CategoryFormType = {
     formData: FormData,
   ) => Promise<ActionStateType>;
   isEdit?: boolean;
-  dataObject?: Category;
+  dataObject?: Category | null;
 };
 
 export default function CategoryForm({

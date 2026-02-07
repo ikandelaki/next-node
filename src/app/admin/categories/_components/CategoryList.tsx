@@ -1,5 +1,6 @@
 import { Category } from "@/app/generated/prisma/client";
 import prisma from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function CategoryList() {
   const categories = await prisma.category.findMany({
@@ -15,10 +16,11 @@ export default async function CategoryList() {
     children: Category[];
   };
 
+  console.log(">> categories", categories);
   const renderCategoryListItem = (category: CategoryListItem) => {
     return (
       <li key={category.id} className="mt-2 list-disc">
-        {category.name}
+        <Link href={`/admin/categories/${category.id}`}>{category.name}</Link>
       </li>
     );
   };

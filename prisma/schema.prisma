@@ -60,6 +60,7 @@ model Category {
   mainImage   String
   description String
   parentId    Int?
+  path        String?
   parent      Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryToSubCategory")
 }
