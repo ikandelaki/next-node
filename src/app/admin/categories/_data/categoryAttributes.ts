@@ -12,7 +12,7 @@ export const categoryAttributeMap = {
   ATTR_DESCRIPTION,
 };
 
-type CategoryAttributeType = {
+export type CategoryAttributeType = {
   type: string;
   placeholder?: string;
   label?: string;

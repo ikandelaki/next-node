@@ -1,40 +1,26 @@
 "use client";
 
 import CategoryImageUpload from "@/components/CategoryImageUpload";
-import Field from "@/components/Field";
 import Form from "@/components/Form";
 import { categoryAttributes } from "../_data/categoryAttributes";
 import { useActionState, useEffect, useEffectEvent } from "react";
 import { ActionStateType } from "../../products/create/CreateProductForm";
-import {
-  ERROR_TYPE,
-  SUCCESS_TYPE,
-  useNotificationStore,
-} from "@/store/useNotificationStore";
+import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { useRouter } from "next/navigation";
 import { Category } from "@/app/generated/prisma/client";
 
 type CategoryFormType = {
-  formAction: (
-    initialState: ActionStateType,
-    formData: FormData,
-  ) => Promise<ActionStateType>;
+  formAction: (initialState: ActionStateType, formData: FormData) => Promise<ActionStateType>;
   isEdit?: boolean;
   dataObject?: Category | null;
 };
 
-export default function CategoryForm({
-  formAction,
-  isEdit,
-  dataObject,
-}: CategoryFormType) {
+export default function CategoryForm({ formAction, isEdit, dataObject }: CategoryFormType) {
   const [state, action] = useActionState(formAction, {
     success: true,
     message: "",
   });
-  const setNotifications = useNotificationStore(
-    (state) => state.setNotifications,
-  );
+  const setNotifications = useNotificationStore((state) => state.setNotifications);
   const router = useRouter();
 
   const onFormSubmit = useEffectEvent(() => {
@@ -47,6 +33,7 @@ export default function CategoryForm({
 
     if (redirectPath) {
       router.push(redirectPath);
+      router.refresh();
     }
   });
 
@@ -54,24 +41,7 @@ export default function CategoryForm({
     if (state.message) {
       onFormSubmit();
     }
-  }, [state.message]);
-
-  const renderMainFormFields = () => {
-    return categoryAttributes.map(
-      ({ type, id, label, placeholder, isRequired }, key) => (
-        <Field
-          type={type}
-          id={id}
-          label={label}
-          placeholder={placeholder}
-          isRequired={isRequired}
-          defaultValue={isEdit ? String(dataObject?.[id]) : ""}
-          key={id}
-          className={`${key === 0 ? "" : " mt-2"}`}
-        />
-      ),
-    );
-  };
+  }, [state]);
 
   const renderImageUploadSection = () => {
     return (
@@ -81,10 +51,17 @@ export default function CategoryForm({
     );
   };
 
+  console.log(">> rendering form dataObj", dataObject);
   return (
     <section className="Section col-[2/-1]">
-      <Form action={action} id="create-category" className="w-full">
-        {renderMainFormFields()}
+      <Form
+        action={action}
+        id="create-category"
+        className="w-full"
+        fields={categoryAttributes}
+        isEdit={isEdit}
+        dataObject={dataObject}
+      >
         {renderImageUploadSection()}
       </Form>
     </section>

@@ -6,11 +6,7 @@ import Form from "@/components/Form";
 import Field from "@/components/Field";
 import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
-import {
-  useNotificationStore,
-  ERROR_TYPE,
-  SUCCESS_TYPE,
-} from "@/store/useNotificationStore";
+import { useNotificationStore, ERROR_TYPE, SUCCESS_TYPE } from "@/store/useNotificationStore";
 import { productAttributes } from "../_data/productAttributes";
 import { useRouter } from "next/navigation";
 
@@ -21,10 +17,7 @@ export type ActionStateType = {
 };
 
 interface CreateProductFormProps {
-  action: (
-    prevState: ActionStateType,
-    formData: FormData,
-  ) => Promise<ActionStateType>;
+  action: (prevState: ActionStateType, formData: FormData) => Promise<ActionStateType>;
 }
 
 export default function CreateProductForm({ action }: CreateProductFormProps) {
@@ -47,22 +40,6 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
     setNotifications({ type, message });
     router.push(`/admin/products`);
   }, [state, setNotifications, router]);
-
-  const renderMainFormFields = () => {
-    return productAttributes.map(
-      ({ type, id, label, placeholder, isRequired }, key) => (
-        <Field
-          type={type}
-          id={id}
-          label={label}
-          placeholder={placeholder}
-          isRequired={isRequired}
-          key={id}
-          className={`${key === 0 ? "" : " mt-2"}`}
-        />
-      ),
-    );
-  };
 
   const renderMediaGallerySection = () => {
     return (
@@ -90,8 +67,7 @@ export default function CreateProductForm({ action }: CreateProductFormProps) {
       </section>
       <div className="Section mt-4">
         <h2>Product details</h2>
-        <Form action={formAction} id="create-product" className="w-max">
-          {renderMainFormFields()}
+        <Form action={formAction} id="create-product" className="w-max" fields={productAttributes}>
           {renderMediaGallerySection()}
         </Form>
       </div>

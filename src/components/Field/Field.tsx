@@ -81,7 +81,7 @@ export default function Field({
           className="w-full bg-navbar py-2 px-4 rounded-lg"
           id={id}
           name={inputName}
-          defaultValue={defaultValue ? 1 : 0}
+          defaultValue={defaultValue === "true" ? 1 : 0}
         >
           <option value={1}>Yes</option>
           <option value={0}>No</option>
@@ -95,7 +95,12 @@ export default function Field({
 
   const renderTextareaInput = () => {
     return (
-      <textarea className="bg-navbar px-4 py-2 rounded-lg w-full"></textarea>
+      <textarea
+        className="bg-navbar px-4 py-2 rounded-lg w-full"
+        name={inputName}
+        id={id}
+        defaultValue={defaultValue}
+      ></textarea>
     );
   };
 
@@ -124,10 +129,7 @@ export default function Field({
   };
 
   return (
-    <div
-      className={`Field Field_type_${type} grid grid-cols-2 items-center ${className}`}
-      key={String(defaultValue)}
-    >
+    <div className={`Field Field_type_${type} grid grid-cols-2 items-center ${className}`} key={String(defaultValue)}>
       {renderLabel()}
       <div className="ml-auto relative w-full">
         {renderInput()}

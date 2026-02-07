@@ -2,6 +2,7 @@ import { Category } from "@/types/category";
 import { formatZodError, toKebabCase } from "./utils";
 import prisma from "../prisma";
 import z from "zod";
+import { getChangedFields } from "./compare";
 
 export const handleCreateCategory = async (formData: FormData, categoryPath?: string[]) => {
   const data = Object.fromEntries(formData);
@@ -24,7 +25,6 @@ export const handleCreateCategory = async (formData: FormData, categoryPath?: st
       }
     }
 
-    console.log(">> parentId", parentId);
     const { id } = await prisma.category.create({
       data: {
         name,
@@ -61,6 +61,69 @@ export const handleCreateCategory = async (formData: FormData, categoryPath?: st
     }
 
     console.error(err);
+    return {
+      success: false,
+      message: "Could not create the category",
+    };
+  }
+};
+
+export const handleEditCategory = async (formData: FormData, categoryPath: string[]) => {
+  const id = categoryPath[categoryPath.length - 1];
+  const data = Object.fromEntries(formData);
+  if (!data.urlKey) {
+    data.urlKey = toKebabCase(data.name as string);
+  }
+
+  try {
+    const parsedCategory = await Category.parse(data);
+    const prevCategory = await prisma.category.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!prevCategory) {
+      throw new Error(`Category with id ${id} does not exist`);
+    }
+
+    const changes = getChangedFields(parsedCategory, prevCategory);
+
+    if (!Object.keys(changes)?.length) {
+      return {
+        success: true,
+        message: "Category updated successfully",
+        redirectPath: `/admin/categories/${prevCategory.path}`,
+      };
+    }
+
+    const category = await prisma.category.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: { ...changes },
+    });
+
+    return {
+      success: true,
+      message: "Category updated successfully",
+      redirectPath: `/admin/categories/${category.path}`,
+    };
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return {
+        success: false,
+        message: formatZodError(err),
+      };
+    }
+
+    if (typeof err === "string") {
+      return {
+        success: false,
+        message: err,
+      };
+    }
+
     return {
       success: false,
       message: "Could not create the category",

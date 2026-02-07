@@ -20,13 +20,13 @@ export const productAttributeMap = {
   ATTR_MEDIA_GALLERY,
 };
 
-type ProductAttributeType = {
-  type: string,
-  placeholder?: string,
-  label?: string,
-  id: keyof Product,
-  isRequired?: boolean
-}
+export type ProductAttributeType = {
+  type: string;
+  placeholder?: string;
+  label?: string;
+  id: keyof Product;
+  isRequired?: boolean;
+};
 
 export const productAttributes: ProductAttributeType[] = [
   {

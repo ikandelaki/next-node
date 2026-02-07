@@ -36,7 +36,6 @@ export default async function CategoryList() {
 
   const tree = buildTree(categories as FlatCategory[]);
 
-  console.log(">> tree", tree);
   const renderCategoryListItem = (category: CategoryNode) => {
     const { children } = category;
     if (children?.length) {

@@ -3,9 +3,8 @@ import prisma from "@/lib/prisma";
 import { ActionStateType } from "../../products/create/CreateProductForm";
 import CategoryForm from "../_components/CategoryForm";
 import { notFound } from "next/navigation";
-import { handleCreateCategory } from "@/lib/utils/category";
+import { handleCreateCategory, handleEditCategory } from "@/lib/utils/category";
 import Link from "next/link";
-import { sl } from "zod/locales";
 
 const CategoryList = lazy(() => import("../_components/CategoryList"));
 
@@ -13,9 +12,7 @@ type CreateCategoryPageType = {
   params: Promise<{ slug: string[] }>;
 };
 
-export default async function CreateCategoryPage({
-  params,
-}: CreateCategoryPageType) {
+export default async function CreateCategoryPage({ params }: CreateCategoryPageType) {
   const { slug = [] } = await params;
   const lastCategoryPath = slug[slug?.length - 1];
   const isEditForm = lastCategoryPath !== "create";
@@ -36,15 +33,13 @@ export default async function CreateCategoryPage({
       },
     }));
 
+  console.log(">> category", category);
   // If we are on edit category page and category was not found
   if (isEditForm && !category) {
     return notFound();
   }
 
-  const formAction = async (
-    initialState: ActionStateType,
-    formData: FormData,
-  ) => {
+  const formAction = async (initialState: ActionStateType, formData: FormData) => {
     "use server";
 
     console.log(">> formData", formData);
@@ -52,9 +47,7 @@ export default async function CreateCategoryPage({
       return await handleCreateCategory(formData, slug.slice(0, -1));
     }
 
-    return new Promise<ActionStateType>((resolve) => {
-      resolve({ success: true, message: "" });
-    });
+    return handleEditCategory(formData, slug);
   };
 
   const renderSaveButton = () => {

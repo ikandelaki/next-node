@@ -7,11 +7,7 @@ import EditProductForm from "./_components/EditProductForm";
 import { type ActionStateType } from "../create/CreateProductForm";
 import { getChangedFields } from "@/lib/utils/compare";
 
-export default async function EditProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   if (!id) {
@@ -44,8 +40,7 @@ export default async function EditProductPage({
       return notFound();
     }
 
-    const raw_media_gallery =
-      formData.getAll("image").map((image) => ({ url: image, role: "" })) || [];
+    const raw_media_gallery = formData.getAll("image").map((image) => ({ url: image, role: "" })) || [];
 
     const data = Object.fromEntries(formData.entries());
     const rawFormData = {
@@ -96,7 +91,6 @@ export default async function EditProductPage({
         };
       }
 
-      console.log(">> error", error);
       return { success: false, message: "Unknown error while editing product" };
     }
   };
@@ -121,14 +115,7 @@ export default async function EditProductPage({
   };
 
   const renderMainForm = () => {
-    return (
-      <EditProductForm
-        formAction={formAction}
-        product={product}
-        formId={formId}
-        media_gallery={media_gallery}
-      />
-    );
+    return <EditProductForm formAction={formAction} product={product} formId={formId} media_gallery={media_gallery} />;
   };
 
   return (
