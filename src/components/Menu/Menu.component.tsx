@@ -71,7 +71,7 @@ export default function MenuComponent({ menu }: { menu: Menu & { menuItems: Menu
     <div>
       {renderMobileMenuHeader()}
       <div
-        className={`h-[calc(100dvh-var(--mobile-menu-height))] md:h-full flex flex-col md:flex-row items-center justify-center md:justify-start w-full py-2 px-4 gap-8 bg-navbar absolute md:relative top-12 md:top-0 left-0 -translate-x-full ${isExpanded ? "translate-x-0" : ""} md:translate-x-[unset] transition-translate duration-300`}
+        className={`h-[calc(100dvh-var(--mobile-menu-height))] md:h-full flex flex-col md:flex-row items-center justify-center md:justify-start w-full py-2 px-4 gap-8 bg-navbar absolute md:relative top-12 md:top-0 left-0 -translate-x-full ${isExpanded ? "translate-x-0 opacity-100" : ""} md:translate-x-[unset] opacity-0 md:opacity-100 transition-translate duration-300`}
       >
         {renderMenuItems()}
         {renderAdditionalLinks()}
