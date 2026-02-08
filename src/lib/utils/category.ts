@@ -25,6 +25,10 @@ export const handleCreateCategory = async (formData: FormData, categoryPath?: st
       }
     }
 
+    const parentCategory =
+      parentId && (await prisma.category.findUnique({ where: { id: parentId }, select: { urlPath: true } }));
+    const urlPath = parentCategory ? `${parentCategory.urlPath}/${urlKey}` : urlKey;
+
     const { id } = await prisma.category.create({
       data: {
         name,
@@ -32,8 +36,8 @@ export const handleCreateCategory = async (formData: FormData, categoryPath?: st
         mainImage,
         description,
         enabled,
-        // Only include parentId when it was successfully parsed as a positive integer.
-        ...(parentId ? { parentId } : {}),
+        urlPath,
+        parentId,
       },
     });
 

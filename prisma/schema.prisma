@@ -61,6 +61,7 @@ model Category {
   description String
   parentId    Int?
   path        String?
+  urlPath     String     @unique
   parent      Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryToSubCategory")
 }

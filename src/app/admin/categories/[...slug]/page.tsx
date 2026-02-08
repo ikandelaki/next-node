@@ -82,7 +82,14 @@ export default async function CreateCategoryPage({ params }: CreateCategoryPageT
   };
 
   const renderCategoryListFallback = () => {
-    return <section className="Section">Category list</section>;
+    return (
+      <section className="Section">
+        <h2>Category list</h2>
+        <div className="skeleton h-6 mt-4 w-50" />
+        <div className="skeleton h-6 mt-2 w-45" />
+        <div className="skeleton h-6 mt-2 w-40" />
+      </section>
+    );
   };
 
   return (

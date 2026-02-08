@@ -41,9 +41,7 @@ export default function Expandable({ title, children, shouldRenderBottomLine }: 
 
   const renderChildren = () => {
     return (
-      <div
-        className={`grid mt-2 transition-[grid-template-rows] ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-      >
+      <div className={`grid transition-[grid-template-rows] ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
         <div className="overflow-hidden">{children}</div>
       </div>
     );

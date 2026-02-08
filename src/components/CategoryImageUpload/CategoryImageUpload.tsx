@@ -7,20 +7,17 @@ import { normalizeImageUrl } from "@/lib/utils/url";
 import TrashIcon from "../TrashIcon";
 import Loader from "../Loader/Loader";
 
-type ImageType = string | undefined | null;
+type ImageType = string | null;
 
 type CategoryImageUploadType = {
   image?: ImageType;
   categoryId?: number;
 };
 
-export default function CategoryImageUpload({
-  image,
-}: CategoryImageUploadType) {
-  const [uploadedFile, setUploadedFile] = useState<ImageType>(image);
+export default function CategoryImageUpload({ image }: CategoryImageUploadType) {
+  const [uploadedFile, setUploadedFile] = useState<ImageType>(image ?? null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const inputValuePlaceholderRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -45,10 +42,6 @@ export default function CategoryImageUpload({
 
     setIsLoading(false);
     setUploadedFile(data);
-
-    if (inputValuePlaceholderRef.current) {
-      inputValuePlaceholderRef.current.value = data;
-    }
   };
 
   const handleImageDelete = () => {
@@ -56,10 +49,6 @@ export default function CategoryImageUpload({
 
     if (imageInputRef.current?.value) {
       imageInputRef.current.value = "";
-    }
-
-    if (inputValuePlaceholderRef.current?.value) {
-      inputValuePlaceholderRef.current.value = "";
     }
   };
 
@@ -81,14 +70,11 @@ export default function CategoryImageUpload({
           className="cursor-pointer"
         />
         <div className="absolute w-full h-full left-0 top-0 transition-opacity transition-300 opacity-0 group-hover:opacity-100 group-hover:bg-black/30">
-          <button
-            onClick={handleImageDelete}
-            className="absolute top-1/2 left-1/2 -translate-1/2 "
-          >
+          <button onClick={handleImageDelete} className="absolute top-1/2 left-1/2 -translate-1/2 ">
             <TrashIcon className="**:stroke-red-400" />
           </button>
         </div>
-        <input hidden ref={inputValuePlaceholderRef} name="mainImage" />
+        <input hidden value={uploadedFile} name="mainImage" readOnly />
       </div>
     );
   };
@@ -115,14 +101,7 @@ export default function CategoryImageUpload({
       <div className="flex gap-2">
         <div className="flex w-full">
           <span>Main image</span>
-          <input
-            type="file"
-            id="file"
-            name="file"
-            className="hidden"
-            onChange={handleFileUpload}
-            ref={imageInputRef}
-          />
+          <input type="file" id="file" name="file" className="hidden" onChange={handleFileUpload} ref={imageInputRef} />
           {renderLabel()}
         </div>
       </div>

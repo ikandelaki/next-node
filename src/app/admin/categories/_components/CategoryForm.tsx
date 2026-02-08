@@ -51,7 +51,6 @@ export default function CategoryForm({ formAction, isEdit, dataObject }: Categor
     );
   };
 
-  console.log(">> rendering form dataObj", dataObject);
   return (
     <section className="Section col-[2/-1]">
       <Form
