@@ -18,7 +18,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const product = await prisma.product.findUnique({
     where: { id: parseInt(id) },
-    include: { media_gallery: true },
+    include: { media_gallery: true, categories: true },
   });
 
   if (!product) {
@@ -41,7 +41,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     // because the image data may have changed after first fetching it when the product page loaded
     const product = await prisma.product.findUnique({
       where: { id: parseInt(id) },
-      include: { media_gallery: true },
+      include: { media_gallery: true, categories: true },
     });
 
     if (!product) {
@@ -68,6 +68,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       }
 
       const { media_gallery: newMedia, categories: newCategories, ...restChanges } = changes;
+      const { categories: prevCategories } = product;
 
       if (Object.keys(restChanges).length > 0) {
         await handleScalarFields(id, restChanges);
@@ -77,7 +78,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         await handleProductMediaGallery(id, newMedia);
       }
 
-      if (newCategories?.length) {
+      if (getChangedFields(newCategories, prevCategories)) {
         await handleProductCategories(id, newCategories);
       }
 
@@ -114,6 +115,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   };
 
   const renderMainForm = () => {
+    const categoryIds = product.categories.map((category) => category.categoryId);
     const parsedProductAttributes = productAttributes.map((attr) => {
       if (attr.id !== "categories") {
         return attr;
@@ -121,7 +123,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
       return {
         ...attr,
-        options: categories,
+        options: categories.map((category) => ({
+          ...category,
+          isSelected: categoryIds.includes(category.id),
+        })),
       };
     });
     return (

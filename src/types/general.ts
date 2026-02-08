@@ -5,6 +5,7 @@ type ProductAttributeId = keyof Product | keyof Category | "categories";
 export type OptionType = {
   id: number;
   name: string;
+  isSelected?: boolean;
 };
 
 export type AttributeType = {

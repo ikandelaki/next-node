@@ -122,7 +122,13 @@ export default function Field({
 
     return (
       <>
-        <select className="w-full bg-navbar py-2 px-4 rounded-lg custom-scrollbar" id={id} name={inputName} multiple>
+        <select
+          className="w-full bg-navbar py-2 px-4 rounded-lg custom-scrollbar"
+          id={id}
+          name={inputName}
+          multiple
+          defaultValue={options.filter((option) => option.isSelected).map((option) => String(option.id))}
+        >
           {options.map((option) => (
             <option value={option.id} key={option.id}>
               {option.name}
