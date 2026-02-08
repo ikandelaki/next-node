@@ -15,17 +15,9 @@ export default async function MenusPage() {
       id: column,
       label: capitalizeFirstLetter(column),
     }));
-    return (
-      <Table
-        data={menus}
-        columns={columns}
-        className="max-w-7xl mx-auto"
-        shouldRenderLink={{ route: "menus" }}
-      />
-    );
+    return <Table data={menus} columns={columns} className="max-w-7xl mx-auto" shouldRenderLink={{ route: "menus" }} />;
   };
 
-  console.log(">> menus");
   return (
     <div>
       <section className="flex items-center Section">

@@ -33,7 +33,6 @@ export default async function CreateCategoryPage({ params }: CreateCategoryPageT
       },
     }));
 
-  console.log(">> category", category);
   // If we are on edit category page and category was not found
   if (isEditForm && !category) {
     return notFound();
@@ -42,7 +41,6 @@ export default async function CreateCategoryPage({ params }: CreateCategoryPageT
   const formAction = async (initialState: ActionStateType, formData: FormData) => {
     "use server";
 
-    console.log(">> formData", formData);
     if (!isEditForm) {
       return await handleCreateCategory(formData, slug.slice(0, -1));
     }

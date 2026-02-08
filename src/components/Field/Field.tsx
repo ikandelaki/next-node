@@ -116,7 +116,6 @@ export default function Field({
   };
 
   const renderMultiselectInput = () => {
-    console.log(">> options", options);
     if (!options) {
       return null;
     }

@@ -7,6 +7,7 @@ import EditProductForm from "./_components/EditProductForm";
 import { type ActionStateType } from "../create/CreateProductForm";
 import { getChangedFields } from "@/lib/utils/compare";
 import { productAttributes } from "../_data/productAttributes";
+import { handleProductCategories, handleProductMediaGallery, handleScalarFields } from "@/lib/utils/product";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -48,10 +49,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     }
 
     const raw_media_gallery = formData.getAll("image").map((image) => ({ url: image, role: "" })) || [];
+    const categories = formData.getAll("categories");
 
     const data = Object.fromEntries(formData.entries());
     const rawFormData = {
       ...data,
+      categories,
       media_gallery: raw_media_gallery,
     };
 
@@ -64,29 +67,18 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         return { success: true, message: "Product saved successfully" };
       }
 
-      const { media_gallery: newMedia, ...restChanges } = changes;
+      const { media_gallery: newMedia, categories: newCategories, ...restChanges } = changes;
 
       if (Object.keys(restChanges).length > 0) {
-        await prisma.product.update({
-          where: {
-            id: parseInt(id),
-          },
-          data: { ...restChanges },
-        });
+        await handleScalarFields(id, restChanges);
       }
 
       if (newMedia?.length) {
-        await prisma.image.deleteMany({ where: { parentId: parseInt(id) } });
+        await handleProductMediaGallery(id, newMedia);
+      }
 
-        if (newMedia.length) {
-          await prisma.image.createMany({
-            data: (newMedia as ImageType[]).map((image) => ({
-              parentId: parseInt(id),
-              url: image.url,
-              role: image.role,
-            })),
-          });
-        }
+      if (newCategories?.length) {
+        await handleProductCategories(id, newCategories);
       }
 
       return { success: true, message: "Product saved successfully" };
