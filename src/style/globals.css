@@ -20,16 +20,13 @@
   --animation-duration: 1.5s;
 
   --placeholder-gradient-color: #d9d9d9;
-  --placeholder-image: linear-gradient(
-    to right,
-    #ebebeb 0,
-    var(--placeholder-gradient-color) 15%,
-    #ebebeb 30%
-  );
+  --placeholder-image: linear-gradient(to right, #ebebeb 0, var(--placeholder-gradient-color) 15%, #ebebeb 30%);
   --placeholder-size: 1200px 100%;
   --placeholder-animation: placeholderAnimation 2s linear infinite;
 
   --shake-animation: shake 820ms 0.5ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+
+  --mobile-menu-height: 48px;
 }
 
 @theme inline {
