@@ -1,4 +1,4 @@
-import { Product } from "@/app/generated/prisma/client";
+import { AttributeType } from "@/types/general";
 
 const ATTR_ENABLED = "enabled";
 const ATTR_NAME = "name";
@@ -8,6 +8,7 @@ const ATTR_DISCOUNT_PRICE = "discountPrice";
 const ATTR_QUANTITY = "quantity";
 const ATTR_IS_IN_STOCK = "isInStock";
 const ATTR_MEDIA_GALLERY = "media_gallery";
+const ATTR_CATEGORIES = "categories";
 
 export const productAttributeMap = {
   ATTR_ENABLED,
@@ -18,17 +19,10 @@ export const productAttributeMap = {
   ATTR_QUANTITY,
   ATTR_IS_IN_STOCK,
   ATTR_MEDIA_GALLERY,
+  ATTR_CATEGORIES,
 };
 
-export type ProductAttributeType = {
-  type: string;
-  placeholder?: string;
-  label?: string;
-  id: keyof Product;
-  isRequired?: boolean;
-};
-
-export const productAttributes: ProductAttributeType[] = [
+export const productAttributes: AttributeType[] = [
   {
     type: "bool",
     placeholder: "is Enabled",
@@ -77,5 +71,13 @@ export const productAttributes: ProductAttributeType[] = [
     label: "Is in stock",
     id: ATTR_IS_IN_STOCK,
     isRequired: true,
+  },
+  {
+    type: "multiselect",
+    placeholder: "Is in stock",
+    label: "Categories",
+    id: ATTR_CATEGORIES,
+    isRequired: true,
+    options: [],
   },
 ];

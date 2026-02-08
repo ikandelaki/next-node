@@ -30,9 +30,9 @@ model MenuItem {
 }
 
 model Product {
-  id                  Int        @id @default(autoincrement())
+  id                  Int                 @id @default(autoincrement())
   name                String
-  sku                 String     @unique
+  sku                 String              @unique
   price               Int
   discountPrice       Int
   discountPercentage  Int
@@ -40,8 +40,9 @@ model Product {
   enabled             Boolean
   quantity            Int
   isInStock           Boolean
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  categories          CategoryOnProducts[]
 }
 
 model Image {
@@ -64,4 +65,14 @@ model Category {
   urlPath     String     @unique
   parent      Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryToSubCategory")
+  products    CategoryOnProducts[]
+}
+
+model CategoryOnProducts {
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@id([productId, categoryId]) // Composite ID for uniqueness
 }

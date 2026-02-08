@@ -6,6 +6,7 @@ import { formatZodError } from "@/lib/utils/utils";
 import EditProductForm from "./_components/EditProductForm";
 import { type ActionStateType } from "../create/CreateProductForm";
 import { getChangedFields } from "@/lib/utils/compare";
+import { productAttributes } from "../_data/productAttributes";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,6 +26,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const formId = `editProduct-${product.id}`;
   const { media_gallery } = product;
+  const categories = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
 
   const formAction = async (prevState: ActionStateType, formData: FormData) => {
     "use server";
@@ -115,7 +122,25 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   };
 
   const renderMainForm = () => {
-    return <EditProductForm formAction={formAction} product={product} formId={formId} media_gallery={media_gallery} />;
+    const parsedProductAttributes = productAttributes.map((attr) => {
+      if (attr.id !== "categories") {
+        return attr;
+      }
+
+      return {
+        ...attr,
+        options: categories,
+      };
+    });
+    return (
+      <EditProductForm
+        formAction={formAction}
+        product={product}
+        formId={formId}
+        media_gallery={media_gallery}
+        productAttributes={parsedProductAttributes}
+      />
+    );
   };
 
   return (

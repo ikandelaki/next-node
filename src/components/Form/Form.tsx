@@ -1,7 +1,5 @@
-import { ProductAttributeType } from "@/app/admin/products/_data/productAttributes";
+import { AttributeType } from "@/types/general";
 import Field from "../Field";
-
-import { CategoryAttributeType } from "@/app/admin/categories/_data/categoryAttributes";
 import { FormLoader } from "@/app/admin/products/[id]/_components/FormLoader";
 
 type FormType = {
@@ -10,7 +8,7 @@ type FormType = {
   children: React.ReactNode;
   id?: string;
   shouldRenderSubmitButton?: boolean;
-  fields: CategoryAttributeType[] | ProductAttributeType[];
+  fields: AttributeType[];
   isEdit?: boolean;
   dataObject?: { [key: string]: unknown } | null;
 };
@@ -38,7 +36,7 @@ export default function Form({
   };
 
   const renderMainFormFields = () => {
-    return fields.map(({ type, id, label, placeholder, isRequired }, key) => (
+    return fields.map(({ type, id, label, placeholder, isRequired, options }, key) => (
       <Field
         type={type}
         id={id}
@@ -48,6 +46,7 @@ export default function Form({
         defaultValue={isEdit ? String(dataObject?.[id]) : ""}
         key={id}
         className={`${key === 0 ? "" : " mt-2"}`}
+        options={options}
       />
     ));
   };
@@ -56,7 +55,6 @@ export default function Form({
     return <FormLoader />;
   };
 
-  console.log(">> rendering form", dataObject);
   return (
     <form action={action} className={`Section mt-4 ${className}`} id={id} key={String(id)}>
       {renderMainFormFields()}

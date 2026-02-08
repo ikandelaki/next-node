@@ -2,8 +2,6 @@
 
 import { useActionState, useEffect } from "react";
 import Form from "@/components/Form";
-import { productAttributes } from "../../_data/productAttributes";
-import Field from "@/components/Field";
 import { ERROR_TYPE, SUCCESS_TYPE, useNotificationStore } from "@/store/useNotificationStore";
 import { type ActionStateType } from "../../create/CreateProductForm";
 import { Product } from "@/app/generated/prisma/client";
@@ -12,15 +10,23 @@ import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
 import { MediaGalleryType } from "@/components/ImageUpload/ImageUpload";
 import { FormLoader } from "./FormLoader";
+import { AttributeType } from "@/types/general";
 
 type EditProductFormType = {
   formAction: (prevState: ActionStateType, formData: FormData) => Promise<ActionStateType>;
   formId: string;
   product: Product;
   media_gallery?: MediaGalleryType[];
+  productAttributes: AttributeType[];
 };
 
-export default function EditProductForm({ formAction, formId, product, media_gallery }: EditProductFormType) {
+export default function EditProductForm({
+  formAction,
+  formId,
+  product,
+  media_gallery,
+  productAttributes,
+}: EditProductFormType) {
   const [state, action] = useActionState(formAction, {
     success: true,
     message: "",

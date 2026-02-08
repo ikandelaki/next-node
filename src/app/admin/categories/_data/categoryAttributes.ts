@@ -1,4 +1,4 @@
-import { Category } from "@/app/generated/prisma/client";
+import { AttributeType } from "@/types/general";
 
 const ATTR_ENABLED = "enabled";
 const ATTR_NAME = "name";
@@ -12,15 +12,7 @@ export const categoryAttributeMap = {
   ATTR_DESCRIPTION,
 };
 
-export type CategoryAttributeType = {
-  type: string;
-  placeholder?: string;
-  label?: string;
-  id: keyof Category;
-  isRequired?: boolean;
-};
-
-export const categoryAttributes: CategoryAttributeType[] = [
+export const categoryAttributes: AttributeType[] = [
   {
     type: "bool",
     placeholder: "is Enabled",

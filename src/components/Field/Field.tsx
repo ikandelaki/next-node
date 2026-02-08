@@ -2,6 +2,7 @@
 
 import { ChangeEvent } from "react";
 import ChevronIcon from "../ChevronIcon";
+import { OptionType } from "@/types/general";
 
 export type FieldType = {
   type: string;
@@ -14,6 +15,7 @@ export type FieldType = {
   isRequired?: boolean;
   className?: string;
   defaultValue?: string | number | string[];
+  options?: OptionType[];
 };
 
 export default function Field({
@@ -27,6 +29,7 @@ export default function Field({
   isRequired,
   className,
   defaultValue,
+  options,
 }: FieldType) {
   if (!type) {
     return null;
@@ -112,10 +115,30 @@ export default function Field({
     return <span className="text-red-400 absolute translate-1/2">*</span>;
   };
 
-  const renderMap: { [key: string]: () => React.ReactElement } = {
+  const renderMultiselectInput = () => {
+    console.log(">> options", options);
+    if (!options) {
+      return null;
+    }
+
+    return (
+      <>
+        <select className="w-full bg-navbar py-2 px-4 rounded-lg custom-scrollbar" id={id} name={inputName} multiple>
+          {options.map((option) => (
+            <option value={option.id} key={option.id}>
+              {option.name}
+            </option>
+          ))}
+        </select>
+      </>
+    );
+  };
+
+  const renderMap: { [key: string]: () => React.ReactElement | null } = {
     text: renderTextInput,
     bool: renderBooleanInput,
     textarea: renderTextareaInput,
+    multiselect: renderMultiselectInput,
   };
 
   const renderInput = () => {
