@@ -24,8 +24,8 @@ export const handleProductMediaGallery = async (productId: string, newMedia: Ima
   }
 };
 
-export const handleProductCategories = async (productId: string, newCategories: string[]) => {
-  const id = parseInt(productId);
+export const handleProductCategories = async (productId: string | number, newCategories: string[]) => {
+  const id = typeof productId === "string" ? parseInt(productId) : productId;
 
   // Get existing category associations
   const existingCategories = await prisma.categoryOnProducts.findMany({

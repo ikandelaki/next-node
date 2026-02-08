@@ -48,9 +48,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       return notFound();
     }
 
-    const raw_media_gallery = formData.getAll("image").map((image) => ({ url: image, role: "" })) || [];
+    const raw_media_gallery =
+      formData
+        .getAll("image")
+        .filter(Boolean)
+        .map((image) => ({ url: image, role: "" })) || [];
     const categories = formData.getAll("categories");
-
     const data = Object.fromEntries(formData.entries());
     const rawFormData = {
       ...data,

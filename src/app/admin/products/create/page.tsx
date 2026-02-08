@@ -3,37 +3,54 @@ import z from "zod";
 import CreateProductForm, { type ActionStateType } from "./CreateProductForm";
 import prisma from "@/lib/prisma";
 import { formatZodError } from "@/lib/utils/utils";
+import { handleProductCategories } from "@/lib/utils/product";
+import { productAttributes } from "../_data/productAttributes";
 
-export default function CreateProduct() {
-  const createProduct = async (
-    prevState: ActionStateType,
-    formData: FormData,
-  ) => {
+export default async function CreateProduct() {
+  const categories = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  const getParsedProductAttributes = () => {
+    return productAttributes.map((attr) => {
+      if (attr.id !== "categories") {
+        return attr;
+      }
+
+      return {
+        ...attr,
+        options: categories.map((category) => ({
+          ...category,
+          isSelected: false,
+        })),
+      };
+    });
+  };
+
+  const createProduct = async (prevState: ActionStateType, formData: FormData) => {
     "use server";
 
     try {
       const raw_media_gallery =
-        formData.getAll("image").map((image) => ({ url: image, role: "" })) ||
-        [];
+        formData
+          .getAll("image")
+          .filter(Boolean)
+          .map((image) => ({ url: image, role: "" })) || [];
+      const categories = formData.getAll("categories").map((categoryId) => String(categoryId));
       const data = Object.fromEntries(formData.entries());
       const rawFormData = {
         ...data,
+        categories,
         media_gallery: raw_media_gallery,
       };
 
-      const {
-        name,
-        sku,
-        enabled,
-        price,
-        discountPrice,
-        discountPercentage,
-        quantity,
-        isInStock,
-        media_gallery,
-      } = Product.parse(rawFormData);
+      const { name, sku, enabled, price, discountPrice, discountPercentage, quantity, isInStock, media_gallery } =
+        Product.parse(rawFormData);
 
-      await prisma.product.create({
+      const { id } = await prisma.product.create({
         data: {
           name,
           sku,
@@ -51,6 +68,9 @@ export default function CreateProduct() {
           media_gallery: true,
         },
       });
+
+      console.log(">> categories!@", categories);
+      await handleProductCategories(id, categories);
 
       return {
         success: true,
@@ -71,5 +91,5 @@ export default function CreateProduct() {
     }
   };
 
-  return <CreateProductForm action={createProduct} />;
+  return <CreateProductForm action={createProduct} productAttributes={getParsedProductAttributes()} />;
 }

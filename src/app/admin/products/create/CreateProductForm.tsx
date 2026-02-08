@@ -3,12 +3,11 @@
 import { useActionState } from "react";
 import { useEffect } from "react";
 import Form from "@/components/Form";
-import Field from "@/components/Field";
 import Expandable from "@/components/Expandable";
 import ImageUpload from "@/components/ImageUpload";
 import { useNotificationStore, ERROR_TYPE, SUCCESS_TYPE } from "@/store/useNotificationStore";
-import { productAttributes } from "../_data/productAttributes";
 import { useRouter } from "next/navigation";
+import { AttributeType } from "@/types/general";
 
 export type ActionStateType = {
   success: boolean;
@@ -18,9 +17,10 @@ export type ActionStateType = {
 
 interface CreateProductFormProps {
   action: (prevState: ActionStateType, formData: FormData) => Promise<ActionStateType>;
+  productAttributes: AttributeType[];
 }
 
-export default function CreateProductForm({ action }: CreateProductFormProps) {
+export default function CreateProductForm({ action, productAttributes }: CreateProductFormProps) {
   const [state, formAction] = useActionState(action, {
     success: false,
     message: "",
