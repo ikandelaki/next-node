@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardType) {
     return <h3>{name}</h3>;
   };
   return (
-    <div>
+    <div className="flex flex-col max-w-max">
       {renderProductImage()}
       {renderProductTitle()}
     </div>

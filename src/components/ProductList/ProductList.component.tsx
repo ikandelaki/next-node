@@ -27,5 +27,7 @@ export default function ProductListComponent({ products }: ProductListComponentT
     return products.map((product: ProductWithMediaGallery) => renderProductListItem(product));
   };
 
-  return <section className="grid grid-cols-3 max-w-7xl mx-auto mt-16">{renderProductList()}</section>;
+  return (
+    <section className="grid grid-cols-3 max-w-7xl mx-auto mt-16 justify-items-center">{renderProductList()}</section>
+  );
 }
