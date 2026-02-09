@@ -59,7 +59,6 @@ export default function CategoryImageUpload({ image }: CategoryImageUploadType) 
       return null;
     }
 
-    console.log(">> rendering image", uploadedFile);
     return (
       <div className="relative group w-max">
         <Image

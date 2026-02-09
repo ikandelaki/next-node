@@ -1,3 +1,4 @@
+import ProductList from "@/components/ProductList";
 import prisma from "@/lib/prisma";
 import { normalizeImageUrl } from "@/lib/utils/url";
 import Image from "next/image";
@@ -18,6 +19,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   if (!category) {
     return notFound();
   }
+
+  const categoryProducts = await prisma.categoryOnProducts.findMany({
+    where: {
+      categoryId: category.id,
+    },
+  });
 
   const renderMainCategoryImage = () => {
     const { mainImage } = category;
@@ -45,5 +52,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     );
   };
 
-  return <div>{renderHeaderSection()}</div>;
+  const renderProductList = () => <ProductList categoryId={category.id} />;
+
+  return (
+    <div>
+      {renderHeaderSection()}
+      {renderProductList()}
+    </div>
+  );
 }

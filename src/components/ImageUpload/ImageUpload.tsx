@@ -54,7 +54,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
     setIsLoading(false);
     setNotifications({ type, message });
 
-    console.log(">> data 1", data);
     if (data?.length && productId) {
       const formattedFileData = data.map(({ id, url, role, parentId }: ImageModel) => ({
         id,
@@ -67,7 +66,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
       return;
     }
 
-    console.log(">> data", data);
     const formattedFileData = data.map((filePath: ImageModel, key: number) => ({
       id: key,
       url: filePath,
@@ -93,7 +91,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
 
     if (type === SUCCESS_TYPE) {
       const newFiles = uploadedFiles.filter((uploadedFile) => uploadedFile.id !== parseInt(imageId));
-      console.log(">> newFiles", newFiles);
       setUploadedFiles(newFiles);
     }
   };
@@ -105,7 +102,6 @@ export default function ImageUpload({ isSquare, mediaGallery = [], productId }: 
       return null;
     }
 
-    console.log(">> rendering image uploadedFiles", uploadedFiles);
     return uploadedFiles.map(({ id, url }, key) => {
       return (
         <div key={`${url}-${key}`} className="relative group">

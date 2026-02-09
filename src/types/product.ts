@@ -1,3 +1,4 @@
+import { Image, Product } from "@/app/generated/prisma/client";
 import z from "zod";
 
 export const Product = z.object({
@@ -26,3 +27,5 @@ export type ImageType = {
   url: string;
   role: string;
 };
+
+export type ProductWithMediaGallery = Product & { media_gallery: Image[] };
