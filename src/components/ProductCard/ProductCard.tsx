@@ -18,7 +18,13 @@ export default function ProductCard({ product }: ProductCardType) {
 
     return (
       <div className="w-max h-max rounded-lg overflow-hidden">
-        <Image src={normalizeImageUrl(media_gallery[0].url)} width={240} height={240} alt="Product image" />
+        <Image
+          src={normalizeImageUrl(media_gallery[0].url)}
+          width={320}
+          height={320}
+          alt="Product image"
+          className="w-full"
+        />
       </div>
     );
   };
