@@ -28,16 +28,16 @@ export default function ProductCard({ product }: ProductCardType) {
 
     if (!discountPrice) {
       return (
-        <div className="mt-1">
-          <span className="text-md">{formatPrice(price)}</span>
+        <div>
+          <span className="text-lg">{formatPrice(price)}</span>
         </div>
       );
     }
 
     return (
-      <div className="mt-1">
-        <span className="text-md">{formatPrice(discountPrice)}</span>
-        <span className="text-gray-600 line-through ml-2 text-sm">{formatPrice(price)}</span>
+      <div>
+        <span className="text-lg">{formatPrice(discountPrice)}</span>
+        <span className="text-gray-600 line-through ml-2 text-md">{formatPrice(price)}</span>
         <span className="text-red-600 ml-2 text-sm">{calculateDiscountPercentage(price, discountPrice)}</span>
       </div>
     );
@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductCardType) {
 
   const renderProductDetails = () => {
     return (
-      <div className="mt-4 flex flex-col px-2">
+      <div className="flex flex-col p-2">
         {renderProductTitle()}
         {renderPrice()}
       </div>
@@ -55,19 +55,19 @@ export default function ProductCard({ product }: ProductCardType) {
   const renderProductTitle = () => {
     const { name } = product;
 
-    return <h3 className="text-xl">{name}</h3>;
+    return <h3 className="text-sm font-normal">{name}</h3>;
   };
 
   const renderAddToCart = () => {
     return (
-      <div className="hidden bg-gray-100 p-2 absolute bottom-0 left-0 translate-y-4/5 w-full">
+      <div className="hidden bg-gray-100 p-2 absolute bottom-0 left-0 translate-y-4/5 w-full rounded-b-lg">
         <Button text="Add To Cart" className="w-full" />
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col max-w-max p-2 bg-gray-100 rounded-xl text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block h-max">
+    <div className="flex flex-col max-w-max p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block h-max">
       {renderProductImage()}
       {renderProductDetails()}
       {renderAddToCart()}
