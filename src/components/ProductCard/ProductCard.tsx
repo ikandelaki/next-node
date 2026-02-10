@@ -73,7 +73,7 @@ export default function ProductCard({ product }: ProductCardType) {
   };
 
   return (
-    <div className="flex flex-col max-w-max p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block h-max">
+    <div className="flex flex-col max-w-max h-full p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block">
       {renderProductImage()}
       {renderProductDetails()}
       {renderAddToCart()}
