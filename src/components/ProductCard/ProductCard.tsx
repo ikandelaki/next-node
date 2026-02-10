@@ -2,6 +2,7 @@ import { normalizeImageUrl } from "@/lib/utils/url";
 import { calculateDiscountPercentage, formatPrice } from "@/lib/utils/utils";
 import { ProductWithMediaGallery } from "@/types/product";
 import Image from "next/image";
+import Button from "../Button";
 
 type ProductCardType = {
   product: ProductWithMediaGallery;
@@ -57,10 +58,19 @@ export default function ProductCard({ product }: ProductCardType) {
     return <h3 className="text-xl">{name}</h3>;
   };
 
+  const renderAddToCart = () => {
+    return (
+      <div className="hidden bg-gray-100 p-2 absolute bottom-0 left-0 translate-y-4/5 w-full">
+        <Button text="Add To Cart" className="w-full" />
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col max-w-max p-2 bg-gray-100 rounded-2xl text-dark-gray font-bold">
+    <div className="flex flex-col max-w-max p-2 bg-gray-100 rounded-xl text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block h-max">
       {renderProductImage()}
       {renderProductDetails()}
+      {renderAddToCart()}
     </div>
   );
 }
