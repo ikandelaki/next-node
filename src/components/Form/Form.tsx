@@ -43,7 +43,7 @@ export default function Form({
         label={label}
         placeholder={placeholder}
         isRequired={isRequired}
-        defaultValue={isEdit ? String(dataObject?.[id]) : ""}
+        defaultValue={isEdit && dataObject?.[id] ? String(dataObject?.[id]) : ""}
         key={id}
         className={`${key === 0 ? "" : " mt-2"}`}
         options={options}

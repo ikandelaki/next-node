@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { ImageType, Product } from "@/types/product";
+import { Product } from "@/types/product";
 import z from "zod";
-import { formatZodError } from "@/lib/utils/utils";
+import { formatZodError, toKebabCase } from "@/lib/utils/utils";
 import EditProductForm from "./_components/EditProductForm";
 import { type ActionStateType } from "../create/CreateProductForm";
 import { getChangedFields } from "@/lib/utils/compare";
@@ -55,9 +55,16 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         .map((image) => ({ url: image, role: "" })) || [];
     const categories = formData.getAll("categories");
     const data = Object.fromEntries(formData.entries());
+
+    // If urlKey was not specified in the product create form, make it match name-sku format
+    const finalUrlKey = data.urlKey
+      ? toKebabCase(String(data.urlKey))
+      : toKebabCase(String(data.name) + "-" + String(data.sku));
+
     const rawFormData = {
       ...data,
       categories,
+      urlKey: finalUrlKey,
       media_gallery: raw_media_gallery,
     };
 
@@ -94,6 +101,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         };
       }
 
+      console.log(">> error", error);
       return { success: false, message: "Unknown error while editing product" };
     }
   };

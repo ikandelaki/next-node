@@ -2,7 +2,7 @@ import { Product } from "@/types/product";
 import z from "zod";
 import CreateProductForm, { type ActionStateType } from "./CreateProductForm";
 import prisma from "@/lib/prisma";
-import { formatZodError } from "@/lib/utils/utils";
+import { formatZodError, toKebabCase } from "@/lib/utils/utils";
 import { handleProductCategories } from "@/lib/utils/product";
 import { productAttributes } from "../_data/productAttributes";
 
@@ -41,14 +41,29 @@ export default async function CreateProduct() {
           .map((image) => ({ url: image, role: "" })) || [];
       const categories = formData.getAll("categories").map((categoryId) => String(categoryId));
       const data = Object.fromEntries(formData.entries());
+
+      // If urlKey was not specified in the product create form, make it match name-sku format
+      const finalUrlKey = data.urlKey ? data.urlKey : toKebabCase(String(data.name) + "-" + String(data.sku));
+
       const rawFormData = {
         ...data,
         categories,
+        urlKey: finalUrlKey,
         media_gallery: raw_media_gallery,
       };
 
-      const { name, sku, enabled, price, discountPrice, discountPercentage, quantity, isInStock, media_gallery } =
-        Product.parse(rawFormData);
+      const {
+        name,
+        sku,
+        enabled,
+        price,
+        discountPrice,
+        discountPercentage,
+        quantity,
+        isInStock,
+        media_gallery,
+        urlKey,
+      } = Product.parse(rawFormData);
 
       const { id } = await prisma.product.create({
         data: {
@@ -60,6 +75,7 @@ export default async function CreateProduct() {
           discountPercentage,
           quantity,
           isInStock,
+          urlKey,
           media_gallery: {
             create: media_gallery,
           },

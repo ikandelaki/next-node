@@ -9,6 +9,7 @@ const ATTR_QUANTITY = "quantity";
 const ATTR_IS_IN_STOCK = "isInStock";
 const ATTR_MEDIA_GALLERY = "media_gallery";
 const ATTR_CATEGORIES = "categories";
+const ATTR_URL_KEY = "urlKey";
 
 export const productAttributeMap = {
   ATTR_ENABLED,
@@ -20,6 +21,7 @@ export const productAttributeMap = {
   ATTR_IS_IN_STOCK,
   ATTR_MEDIA_GALLERY,
   ATTR_CATEGORIES,
+  ATTR_URL_KEY,
 };
 
 export const productAttributes: AttributeType[] = [
@@ -79,5 +81,12 @@ export const productAttributes: AttributeType[] = [
     id: ATTR_CATEGORIES,
     isRequired: true,
     options: [],
+  },
+  {
+    type: "text",
+    placeholder: "Url Key",
+    label: "Url Key",
+    id: ATTR_URL_KEY,
+    isRequired: false,
   },
 ];

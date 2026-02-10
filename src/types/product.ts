@@ -1,4 +1,4 @@
-import { Image, Product } from "@/app/generated/prisma/client";
+import { Image, Product as PrismaProduct } from "@/app/generated/prisma/client";
 import z from "zod";
 
 export const Product = z.object({
@@ -20,6 +20,7 @@ export const Product = z.object({
     .optional()
     .default([]),
   categories: z.array(z.string()).optional().default([]),
+  urlKey: z.string().optional(),
 });
 
 export type ImageType = {
@@ -28,4 +29,4 @@ export type ImageType = {
   role: string;
 };
 
-export type ProductWithMediaGallery = Product & { media_gallery: Image[] };
+export type ProductWithMediaGallery = PrismaProduct & { media_gallery: Image[] };
