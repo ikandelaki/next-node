@@ -42,9 +42,9 @@ export default function ProductCard({ product }: ProductCardType) {
 
     return (
       <div>
-        <span className="text-lg">{formatPrice(discountPrice)}</span>
-        <span className="text-gray-600 line-through ml-2 text-md">{formatPrice(price)}</span>
-        <span className="text-red-600 ml-2 text-sm">{calculateDiscountPercentage(price, discountPrice)}</span>
+        <span className="text-lg text-red-600">{formatPrice(discountPrice)}</span>
+        <span className="text-gray-600 line-through ml-2 text-md font-normal">{formatPrice(price)}</span>
+        <span className="ml-2 text-sm font-bold">{calculateDiscountPercentage(price, discountPrice)}</span>
       </div>
     );
   };
