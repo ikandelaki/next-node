@@ -1,4 +1,5 @@
 import { normalizeImageUrl } from "@/lib/utils/url";
+import { calculateDiscountPercentage, formatPrice } from "@/lib/utils/utils";
 import { ProductWithMediaGallery } from "@/types/product";
 import Image from "next/image";
 
@@ -14,18 +15,52 @@ export default function ProductCard({ product }: ProductCardType) {
       return null;
     }
 
-    return <Image src={normalizeImageUrl(media_gallery[0].url)} width={240} height={240} alt="Product image" />;
+    return (
+      <div className="w-max h-max rounded-lg overflow-hidden">
+        <Image src={normalizeImageUrl(media_gallery[0].url)} width={240} height={240} alt="Product image" />
+      </div>
+    );
+  };
+
+  const renderPrice = () => {
+    const { price, discountPrice } = product;
+
+    if (!discountPrice) {
+      return (
+        <div className="mt-1">
+          <span className="text-md">{formatPrice(price)}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-1">
+        <span className="text-md">{formatPrice(discountPrice)}</span>
+        <span className="text-gray-600 line-through ml-2 text-sm">{formatPrice(price)}</span>
+        <span className="text-red-600 ml-2 text-sm">{calculateDiscountPercentage(price, discountPrice)}</span>
+      </div>
+    );
+  };
+
+  const renderProductDetails = () => {
+    return (
+      <div className="mt-4 flex flex-col px-2">
+        {renderProductTitle()}
+        {renderPrice()}
+      </div>
+    );
   };
 
   const renderProductTitle = () => {
     const { name } = product;
 
-    return <h3>{name}</h3>;
+    return <h3 className="text-xl">{name}</h3>;
   };
+
   return (
-    <div className="flex flex-col max-w-max">
+    <div className="flex flex-col max-w-max p-2 bg-gray-100 rounded-2xl text-dark-gray font-bold">
       {renderProductImage()}
-      {renderProductTitle()}
+      {renderProductDetails()}
     </div>
   );
 }

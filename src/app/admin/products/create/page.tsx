@@ -69,7 +69,6 @@ export default async function CreateProduct() {
         },
       });
 
-      console.log(">> categories!@", categories);
       await handleProductCategories(id, categories);
 
       return {

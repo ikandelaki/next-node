@@ -38,7 +38,21 @@ export const getTableColumnData = (model: ProductModel[]) => {
 };
 
 export const formatZodError = (error: z.ZodError) => {
-  return error.issues
-    .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
-    .join(", ");
+  return error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(", ");
+};
+
+export const formatPrice = (price: string | number) => {
+  if (!price) {
+    return null;
+  }
+
+  if (typeof price === "number") {
+    return `$${String(price)}`;
+  }
+
+  return price.includes("$") ? price : `$${price}`;
+};
+
+export const calculateDiscountPercentage = (price: number | string, discountPrice: number | string) => {
+  return `${Math.ceil(((Number(price) - Number(discountPrice)) / Number(price)) * 100)}% OFF`;
 };
