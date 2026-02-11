@@ -28,6 +28,8 @@ export default function ProductListComponent({ products }: ProductListComponentT
   };
 
   return (
-    <section className="grid grid-cols-3 max-w-7xl mx-auto mt-16 justify-items-center">{renderProductList()}</section>
+    <section className="grid grid-cols-3 gap-x-4 max-w-7xl mx-auto mt-16 justify-items-center">
+      {renderProductList()}
+    </section>
   );
 }

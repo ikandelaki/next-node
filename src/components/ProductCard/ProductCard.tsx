@@ -3,6 +3,7 @@ import { calculateDiscountPercentage, formatPrice } from "@/lib/utils/utils";
 import { ProductWithMediaGallery } from "@/types/product";
 import Image from "next/image";
 import Button from "../Button";
+import Link from "next/link";
 
 type ProductCardType = {
   product: ProductWithMediaGallery;
@@ -17,14 +18,16 @@ export default function ProductCard({ product }: ProductCardType) {
     }
 
     return (
-      <div className="w-max h-max rounded-lg overflow-hidden">
-        <Image
-          src={normalizeImageUrl(media_gallery[0].url)}
-          width={320}
-          height={320}
-          alt="Product image"
-          className="w-full"
-        />
+      <div className="w-full h-max rounded-lg overflow-hidden">
+        <Link href={`/products/${product.urlKey}`}>
+          <Image
+            src={normalizeImageUrl(media_gallery[0].url)}
+            width={320}
+            height={320}
+            alt="Product image"
+            className="w-full"
+          />
+        </Link>
       </div>
     );
   };
@@ -73,7 +76,7 @@ export default function ProductCard({ product }: ProductCardType) {
   };
 
   return (
-    <div className="flex flex-col max-w-max h-full p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block">
+    <div className="flex flex-col w-full h-full p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block">
       {renderProductImage()}
       {renderProductDetails()}
       {renderAddToCart()}
