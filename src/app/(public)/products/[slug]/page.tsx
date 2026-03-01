@@ -1,4 +1,5 @@
 import EmblaCarousel from "@/components/EmblaCarousel/EmblaCarousel";
+import PriceLine from "@/components/PriceLine";
 import prisma from "@/lib/prisma";
 import { normalizeImageUrl } from "@/lib/utils/url";
 import Image from "next/image";
@@ -46,19 +47,48 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     );
   };
 
-  const renderProductDetails = () => {
-    const { name, sku } = product;
+  const renderName = () => {
+    const { name } = product;
 
     return (
+      <>
+        <h2>{name}</h2>
+      </>
+    );
+  };
+
+  const renderSku = () => {
+    const { sku } = product;
+
+    return (
+      <>
+        <p className="text-gray-300 my-3">Code: {sku}</p>
+      </>
+    );
+  };
+
+  const renderPrice = () => {
+    const { price, discountPrice } = product;
+
+    return (
+      <div className="mt-6">
+        <PriceLine price={price} discountPrice={discountPrice} />
+      </div>
+    );
+  };
+
+  const renderProductDetails = () => {
+    return (
       <div className="w-full">
-        <span>{name}</span>
-        <span>{sku}</span>
+        {renderName()}
+        {renderSku()}
+        {renderPrice()}
       </div>
     );
   };
 
   return (
-    <div className="flex max-w-7xl mx-auto">
+    <div className="flex max-w-7xl mx-auto gap-24">
       {renderMediaGallery()}
       {renderProductDetails()}
     </div>

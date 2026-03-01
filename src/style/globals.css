@@ -90,7 +90,11 @@ body {
 }
 
 h1 {
-  font-size: 28px;
+  @apply text-3xl font-bold;
+}
+
+h2 {
+  @apply text-2xl font-bold;
 }
 
 .Button {
@@ -109,10 +113,6 @@ h1 {
 
 .Section {
   @apply bg-section py-4 px-8 rounded-lg;
-}
-
-h2 {
-  @apply text-xl;
 }
 
 @keyframes shimmer {
