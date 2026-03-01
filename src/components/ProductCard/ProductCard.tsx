@@ -4,6 +4,7 @@ import { ProductWithMediaGallery } from "@/types/product";
 import Image from "next/image";
 import Button from "../Button";
 import Link from "next/link";
+import PriceLine from "../PriceLine";
 
 type ProductCardType = {
   product: ProductWithMediaGallery;
@@ -19,15 +20,13 @@ export default function ProductCard({ product }: ProductCardType) {
 
     return (
       <div className="w-full h-max rounded-lg overflow-hidden">
-        <Link href={`/products/${product.urlKey}`}>
-          <Image
-            src={normalizeImageUrl(media_gallery[0].url)}
-            width={320}
-            height={320}
-            alt="Product image"
-            className="w-full"
-          />
-        </Link>
+        <Image
+          src={normalizeImageUrl(media_gallery[0].url)}
+          width={320}
+          height={320}
+          alt="Product image"
+          className="w-full"
+        />
       </div>
     );
   };
@@ -35,20 +34,10 @@ export default function ProductCard({ product }: ProductCardType) {
   const renderPrice = () => {
     const { price, discountPrice } = product;
 
-    if (!discountPrice) {
-      return (
-        <div>
-          <span className="text-lg">{formatPrice(price)}</span>
-        </div>
-      );
-    }
-
     return (
-      <div>
-        <span className="text-lg text-red-600">{formatPrice(discountPrice)}</span>
-        <span className="text-gray-600 line-through ml-2 text-md font-normal">{formatPrice(price)}</span>
-        <span className="ml-2 text-sm font-bold">{calculateDiscountPercentage(price, discountPrice)}</span>
-      </div>
+      <>
+        <PriceLine price={price} discountPrice={discountPrice} />
+      </>
     );
   };
 
@@ -76,10 +65,12 @@ export default function ProductCard({ product }: ProductCardType) {
   };
 
   return (
-    <div className="flex flex-col w-full h-full p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block">
-      {renderProductImage()}
-      {renderProductDetails()}
-      {renderAddToCart()}
-    </div>
+    <Link href={`/products/${product.urlKey}`} className="w-full">
+      <div className="flex flex-col w-full h-full p-1 bg-gray-100 rounded-lg text-dark-gray font-bold relative overflow-hidden hover:overflow-visible hover:[&>div]:block">
+        {renderProductImage()}
+        {renderProductDetails()}
+        {renderAddToCart()}
+      </div>
+    </Link>
   );
 }
